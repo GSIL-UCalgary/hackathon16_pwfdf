@@ -113,17 +113,17 @@ def get_watershed_from_usgs_api(longitude: float, latitude: float):
         # USGS StreamStats API endpoint
         url_format = "https://test.streamstats.usgs.gov/streamstatsservices/watershed{0}?rcode={1}&xlocation={2}&ylocation={3}&crs={4}&includeparameters={5}&includeflowtypes={6}&includefeatures={7}&simplify={8}"
         api_url = url_format.format(
-            '.geojson',             # {0} - format extension
+            '.geojson',          # {0} - format extension
             "CA",                # {1} - region code
             longitude,           # {2} - x location
             latitude,            # {3} - y location
             "4326",              # {4} - coordinate reference system
             str("true").lower(), # {5} - include parameters
-            str("true").lower(), # {6} - include flow types
+            str("false").lower(),# {6} - include flow types
             str("true").lower(), # {7} - include features
             str("true").lower()  # {8} - simplify geometry
         )
-        response = requests.get(api_url, timeout=60)
+        response = requests.get(api_url, timeout=120)
         response.raise_for_status()
         
         data = response.json()
@@ -146,31 +146,53 @@ class PWFDF_Data:
     def __init__(self):
         self.df = pd.read_excel(self.path, sheet_name=self.sheet_name)
 
+
     def coordinates_wgs84(self, i):
         x = self.df['UTM_X'][i].astype(float)
         y = self.df['UTM_Y'][i].astype(float)
         zone = self.df['UTM_Zone'][i].astype(int)
 
-        return self.utm2wgs84(x, y, zone)
+        transformer = self.utm2wgs84(x, y, zone)
+        return transformer.transform(x, y)
        
     def utm2wgs84(self, x, y, zone):
         utm_proj = Proj(proj='utm', zone=zone, ellps='WGS84', datum='WGS84', south=False)
         wgs84_proj = Proj(proj='latlong', ellps='WGS84', datum='WGS84')
         transformer = Transformer.from_proj(utm_proj, wgs84_proj, always_xy=True)
-        return transformer.transform(x, y)
+        return transformer
+        
+    def bounds(self, i, buffer_km):
+        utm_x = self.df['UTM_X'][i].astype(float)
+        utm_y = self.df['UTM_Y'][i].astype(float)
+        utm_zone = self.df['UTM_Zone'][i].astype(int)
+
+        buffer_m = buffer_km * 1000 # Convert buffer from km to meters
+
+        # Calculate bounds in UTM
+        utm_west = utm_x - buffer_m
+        utm_south = utm_y - buffer_m
+        utm_east = utm_x + buffer_m
+        utm_north = utm_y + buffer_m
+
+        transfomer = self.utm2wgs84(utm_x, utm_y, utm_zone)
+        
+        west, south =  transfomer.transform(utm_west, utm_south)
+        east, north =  transfomer.transform(utm_east, utm_north)
+        return (west, south, east, north)
 
 
 def main():
     data = PWFDF_Data()
-    x, y = data.coordinates_wgs84(0)
-    print(f"x: {x}, y: {y}")
-    #bounds, suggested_buffer = utm_to_geographic_bounds(x[0], y[0], zone[0], 'north', 5, 'fire')
+    #x, y = data.coordinates_wgs84(0)
+    #print(f"x: {x}, y: {y}")
+    print("Main")
+    bounds = data.bounds(0, 5)
 
-    #output_file = '/home/quinn/pwfdf/data/dem.tif'
-    #elevation.clip(bounds=bounds, output=output_file, product='SRTM1')
+    output_file = './data/dem.tif'
+    elevation.clip(bounds=bounds, output=output_file, product='SRTM1')
 
-    #with rasterio.open(output_file) as src:
-    #    show(src, cmap='terrain', title=f'Fire/Basin DEM - {5}km buffer')
+    with rasterio.open(output_file) as src:
+        show(src, cmap='terrain', title=f'Fire/Basin DEM - {5}km buffer')
     #delineate_watershed(output_file, (bounds[2], bounds[3]))
 
 if __name__ == '__main__':
