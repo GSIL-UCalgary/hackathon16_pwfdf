@@ -6,6 +6,7 @@ from rasterio.plot import show
 import matplotlib.pyplot as plt
 from pysheds.grid import Grid
 import numpy as np
+import requests
 
 def utm_to_geographic_bounds(utm_x, utm_y, utm_zone, hemisphere='north', buffer_km=5, analysis_type='fire'):
 
@@ -107,25 +108,70 @@ def delineate_watershed(dem_file, pour_point_coords):
     plt.ylabel('Latitude')
     plt.title('Flow Distance', size=14)
 
+def get_watershed_from_usgs_api(longitude: float, latitude: float):
+    try:
+        # USGS StreamStats API endpoint
+        url_format = "https://test.streamstats.usgs.gov/streamstatsservices/watershed{0}?rcode={1}&xlocation={2}&ylocation={3}&crs={4}&includeparameters={5}&includeflowtypes={6}&includefeatures={7}&simplify={8}"
+        api_url = url_format.format(
+            '.geojson',             # {0} - format extension
+            "CA",                # {1} - region code
+            longitude,           # {2} - x location
+            latitude,            # {3} - y location
+            "4326",              # {4} - coordinate reference system
+            str("true").lower(), # {5} - include parameters
+            str("true").lower(), # {6} - include flow types
+            str("true").lower(), # {7} - include features
+            str("true").lower()  # {8} - simplify geometry
+        )
+        response = requests.get(api_url, timeout=60)
+        response.raise_for_status()
+        
+        data = response.json()
+        
+        if 'featurecollection' in data and len(data['featurecollection']) > 0:
+            watershed_features = data['featurecollection'][0]
+            return watershed_features
+        else:
+            print("No watershed found for the given coordinates")
+            return None
+            
+    except Exception as e:
+        print(f"Error querying USGS API: {e}")
+        return None
+
+class PWFDF_Data:
+    path = 'data/ofr20161106_appx-1.xlsx'
+    sheet_name = 'Appendix1_ModelData'
+
+    def __init__(self):
+        self.df = pd.read_excel(self.path, sheet_name=self.sheet_name)
+
+    def coordinates_wgs84(self, i):
+        x = self.df['UTM_X'][i].astype(float)
+        y = self.df['UTM_Y'][i].astype(float)
+        zone = self.df['UTM_Zone'][i].astype(int)
+
+        return self.utm2wgs84(x, y, zone)
+       
+    def utm2wgs84(self, x, y, zone):
+        utm_proj = Proj(proj='utm', zone=zone, ellps='WGS84', datum='WGS84', south=False)
+        wgs84_proj = Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+        transformer = Transformer.from_proj(utm_proj, wgs84_proj, always_xy=True)
+        return transformer.transform(x, y)
+
+
 def main():
-    data_path = 'data/ofr20161106_appx-1.xlsx'
+    data = PWFDF_Data()
+    x, y = data.coordinates_wgs84(0)
+    print(f"x: {x}, y: {y}")
+    #bounds, suggested_buffer = utm_to_geographic_bounds(x[0], y[0], zone[0], 'north', 5, 'fire')
 
-    df = pd.read_excel(data_path, sheet_name='Appendix1_ModelData')
-    print(df.head())
-
-    x = df['UTM_X'].astype(float)
-    y = df['UTM_Y'].astype(float)
-    zone = df['UTM_Zone'].astype(int)
-
-    print(f"x: {x[0]}, y: {y[0]}, zone: {zone[0]}")
-    bounds, suggested_buffer = utm_to_geographic_bounds(x[0], y[0], zone[0], 'north', 5, 'fire')
-
-    output_file = '/home/quinn/pwfdf/data/dem.tif'
-    elevation.clip(bounds=bounds, output=output_file, product='SRTM1')
+    #output_file = '/home/quinn/pwfdf/data/dem.tif'
+    #elevation.clip(bounds=bounds, output=output_file, product='SRTM1')
 
     #with rasterio.open(output_file) as src:
     #    show(src, cmap='terrain', title=f'Fire/Basin DEM - {5}km buffer')
-    delineate_watershed(output_file, (bounds[2], bounds[3]))
+    #delineate_watershed(output_file, (bounds[2], bounds[3]))
 
 if __name__ == '__main__':
     main()
