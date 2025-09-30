@@ -3,7 +3,7 @@ import sciencebasepy
 from pathlib import Path
 
 def download_pwfdf_collection():
-    dir = 'data'
+    dir = 'data/collection'
     sb = sciencebasepy.SbSession()
     id = '6818f950d4be0208bc3e0165' #Post-Wildfire Debris-Flow Hazard Assessment (PWFDF) Collection
     item = sb.get_item(id)

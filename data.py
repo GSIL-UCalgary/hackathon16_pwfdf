@@ -1,63 +1,43 @@
 import pandas as pd
 from pyproj import Proj, transform, Transformer
 import elevation
+
 import rasterio
 from rasterio.plot import show
+from rasterio.warp import reproject, Resampling, calculate_default_transform
+
 import matplotlib.pyplot as plt
 from pysheds.grid import Grid
 import numpy as np
 import requests
-# test
-def utm_to_geographic_bounds(utm_x, utm_y, utm_zone, hemisphere='north', buffer_km=5, analysis_type='fire'):
+import ee
+import geetools
+from geetools import tools
 
-    # Suggested buffer sizes based on analysis type
-    buffer_suggestions = {
-        'fire': {
-            'small': 2,      # Small fire < 1000 acres
-            'medium': 5,     # Medium fire 1000-10000 acres
-            'large': 10,     # Large fire > 10000 acres
-            'mega': 25       # Mega fire > 100000 acres
-        },
-        'small_basin': 5,    # < 100 km²
-        'large_basin': 15,   # > 100 km²
-        'watershed': 25,     # Full watershed analysis
-        'erosion': 3,        # Post-fire erosion modeling
-        'hydrology': 10      # Hydrological modeling
-    }
+ee.Authenticate()
+ee.Initialize(project='ee-quinnledingham')
 
-    # Create UTM projection
-    if hemisphere.lower() == 'north':
-        utm_proj = Proj(proj='utm', zone=utm_zone, ellps='WGS84', datum='WGS84')
-    else:
-        utm_proj = Proj(proj='utm', zone=utm_zone, ellps='WGS84', datum='WGS84', south=True)
+def plot_catchment(grid, clipped_catch):
+    fig, ax = plt.subplots(figsize=(8,6))
+    fig.patch.set_alpha(0)
+    plt.grid('on', zorder=0)
+    im = ax.imshow(np.where(clipped_catch, clipped_catch, np.nan), extent=grid.extent, zorder=1, cmap='Greys_r')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    plt.title('Delineated Catchment', size=14)
 
-    wgs84_proj = Proj(proj='latlong', ellps='WGS84', datum='WGS84')
-    transformer = Transformer.from_proj(utm_proj, wgs84_proj, always_xy=True)
-    buffer_m = buffer_km * 1000 # Convert buffer from km to meters
-
-    # Calculate bounds in UTM
-    utm_west = utm_x - buffer_m
-    utm_east = utm_x + buffer_m
-    utm_south = utm_y - buffer_m
-    utm_north = utm_y + buffer_m
-
-    # Convert corners to geographic coordinates
-    west, south = transformer.transform(utm_west, utm_south)
-    east, north = transformer.transform(utm_east, utm_north)
-
-    # Get suggested buffer
-    if analysis_type in buffer_suggestions:
-        if isinstance(buffer_suggestions[analysis_type], dict):
-            suggested = buffer_suggestions[analysis_type]['medium']  # default to medium
-        else:
-            suggested = buffer_suggestions[analysis_type]
-    else:
-        suggested = 5  # default
-
-    return (west, south, east, north), suggested
+def plot_catchment_dist(grid, dist):
+    fig, ax = plt.subplots(figsize=(8,6))
+    fig.patch.set_alpha(0)
+    plt.grid('on', zorder=0)
+    im = ax.imshow(dist, extent=grid.extent, zorder=2, cmap='cubehelix_r')
+    plt.colorbar(im, ax=ax, label='Distance to outlet (cells)')
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    plt.title('Flow Distance', size=14)
 
 def delineate_watershed(dem_file, pour_point_coords):
-    grid = Grid.from_raster(dem_file, data_name='dem')
+    grid = Grid.from_raster(dem_file)
     dem = grid.read_raster(dem_file)
 
     pit_filled_dem = grid.fill_pits(dem)
@@ -72,41 +52,28 @@ def delineate_watershed(dem_file, pour_point_coords):
     branches = grid.extract_river_network(flow_dir, flow_acc > threshold, dirmap=dirmap)
 
     x, y = pour_point_coords
-    x_snap, y_snap = grid.snap_to_mask(flow_acc > 1000, (x, y)) # Snap pour point to high accumulation cell
+    x_snap, y_snap = grid.snap_to_mask(flow_acc > 10, pour_point_coords) # Snap pour point to high accumulation cell
     catch = grid.catchment(x=x_snap, y=y_snap, fdir=flow_dir, dirmap=dirmap, xytype='coordinate')
 
-    grid.clip_to(catch)
-    clipped_catch = grid.view(catch)
+    dist = grid.distance_to_outlet(x=x_snap, y=y_snap, fdir=flow_dir, dirmap=dirmap, xytype='coordinate')
 
-    fig, ax = plt.subplots(figsize=(8,6))
+    # plot DEM
+    print("PLOTTING DEM")
+    fig, ax = plt.subplots(figsize=(8,8))
     fig.patch.set_alpha(0)
     plt.imshow(dem, extent=grid.extent, cmap='terrain', zorder=1)
     plt.colorbar(label='Elevation (m)')
     plt.grid(zorder=0)
+    #im = ax.imshow(np.where(clipped_catch, clipped_catch, np.nan), extent=grid.extent, zorder=1, cmap='Greys_r')
+    im = ax.imshow(dist, extent=grid.extent, zorder=2, cmap='cubehelix_r')
     plt.title('Digital elevation map', size=14)
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
+    #print(f"x: {x}, y: {y}")
+    plt.plot(x, y, 'ro', markersize=1, zorder=2)  # 'ro' = red circle
+    plt.plot(x_snap, y_snap, 'go', markersize=1, zorder=2)  # 'ro' = red circle
     plt.tight_layout()
-
-    # Plot the catchment
-    fig, ax = plt.subplots(figsize=(8,6))
-    fig.patch.set_alpha(0)
-    plt.grid('on', zorder=0)
-    im = ax.imshow(np.where(clipped_catch, clipped_catch, np.nan), extent=grid.extent, zorder=1, cmap='Greys_r')
-    plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
-    plt.title('Delineated Catchment', size=14)
-
-    dist = grid.distance_to_outlet(x=x_snap, y=y_snap, fdir=flow_dir, dirmap=dirmap, xytype='coordinate')
-
-    fig, ax = plt.subplots(figsize=(8,6))
-    fig.patch.set_alpha(0)
-    plt.grid('on', zorder=0)
-    im = ax.imshow(dist, extent=grid.extent, zorder=2, cmap='cubehelix_r')
-    plt.colorbar(im, ax=ax, label='Distance to outlet (cells)')
-    plt.xlabel('Longitude')
-    plt.ylabel('Latitude')
-    plt.title('Flow Distance', size=14)
+    plt.show()
 
 def get_watershed_from_usgs_api(longitude: float, latitude: float):
     try:
@@ -125,19 +92,51 @@ def get_watershed_from_usgs_api(longitude: float, latitude: float):
         )
         response = requests.get(api_url, timeout=120)
         response.raise_for_status()
-        
+
         data = response.json()
-        
+
         if 'featurecollection' in data and len(data['featurecollection']) > 0:
             watershed_features = data['featurecollection'][0]
             return watershed_features
         else:
             print("No watershed found for the given coordinates")
             return None
-            
+
     except Exception as e:
         print(f"Error querying USGS API: {e}")
         return None
+
+class PWFDF_Entry:
+    def __init__(self, d):
+        self.d = d
+        self.utm_x = self.d['UTM_X']
+        self.utm_y = self.d['UTM_Y']
+        self.zone = self.d['UTM_Zone']
+
+        utm_proj = Proj(proj='utm', zone=self.zone, ellps='WGS84', datum='WGS84', south=False)
+        wgs84_proj = Proj(proj='latlong', ellps='WGS84', datum='WGS84')
+        self.transformer = Transformer.from_proj(utm_proj, wgs84_proj, always_xy=True)
+
+    def coordinates_wgs84(self):
+        return self.transformer.transform(self.utm_x, self.utm_y)
+    
+    def bounds(self, buffer_km):
+        buffer_m = buffer_km * 1000 # Convert buffer from km to meters
+
+        # Calculate bounds in UTM
+        utm_west  = self.utm_x - buffer_m
+        utm_south = self.utm_y - buffer_m
+        utm_east  = self.utm_x + buffer_m
+        utm_north = self.utm_y + buffer_m
+
+        west, south =  self.transformer.transform(utm_west, utm_south)
+        east, north =  self.transformer.transform(utm_east, utm_north)
+
+        return (west, south, east, north)
+    
+    def __getitem__(self, key):
+        return self.d[key]
+
 
 class PWFDF_Data:
     path = 'data/ofr20161106_appx-1.xlsx'
@@ -146,54 +145,111 @@ class PWFDF_Data:
     def __init__(self):
         self.df = pd.read_excel(self.path, sheet_name=self.sheet_name)
 
+    def get(self, i):
+        return PWFDF_Entry(self.df.iloc[i].to_dict())
+    
+def plot_dem(output_file, x, y):
+    fig, ax = plt.subplots(figsize=(8, 6))
+    fig.patch.set_alpha(0)
+    
+    with rasterio.open(output_file) as src:
+        target_crs = src.crs
+        target_bounds = src.bounds
+        target_shape = src.shape
+        target_transform = src.transform
+        show(src, ax=ax, cmap='terrain', zorder=1)
 
-    def coordinates_wgs84(self, i):
-        x = self.df['UTM_X'][i].astype(float)
-        y = self.df['UTM_Y'][i].astype(float)
-        zone = self.df['UTM_Zone'][i].astype(int)
+    plot_satellite_image(ax, '/home/quinn/pwfdf/data/satellite.tif', target_crs, target_bounds, target_shape, target_transform)
 
-        transformer = self.utm2wgs84(x, y, zone)
-        return transformer.transform(x, y)
-       
-    def utm2wgs84(self, x, y, zone):
-        utm_proj = Proj(proj='utm', zone=zone, ellps='WGS84', datum='WGS84', south=False)
-        wgs84_proj = Proj(proj='latlong', ellps='WGS84', datum='WGS84')
-        transformer = Transformer.from_proj(utm_proj, wgs84_proj, always_xy=True)
-        return transformer
-        
-    def bounds(self, i, buffer_km):
-        utm_x = self.df['UTM_X'][i].astype(float)
-        utm_y = self.df['UTM_Y'][i].astype(float)
-        utm_zone = self.df['UTM_Zone'][i].astype(int)
+    plt.colorbar(ax.images[0], label='Elevation (m)')
 
-        buffer_m = buffer_km * 1000 # Convert buffer from km to meters
+    ax.plot(x, y, 'ro', markersize=10, zorder=3)
+    plt.grid(zorder=0)
+    plt.title('DEM with Satellite Overlay', size=14)
+    plt.xlabel('Longitude')
+    plt.ylabel('Latitude')
+    plt.tight_layout()
+    plt.show()
 
-        # Calculate bounds in UTM
-        utm_west = utm_x - buffer_m
-        utm_south = utm_y - buffer_m
-        utm_east = utm_x + buffer_m
-        utm_north = utm_y + buffer_m
+def plot_satellite_image(ax, file, target_crs, target_bounds, target_shape, target_transform):
+    with rasterio.open(file) as src:
+        raster = src.read([1, 2, 3])
 
-        transfomer = self.utm2wgs84(utm_x, utm_y, utm_zone)
-        
-        west, south =  transfomer.transform(utm_west, utm_south)
-        east, north =  transfomer.transform(utm_east, utm_north)
-        return (west, south, east, north)
+        print(f"\nImage metadata:")
+        print(f"  Shape: {raster.shape}")
+        print(f"  CRS: {src.crs}")
+        print(f"  Bounds: {src.bounds}")
+
+        reprojected = np.zeros((3, target_shape[0], target_shape[1]), dtype=raster.dtype)
+        for i in range(3):
+            reproject(
+                source=raster[i],
+                destination=reprojected[i],
+                src_transform=src.transform,
+                src_crs=src.crs,
+                dst_transform=target_transform,
+                dst_crs=target_crs,
+                resampling=Resampling.bilinear
+            )
+
+        raster_plot = np.transpose(reprojected, (1, 2, 0))
+        raster_plot = np.clip(raster_plot / 3000, 0, 1)
+        extent = [target_bounds.left, target_bounds.right, target_bounds.bottom, target_bounds.top]
+        ax.imshow(raster_plot, extent=extent, zorder=2, alpha=0.5)
+
+def get_satellite_image(file, bounds, start_date, end_date):
+    region = ee.Geometry.Rectangle([bounds[0], bounds[1], bounds[2], bounds[3]])
+
+    image = ee.ImageCollection("LANDSAT/LE07/C02/T1_L2") \
+        .filterBounds(region) \
+        .filterDate(start_date, end_date) \
+        .filter(ee.Filter.lt('CLOUD_COVER', 20))
+    
+    bands = ['SR_B3', 'SR_B2', 'SR_B1', 'SR_B4']  # RGB
+    rgb = image.median().select(bands).clip(region)
+    url = rgb.getDownloadURL({
+        'scale': 10,
+        'region': region,
+        'format': 'GEO_TIFF'
+    })
+
+    response = requests.get(url)
+    with open(file, 'wb') as f:
+        f.write(response.content)
+
+from datetime import datetime, timedelta
+
+def get_fire_images(fire_year, bounds):
+    print("FIRE")
+    fire_date = f"{fire_year}-07-15"
+    fire_dt = datetime.strptime(fire_date, "%Y-%m-%d")
+
+    pre_fire_end = fire_dt - timedelta(days=30)  
+    pre_fire_start = pre_fire_end - timedelta(days=90)
+    post_fire_start = fire_dt + timedelta(days=30)
+    post_fire_end = post_fire_start + timedelta(days=150)
+
+    get_satellite_image('/home/quinn/pwfdf/data/before.tif', bounds, pre_fire_start, pre_fire_end)
+    get_satellite_image('/home/quinn/pwfdf/data/after.tif', bounds, post_fire_start, post_fire_end)
 
 
 def main():
     data = PWFDF_Data()
-    #x, y = data.coordinates_wgs84(0)
-    #print(f"x: {x}, y: {y}")
-    print("Main")
-    bounds = data.bounds(0, 5)
+    i = 2
+    entry = data.get(i)
 
-    output_file = './data/dem.tif'
+    print(f"Using entry: {i}, fire name: {entry['Fire Name']}, seg id: {entry['Fire_SegID']}")
+    bounds = entry.bounds(5)
+    output_file = '/home/quinn/pwfdf/data/dem.tif'
     elevation.clip(bounds=bounds, output=output_file, product='SRTM1')
 
-    with rasterio.open(output_file) as src:
-        show(src, cmap='terrain', title=f'Fire/Basin DEM - {5}km buffer')
-    #delineate_watershed(output_file, (bounds[2], bounds[3]))
+    #get_satellite_image('/home/quinn/pwfdf/data/satellite.tif', bounds)
+    get_fire_images(entry['Year'], bounds)
+
+    #x, y = entry.coordinates_wgs84()
+    #plot_dem(output_file, x, y)
+
+    #delineate_watershed(output_file, entry.coordinates_wgs84())
 
 if __name__ == '__main__':
     main()
