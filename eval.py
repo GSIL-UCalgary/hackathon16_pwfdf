@@ -4,6 +4,7 @@ from torch.utils.data import Dataset, DataLoader
 
 import numpy as np
 from sklearn.metrics import roc_auc_score, roc_curve, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 def threat_score(y_true, y_pred, threshold=0.5):
     """Threat Score = TP / (TP + FN + FP)"""
@@ -69,3 +70,29 @@ def compare_params(models, durations):
             learn = models[dur].state_dict()[param].item()
             diff = learn - pub
             print(f"{param:<8} {pub:<12.4f} {learn:<12.4f} {diff:<12.4f}")
+
+def evaluate_model(model, X_test, y_test, name):
+    """Evaluate model and return metrics"""
+    model.eval()
+    with torch.no_grad():
+        y_pred = model(X_test).cpu().numpy()
+    
+    y_test = y_test.cpu().numpy()
+
+    threshold, ts = find_best_threshold(y_test, y_pred)
+    y_pred_binary = (y_pred > threshold).astype(int)
+    
+    accuracy = accuracy_score(y_test, y_pred_binary)
+    precision = precision_score(y_test, y_pred_binary, zero_division=0)
+    recall = recall_score(y_test, y_pred_binary, zero_division=0)
+    f1 = f1_score(y_test, y_pred_binary, zero_division=0)
+    
+    return {
+        'name': name,
+        'ts': ts,
+        'accuracy': accuracy,
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+        'threshold': threshold
+    }

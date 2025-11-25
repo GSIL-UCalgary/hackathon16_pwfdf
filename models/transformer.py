@@ -1,27 +1,6 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
-from torch.utils.data import Dataset, DataLoader
-
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.model_selection import train_test_split
-
-from app import App, Data, App_Dataset
-from data import PWFDF_Data
-from eval import evaluate
-
-params = {
-  "epochs": 50,
-  "batch_size": 64,
-  "max_iters": 5000,
-  "eval_interval": 500,
-  "learning_rate": 3e-4,
-  "eval_iters": 200,
-  "model_output": './output/transformer.model',
-  "optimizer": 'AdamW',
-  "dataset_name": 'Custom',
-}
-
 
 block_size = 256
 n_embd = 128
@@ -149,75 +128,41 @@ class Transformer(nn.Module):
       logits = logits.view(B*T, C)
       targets = targets.view(B*T)
       loss = F.cross_entropy(logits, targets)
-
+    
     return logits, loss
 
-def train(app):
-  print("Training")
-
-  for epoch in range(app.epochs):
-    app.model.train()
-    pbar = app.pbar(epoch)
-
-    for batch_i, (features, labels) in enumerate(pbar):
-      outputs, loss = app.model(features, labels)
-      app.optimizer.zero_grad()
-      loss.backward()
-      app.optimizer.step()
-
-    print(f"\nEpoch {epoch+1}/{app.epochs}")
-    train_metrics = evaluate(app.model, app.data.train_loader)
-    print("Train")
-    train_metrics.output()
-    test_metrics = evaluate(app.model, app.data.test_loader)
-    print("Test")
-    test_metrics.output()
-
-def test(app):
-  app.model.eval()
-  test_loss = 0
-  test_correct = 0
-  test_total = 0
-
-  test_pbar = app.test_pbar()
-
-  with torch.no_grad():
-    for i, (data, target) in enumerate(test_pbar):
-      output, loss = app.model(data, target)
-
-      test_loss += loss.item()
-      _, predicted = output.max(1)
-      test_total += target.size(0)
-      test_correct += predicted.eq(target).sum().item()
-
-  test_loss = test_loss / len(app.data.test_loader)
-  test_acc = 100.0 * test_correct / test_total
-
-  print(f"Final Test Accuracy: {test_acc:.2f}%")
-
-app = App(params)
-
-def main():
-  # loading data
-  pwfdf_data = PWFDF_Data()
-
-  data, target = pwfdf_data.get_data_target()
-  data = torch.FloatTensor(data)
-  target = torch.tensor(target)
-
-  X_train, X_val, y_train, y_val = train_test_split(data, target, test_size=0.1, random_state=42, stratify=target)
-
-  train_dataset = app.create_dataset(X_train, y_train)
-  test_dataset = app.create_dataset(X_val, y_val)
-
-  app.data = Data(app.batch_size, train_dataset, test_dataset)
-
-  app.model = Transformer(data.shape[1])
-  app.set_optimizer()
-  app.train_func = train
-  app.test_func = test
-  app.main()
-
-
-if __name__ == "__main__":
-  main()
+class TransformerClassifier(nn.Module):
+    def __init__(self, input_size, num_classes=1, n_embd=128, n_head=4, n_layer=4, dropout=0.2):
+        super().__init__()
+        self.input_size = input_size
+        self.duration = '15min'
+        
+        # Input projection
+        self.input_proj = nn.Linear(input_size, n_embd)
+        
+        # Transformer encoder
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=n_embd,
+            nhead=n_head,
+            dim_feedforward=4*n_embd,
+            dropout=dropout,
+            batch_first=True
+        )
+        self.transformer = nn.TransformerEncoder(encoder_layer, num_layers=n_layer)
+        
+        # Classification head
+        self.classifier = nn.Sequential(
+            nn.Linear(n_embd, 64),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(64, num_classes),
+            nn.Sigmoid()
+        )
+        
+    def forward(self, x):
+        # x shape: (batch_size, input_size)
+        x = x.unsqueeze(1)  # (batch_size, 1, input_size)
+        x = self.input_proj(x)  # (batch_size, 1, n_embd)
+        x = self.transformer(x)  # (batch_size, 1, n_embd)
+        x = x.squeeze(1)  # (batch_size, n_embd)
+        return self.classifier(x).squeeze(-1)

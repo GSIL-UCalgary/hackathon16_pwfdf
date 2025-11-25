@@ -262,7 +262,6 @@ def export_to_shapefile(pwfdf_data, output_path='data/pwfdf_points.shp', crs='EP
     
     return gdf
 
-
 # Example usage:
 if __name__ == "__main__":
     pwfdf = PWFDF_Data()

@@ -11,7 +11,8 @@ class MambaClassifier(nn.Module):
         self.input_dim = input_dim
         self.d_model = d_model
         self.duration = '15min'
-        
+        self.name = 'Mamba'
+
         # Input projection
         self.input_proj = nn.Linear(input_dim, d_model)
         
@@ -71,6 +72,7 @@ class HybridMambaLogisticModel(nn.Module):
         self.input_dim = input_dim
         self.d_model = d_model
         self.duration = '15min'
+        self.name = 'HybridMamba'
         
         # Define which features are rainfall accumulation features
         # These will use logistic regression

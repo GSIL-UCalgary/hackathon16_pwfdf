@@ -15,6 +15,7 @@ class Staley2017Model(nn.Module):
     def __init__(self, duration='15min'):
         super().__init__()
         self.duration = duration
+        self.name = 'logres'
         
         # Feature indices for T, F, S
         self.T_idx = 10  # PropHM23
@@ -49,6 +50,6 @@ class Staley2017Model(nn.Module):
         logit = B + Ct * T * R + Cf * F * R + Cs * S * R
         # Clip for numerical stability
         logit = torch.clamp(logit, -500, 500)
-        return torch.sigmoid(logit).unsqueeze(1)
+        return torch.sigmoid(logit)
 
 

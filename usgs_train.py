@@ -60,7 +60,7 @@ def train(model, X_train, y_train, X_test, y_test, max_iter=1000):
     print(f"Positive samples: {torch.sum(y_train).item()} ({100*torch.mean(y_train.float()):.1f}%)")
     print(f"Negative samples: {len(y_train) - torch.sum(y_train).item()} ({100*(1-torch.mean(y_train.float())):.1f}%)")
     
-    y_train = y_train.reshape(-1, 1)
+    #y_train = y_train.reshape(-1, 1)
     
     # Use LBFGS optimizer (same as sklearn's lbfgs)
     optimizer = optim.LBFGS(

@@ -1,3 +1,6 @@
+import os
+import random
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -5,19 +8,44 @@ import numpy as np
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from data import PWFDF_Data
-from eval import find_best_threshold, evaluate, compare_params
+from eval import find_best_threshold, evaluate, compare_params, evaluate_model
+
 from models.log_reg import Staley2017Model
 from models.mamba import MambaClassifier, HybridMambaLogisticModel
+from models.transformer import TransformerClassifier
+
+import logging
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def train_lg(model, X_train, y_train, X_test, y_test, max_iter=1000):    
+output_file = './output/logs.txt'
+
+# Setup logging to both console and file
+logging.basicConfig(
+    level=logging.INFO,
+    #format='%(asctime)s - %(levelname)s - %(message)s',
+    format='%(message)s',
+    handlers=[
+        logging.FileHandler(output_file, encoding='utf-8'),
+        logging.StreamHandler()  # This sends to console
+    ]
+)
+
+# random seed setting
+def setup_seed(seed):
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    os.environ['PYTHONHASHSEED'] = str(seed)
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+def train_logistic(model, X_train, y_train, X_test, y_test, max_iter=1000):    
     print(f"Training on {len(y_train)} samples")
     print(f"Positive samples: {torch.sum(y_train).item()} ({100*torch.mean(y_train.float()):.1f}%)")
     print(f"Negative samples: {len(y_train) - torch.sum(y_train).item()} ({100*(1-torch.mean(y_train.float())):.1f}%)")
-    
-    y_train = y_train.reshape(-1, 1)
-    
+        
     # Use LBFGS optimizer (same as sklearn's lbfgs)
     optimizer = optim.LBFGS(
         model.parameters(),
@@ -32,13 +60,11 @@ def train_lg(model, X_train, y_train, X_test, y_test, max_iter=1000):
     
     criterion = nn.BCELoss()
     
-    # Training with LBFGS
-    print(f"Training {model.duration} model with LBFGS...")
-    
     iteration = 0
     
     def closure():
         nonlocal iteration
+        model.train()
         optimizer.zero_grad()
         y_pred = model(X_train)
         loss = criterion(y_pred, y_train)
@@ -51,9 +77,12 @@ def train_lg(model, X_train, y_train, X_test, y_test, max_iter=1000):
             threshold, test_ts = find_best_threshold(y_test.cpu().numpy(), y_test_pred)
             model.train()
             
+           
             print(f"Iter {iteration}: Loss={loss.item():.6f}, Test TS={test_ts:.4f}")
+            '''
             print(f"  B={model.B.item():.4f}, Ct={model.Ct.item():.4f}, "
                   f"Cf={model.Cf.item():.4f}, Cs={model.Cs.item():.4f}")
+            '''
         
         iteration += 1
         return loss
@@ -71,6 +100,8 @@ def train_lg(model, X_train, y_train, X_test, y_test, max_iter=1000):
     return model
 
 def train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patience=10):    
+    model_save_path = f"./output/{model.name}_model.pth"
+
     print(f"Training on {len(y_train)} samples")
     print(f"Positive samples: {torch.sum(y_train).item()} ({100*torch.mean(y_train.float()):.1f}%)")
     print(f"Negative samples: {len(y_train) - torch.sum(y_train).item()} ({100*(1-torch.mean(y_train.float())):.1f}%)")
@@ -84,15 +115,10 @@ def train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patienc
     best_ts = 0.0
     best_epoch = 0
     patience_counter = 0
-    
-    print("Training Mamba model with AdamW optimizer...")
-    
-    model_save_path = './output/best_mamba_model.pth'
-
+        
     for epoch in range(max_epochs):
         model.train()
         optimizer.zero_grad()
-        
         y_pred = model(X_train)
         loss = criterion(y_pred, y_train)
         
@@ -154,6 +180,67 @@ def train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patienc
     
     return model
 
+def compare_all_approaches():
+    data = PWFDF_Data()
+    
+    print(f"Total samples: {len(data.df)}")
+    print(f"Training samples: {len(data.df[data.df['Database'] == 'Training'])}")
+    print(f"Test samples: {len(data.df[data.df['Database'] == 'Test'])}\n")
+
+    X_train, y_train = data.prepare_data_with_normalization(split='Training')
+    X_test, y_test = data.prepare_data_with_normalization(split='Test')
+    
+    X_train = torch.Tensor(X_train).to(device)
+    y_train = torch.Tensor(y_train).to(device)
+    X_test = torch.Tensor(X_test).to(device)
+    y_test = torch.Tensor(y_test).to(device)
+
+    print(f"Feature dimension: {X_train.shape[1]}")
+    print(f"Training set: {X_train.shape[0]} samples")
+    print(f"Test set: {X_test.shape[0]} samples")
+
+    feature_names = [
+        'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm',
+        'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
+        'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF',
+        'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
+    ]
+    
+    results = {}
+    
+    # Approach 1: Classical Logistic
+    print("=" * 60)
+    print("APPROACH 1: Classical Logistic Model")
+    print("=" * 60)
+    model1 = Staley2017Model().to(device)
+    model1 = train_logistic(model1, X_train, y_train, X_test, y_test, max_iter=100)
+    results['logistic'] = evaluate_model(model1, X_test, y_test, "Classical Logistic")
+    
+    # Approach 2: Mamba Feature Fusion
+    print("\n" + "=" * 60)
+    print("APPROACH 2: Mamba Feature Fusion")
+    print("=" * 60)
+    model2 = MambaClassifier(input_dim=X_train.shape[1], n_layers=2).to(device)
+    model2 = train_mamba(model2, X_train, y_train, X_test, y_test, max_epochs=100)
+    results['mamba_fusion'] = evaluate_model(model2, X_test, y_test, "Mamba Fusion")
+    
+    # Approach 3: Mamba × Rainfall Multiplication
+    print("\n" + "=" * 60)
+    print("APPROACH 3: Mamba × Rainfall Multiplication")
+    print("=" * 60)
+    model3 = HybridMambaLogisticModel(input_dim=X_train.shape[1], n_layers=2).to(device)
+    model3 = train_mamba(model3, X_train, y_train, X_test, y_test, max_epochs=100)
+    results['mamba_rainfall'] = evaluate_model(model3, X_test, y_test, "Mamba × Rainfall")
+    
+    # Compare results
+    logging.info("\n" + "=" * 60)
+    logging.info("COMPARISON SUMMARY")
+    logging.info("=" * 60)
+    for approach, result in results.items():
+        logging.info(f"{result['name']:25} TS: {result['ts']:.4f} | Acc: {result['accuracy']:.4f} | F1: {result['f1']:.4f}")
+    
+    return results, [model1, model2, model3]
+
 def main():
     data = PWFDF_Data()
     
@@ -176,11 +263,14 @@ def main():
     #model = Staley2017Model().to(device)
     model = MambaClassifier(input_dim=X_train.shape[1]).to(device)
     #model = HybridMambaLogisticModel(input_dim=X_train.shape[1]).to(device)
+    #model = TransformerClassifier(X_train.shape[1]).to(device)
 
     #model = train_lg(model, X_train, y_train, X_test, y_test, max_iter=100)
     model = train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patience=15)
-    evaluate(model, X_test, y_test)
+    evaluate(model, X_test, y_test, logging)
 
 
 if __name__ == "__main__":
-    main()
+    setup_seed(42)
+    #main()
+    results, models = compare_all_approaches()
