@@ -44,13 +44,13 @@ class TSMixerClassifier(nn.Module):
         # Classification head
         self.classifier = nn.Sequential(
             nn.Flatten(),  # [B, seq_len, input_dim] -> [B, seq_len * input_dim]
-            nn.Linear(seq_len * input_dim, d_model),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(d_model, 32),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(32, 1),
+            nn.Linear(seq_len * input_dim, 1),
+            #nn.ReLU(),
+            #nn.Dropout(dropout),
+            #nn.Linear(d_model, 32),
+            #nn.ReLU(),
+            #nn.Dropout(dropout),
+            #nn.Linear(d_model, 1),
             nn.Sigmoid()
         )
         

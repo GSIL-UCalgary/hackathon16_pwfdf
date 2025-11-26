@@ -76,12 +76,17 @@ def evaluate_model(model, X_test, y_test):
 
     y_pred_binary = (y_pred >= threshold).astype(int)
     
+    print(y_pred_binary)
+
     ts = threat_score(y_test, y_pred_binary)
     accuracy = accuracy_score(y_test, y_pred_binary)
     precision = precision_score(y_test, y_pred_binary, zero_division=0)
     recall = recall_score(y_test, y_pred_binary, zero_division=0)
     f1 = f1_score(y_test, y_pred_binary, zero_division=0)
     
+    tn, fp, fn, tp = confusion_matrix(y_test, y_pred_binary, labels=[0, 1]).ravel()
+    print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
+
     return {
         'name': model.name,
         'ts': ts,

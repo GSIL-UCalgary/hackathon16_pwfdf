@@ -25,8 +25,9 @@ numerical_features = [
     #'UTM_X', 'UTM_Y', 
     'GaugeDist_m', 'StormDur_H', 'StormAccum_mm',
     'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
-    'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF',
-    'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
+    'ContributingArea_km2', 
+    'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 
+    'Acc030_mm', 'Acc060_mm'
 ]
 
 # Setup logging to both console and file
@@ -119,11 +120,11 @@ def train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patienc
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=5)
     
     # Count class distribution
-    n_neg = (y_train == 0).sum()
-    n_pos = (y_train == 1).sum()
-    pos_weight = n_neg / n_pos
-    criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]).to(device))
-    #criterion = nn.BCELoss()
+    #n_neg = (y_train == 0).sum()
+    #n_pos = (y_train == 1).sum()
+    #pos_weight = n_neg / n_pos
+    #criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]).to(device))
+    criterion = nn.BCELoss()
     
     train_losses = []
     test_metrics = []
@@ -140,7 +141,7 @@ def train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patienc
         loss.backward()
         
         # Gradient clipping for stability
-        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+        #Torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         
         optimizer.step()
         
@@ -191,8 +192,8 @@ def train_mamba(model, X_train, y_train, X_test, y_test, max_epochs=100, patienc
         })
     
     # Load best model
-    model.load_state_dict(torch.load(model_save_path))
-    print(f"Training completed. Best Test TS={best_ts:.4f} at epoch {best_epoch}")
+    #model.load_state_dict(torch.load(model_save_path))
+    #print(f"Training completed. Best Test TS={best_ts:.4f} at epoch {best_epoch}")
     
     return model
 
@@ -222,6 +223,7 @@ def compare_all_approaches():
     print("=" * 60)
     print("APPROACH 1: Logistic Regression")
     print("=" * 60)
+    setup_seed(42)
     model1 = Staley2017Model(numerical_features, duration='15min').to(device)
     model1 = train_logistic(model1, X_train, y_train, X_test, y_test, max_iter=100)
     training_results[model1.name] = evaluate_model(model1, X_train, y_train)
@@ -231,6 +233,7 @@ def compare_all_approaches():
     print("\n" + "=" * 60)
     print("APPROACH 2: Mamba Feature Fusion")
     print("=" * 60)
+    setup_seed(42)
     model2 = MambaClassifier(input_dim=X_train.shape[1], n_layers=2).to(device)
     model2 = train_mamba(model2, X_train, y_train, X_test, y_test, max_epochs=100)
     training_results[model2.name] = evaluate_model(model2, X_train, y_train)
@@ -240,6 +243,7 @@ def compare_all_approaches():
     print("\n" + "=" * 60)
     print("APPROACH 3: Mamba × Rainfall Multiplication")
     print("=" * 60)
+    setup_seed(42)
     model3 = HybridMambaLogisticModel(numerical_features, input_dim=X_train.shape[1], n_layers=2).to(device)
     model3 = train_mamba(model3, X_train, y_train, X_test, y_test, max_epochs=100)
     training_results[model3.name] = evaluate_model(model3, X_train, y_train)
@@ -249,10 +253,13 @@ def compare_all_approaches():
     print("\n" + "=" * 60)
     print("APPROACH 4: TS Mixer")
     print("=" * 60)
+    setup_seed(42)
     model4 = TSMixerClassifier(input_dim=X_train.shape[1], d_model=64, n_layers=4, dropout=0.1).to(device)
     model4 = train_mamba(model4, X_train, y_train, X_test, y_test, max_epochs=100)
     training_results[model4.name] = evaluate_model(model4, X_train, y_train)
     test_results[model4.name] = evaluate_model(model4, X_test, y_test)
+
+    print(test_results)
 
     # Compare results
     logging.info("\n" + "=" * 60)
@@ -264,7 +271,7 @@ def compare_all_approaches():
     logging.info("=" * 60)
     logging.info("Test set")
     for approach, results in test_results.items():
-        logging.info(f"{results['name']:25} TS: {results['ts']:.4f} | Acc: {results['accuracy']:.4f} | F1: {results['f1']:.4f}")
+        logging.info(f"{results['name']:25} TS: {results['ts']:.4f} | Acc: {results['accuracy']:.4f} | F1: {results['f1']:.4f} | Recall: {results['recall']:.4f} | Precision: {results['precision']:.4f}")
     
     return test_results, [model1, model2, model3]
 

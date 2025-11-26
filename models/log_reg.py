@@ -22,8 +22,8 @@ class Staley2017Model(nn.Module):
         # Rainfall index based on duration
         self.R_idx = {
             '15min': features.index('Acc015_mm'), 
-            '30min': features.index('Acc030_mm'), 
-            '60min': features.index('Acc060_mm')
+            #'30min': features.index('Acc030_mm'), 
+            #'60min': features.index('Acc060_mm')
         }[duration]
         
         # Initialize all parameters at 0

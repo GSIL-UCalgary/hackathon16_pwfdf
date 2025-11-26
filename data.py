@@ -136,8 +136,8 @@ class PWFDF_Data:
         X = df[features].values
         y = df['Response'].values
 
-        X = X[mask]
-        y = y[mask]
+        #X = X[mask]
+        #y = y[mask]
 
         # Normalize
         if True:

@@ -16,7 +16,8 @@ class MambaClassifier(nn.Module):
         self.input_proj = nn.Linear(input_dim, d_model)
         
         self.mamba_layers = nn.ModuleList([
-            Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2)
+            #Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2)
+            nn.Linear(d_model, d_model)
             for _ in range(n_layers)
         ])
         
@@ -32,7 +33,7 @@ class MambaClassifier(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(32, 1),
-            #nn.Sigmoid()
+            nn.Sigmoid()
         )
         
     def forward(self, x):
