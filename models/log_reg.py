@@ -12,7 +12,7 @@ class Staley2017Model(nn.Module):
     def __init__(self, features, duration='15min'):
         super().__init__()
         self.duration = duration
-        self.name = 'logres'
+        self.name = 'Staley'
         
         # Feature indices for T, F, S
         self.T_idx = features.index('PropHM23')
@@ -22,15 +22,27 @@ class Staley2017Model(nn.Module):
         # Rainfall index based on duration
         self.R_idx = {
             '15min': features.index('Acc015_mm'), 
-            #'30min': features.index('Acc030_mm'), 
-            #'60min': features.index('Acc060_mm')
+            '30min': features.index('Acc030_mm'), 
+            '60min': features.index('Acc060_mm')
         }[duration]
         
         # Initialize all parameters at 0
-        self.B = nn.Parameter(torch.tensor([0.0]))
-        self.Ct = nn.Parameter(torch.tensor([0.0]))
-        self.Cf = nn.Parameter(torch.tensor([0.0]))
-        self.Cs = nn.Parameter(torch.tensor([0.0]))
+        #self.B = nn.Parameter(torch.tensor([0.0]))
+        #self.Ct = nn.Parameter(torch.tensor([0.0]))
+        #self.Cf = nn.Parameter(torch.tensor([0.0]))
+        #self.Cs = nn.Parameter(torch.tensor([0.0]))
+        
+        # Create parameters
+        self.B  = nn.Parameter(torch.empty(1))
+        self.Ct = nn.Parameter(torch.empty(1))
+        self.Cf = nn.Parameter(torch.empty(1))
+        self.Cs = nn.Parameter(torch.empty(1))
+
+        # Xavier/Glorot uniform initialization
+        nn.init.xavier_uniform_(self.B.unsqueeze(0))
+        nn.init.xavier_uniform_(self.Ct.unsqueeze(0))
+        nn.init.xavier_uniform_(self.Cf.unsqueeze(0))
+        nn.init.xavier_uniform_(self.Cs.unsqueeze(0))
     
     def forward(self, x):
         """
@@ -52,3 +64,20 @@ class Staley2017Model(nn.Module):
         return torch.sigmoid(logit)
 
 
+
+class LogisticRegression(nn.Module):
+    def __init__(self, features, duration='15min'):
+        super().__init__()
+        self.duration = duration
+        self.name = 'LogisticRegression'
+        self.num_features = len(features)
+        
+        self.B = nn.Parameter(torch.empty(1)) # Intercept parameter
+        self.C = nn.Parameter(torch.empty(self.num_features))
+        
+        nn.init.xavier_uniform_(self.B.unsqueeze(0))
+        nn.init.xavier_uniform_(self.C.unsqueeze(0))
+    
+    def forward(self, x):
+        logit = self.B + torch.sum(self.C * x, dim=1)   
+        return torch.sigmoid(logit)

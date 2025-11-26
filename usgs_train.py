@@ -3,10 +3,19 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-from eval import find_best_threshold, evaluate, compare_params
+from eval import evaluate, compare_params, threat_score
 from models.log_reg import Staley2017Model
 
+from data import PWFDF_Data
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+numerical_features = [
+    'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm',
+    'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
+    'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF',
+    'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
+]
 
 def prepare_data(pwfdf_data, duration='15min', split='Training'):
     """
@@ -21,14 +30,6 @@ def prepare_data(pwfdf_data, duration='15min', split='Training'):
     
     # Filter by Database column
     df = df[df['Database'] == split].copy()
-    
-    # Get all numerical features
-    numerical_features = [
-        'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm',
-        'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
-        'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF',
-        'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
-    ]
     
     X = df[numerical_features].values
     y = df['Response'].values
@@ -49,7 +50,7 @@ def prepare_data(pwfdf_data, duration='15min', split='Training'):
     y = df['Response'].values
     
     # Remove rows with missing values
-    mask = ~(np.isnan(T) | np.isnan(F) | np.isnan(S) | np.isnan(R) | np.isnan(y))
+    mask = ~(np.isnan(T) | np.isnan(F) | np.isnan(S) | np.isnan(R))
     X = X[mask]
     y = y[mask]
 
@@ -92,7 +93,7 @@ def train(model, X_train, y_train, X_test, y_test, max_iter=1000):
             model.eval()
             with torch.no_grad():
                 y_test_pred = model(X_test).cpu().numpy().flatten()
-            threshold, test_ts = find_best_threshold(y_test.cpu().numpy(), y_test_pred)
+            test_ts = threat_score(y_test.cpu().numpy(), y_test_pred)
             model.train()
             
             print(f"Iter {iteration}: Loss={loss.item():.6f}, Test TS={test_ts:.4f}")
@@ -115,9 +116,6 @@ def train(model, X_train, y_train, X_test, y_test, max_iter=1000):
     return model
 
 def main():
-    from data import PWFDF_Data
-    
-    # Load data
     print("Loading PWFDF data...")
     data = PWFDF_Data()
     
@@ -137,7 +135,7 @@ def main():
         X_train, y_train = prepare_data(data, duration=duration, split='Training')
         X_test, y_test = prepare_data(data, duration=duration, split='Test')
 
-        model = Staley2017Model(duration=duration).to(device)
+        model = Staley2017Model(numerical_features, duration=duration).to(device)
         model = train(model, X_train, y_train, X_test, y_test, max_iter=100)
         models[duration] = model
         

@@ -76,7 +76,7 @@ def evaluate_model(model, X_test, y_test):
 
     y_pred_binary = (y_pred >= threshold).astype(int)
     
-    print(y_pred_binary)
+    #print(y_pred_binary)
 
     ts = threat_score(y_test, y_pred_binary)
     accuracy = accuracy_score(y_test, y_pred_binary)
@@ -85,7 +85,7 @@ def evaluate_model(model, X_test, y_test):
     f1 = f1_score(y_test, y_pred_binary, zero_division=0)
     
     tn, fp, fn, tp = confusion_matrix(y_test, y_pred_binary, labels=[0, 1]).ravel()
-    print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
+    #print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
 
     return {
         'name': model.name,

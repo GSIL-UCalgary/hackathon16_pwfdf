@@ -136,26 +136,29 @@ class PWFDF_Data:
         X = df[features].values
         y = df['Response'].values
 
-        #X = X[mask]
-        #y = y[mask]
+
+        if split == 'Test':
+            X = X[mask]
+            y = y[mask]
 
         # Normalize
         if True:
-            skip_indices = [features.index(f) for f in [
-                #'UTM_X', 'UTM_Y', 
-                'PropHM23', 'dNBR/1000', 'KF']]
+            to_skip = ['UTM_X', 'UTM_Y', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm']
+            present = [f for f in to_skip if f in features]
+            skip_indices = [features.index(f) for f in present]
             normalize_indices = [i for i in range(len(features)) if i not in skip_indices]
             
-            if scaler is None:
-                scaler = StandardScaler()
-                X[:, normalize_indices] = scaler.fit_transform(X[:, normalize_indices])
-                print(f"\nNormalized {len(normalize_indices)} features (fitted new scaler)")
-            else:
-                # Use provided scaler (for test set)
-                X[:, normalize_indices] = scaler.transform(X[:, normalize_indices])
-                print(f"\nNormalized {len(normalize_indices)} features (using provided scaler)")
-            
-            return X, y, scaler
+            if len(normalize_indices) != 0:
+                if scaler is None:
+                    scaler = StandardScaler()
+                    X[:, normalize_indices] = scaler.fit_transform(X[:, normalize_indices])
+                    print(f"\nNormalized {len(normalize_indices)} features (fitted new scaler)")
+                else:
+                    # Use provided scaler (for test set)
+                    X[:, normalize_indices] = scaler.transform(X[:, normalize_indices])
+                    print(f"\nNormalized {len(normalize_indices)} features (using provided scaler)")
+                
+                return X, y, scaler
         
         return X, y, None
 

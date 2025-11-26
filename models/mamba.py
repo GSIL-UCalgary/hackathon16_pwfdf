@@ -33,7 +33,7 @@ class MambaClassifier(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(32, 1),
-            nn.Sigmoid()
+            #nn.Sigmoid()
         )
         
     def forward(self, x):
@@ -73,8 +73,8 @@ class HybridMambaLogisticModel(nn.Module):
         self.rainfall_indices = [self.all_features.index(feat) for feat in self.rainfall_features if feat in self.all_features]
         self.non_rainfall_indices = [i for i in range(len(self.all_features)) if i not in self.rainfall_indices]
         
-        print(f"Rainfall features ({len(self.rainfall_indices)}): {self.rainfall_features}")
-        print(f"Non-rainfall features ({len(self.non_rainfall_indices)}): {[self.all_features[i] for i in self.non_rainfall_indices]}")
+        #print(f"Rainfall features ({len(self.rainfall_indices)}): {self.rainfall_features}")
+        #print(f"Non-rainfall features ({len(self.non_rainfall_indices)}): {[self.all_features[i] for i in self.non_rainfall_indices]}")
         
         # Mamba pathway for non-rainfall features
         self.mamba_input_dim = len(self.non_rainfall_indices)
@@ -82,12 +82,8 @@ class HybridMambaLogisticModel(nn.Module):
         
         # Mamba backbone
         self.mamba_layers = nn.ModuleList([
-            Mamba(
-                d_model=d_model,
-                d_state=16,
-                d_conv=4,
-                expand=2,
-            )
+            #Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2,)
+            nn.Linear(d_model, d_model)
             for _ in range(n_layers)
         ])
         
@@ -101,7 +97,7 @@ class HybridMambaLogisticModel(nn.Module):
         self.logistic_input_dim = len(self.rainfall_indices)
         self.logistic_layer = nn.Sequential(
             nn.Linear(self.logistic_input_dim, 1),
-            nn.Sigmoid()
+            #nn.Sigmoid()
         )
         
         # Combined output head
@@ -110,7 +106,7 @@ class HybridMambaLogisticModel(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(32, 1),
-            nn.Sigmoid()
+            #nn.Sigmoid()
         )
         
         self.dropout = nn.Dropout(dropout)
@@ -125,13 +121,9 @@ class HybridMambaLogisticModel(nn.Module):
     def forward(self, x):
         non_rainfall_x, rainfall_x = self.split_features(x)
         
-        # Mamba pathway for non-rainfall features
         mamba_out = self._mamba_forward(non_rainfall_x)
-        
-        # Logistic pathway for rainfall features
         logistic_out = self.logistic_layer(rainfall_x)  # (batch_size, 1)
         
-        # Combine both pathways
         combined = torch.cat([mamba_out, logistic_out], dim=1)  # (batch_size, d_model + 1)
         
         # Final prediction
