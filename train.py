@@ -21,7 +21,7 @@ import logging
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-output_file = './output/seeds101_logs.txt'
+output_file = './output/realmamba_seeds101_logs.txt'
 
 numerical_features = [
     #'UTM_X', 'UTM_Y', 

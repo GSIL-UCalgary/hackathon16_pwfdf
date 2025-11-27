@@ -1,0 +1,291 @@
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4925 | Acc: 0.8190 | F1: 0.6600
+HybridMamba               TS: 0.5570 | Acc: 0.8509 | F1: 0.7154
+TSMixer                   TS: 0.5138 | Acc: 0.8317 | F1: 0.6789
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3285 | Acc: 0.6752 | F1: 0.4945 | Recall: 0.5913 | Precision: 0.4250
+HybridMamba               TS: 0.4167 | Acc: 0.7056 | F1: 0.5882 | Recall: 0.7826 | Precision: 0.4712
+TSMixer                   TS: 0.2712 | Acc: 0.6986 | F1: 0.4267 | Recall: 0.4174 | Precision: 0.4364
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4927 | Acc: 0.8147 | F1: 0.6602
+HybridMamba               TS: 0.4860 | Acc: 0.8243 | F1: 0.6541
+TSMixer                   TS: 0.5097 | Acc: 0.8392 | F1: 0.6753
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3394 | Acc: 0.6589 | F1: 0.5068 | Recall: 0.6522 | Precision: 0.4144
+HybridMamba               TS: 0.3803 | Acc: 0.6916 | F1: 0.5510 | Recall: 0.7043 | Precision: 0.4525
+TSMixer                   TS: 0.3172 | Acc: 0.7033 | F1: 0.4816 | Recall: 0.5130 | Precision: 0.4538
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4849 | Acc: 0.8179 | F1: 0.6531
+HybridMamba               TS: 0.4850 | Acc: 0.8168 | F1: 0.6532
+TSMixer                   TS: 0.3374 | Acc: 0.5964 | F1: 0.5046
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3677 | Acc: 0.6706 | F1: 0.5377 | Recall: 0.7130 | Precision: 0.4316
+HybridMamba               TS: 0.3699 | Acc: 0.6776 | F1: 0.5400 | Recall: 0.7043 | Precision: 0.4378
+TSMixer                   TS: 0.3466 | Acc: 0.6168 | F1: 0.5148 | Recall: 0.7565 | Precision: 0.3901
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4715 | Acc: 0.7923 | F1: 0.6409
+HybridMamba               TS: 0.5367 | Acc: 0.8456 | F1: 0.6985
+TSMixer                   TS: 0.4033 | Acc: 0.8094 | F1: 0.5748
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3767 | Acc: 0.6752 | F1: 0.5472 | Recall: 0.7304 | Precision: 0.4375
+HybridMamba               TS: 0.3919 | Acc: 0.6846 | F1: 0.5631 | Recall: 0.7565 | Precision: 0.4485
+TSMixer                   TS: 0.3684 | Acc: 0.6075 | F1: 0.5385 | Recall: 0.8522 | Precision: 0.3936
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4639 | Acc: 0.8104 | F1: 0.6337
+HybridMamba               TS: 0.5446 | Acc: 0.8477 | F1: 0.7052
+TSMixer                   TS: 0.4605 | Acc: 0.8253 | F1: 0.6306
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3659 | Acc: 0.6963 | F1: 0.5357 | Recall: 0.6522 | Precision: 0.4545
+HybridMamba               TS: 0.3946 | Acc: 0.6846 | F1: 0.5659 | Recall: 0.7652 | Precision: 0.4490
+TSMixer                   TS: 0.3491 | Acc: 0.6472 | F1: 0.5176 | Recall: 0.7043 | Precision: 0.4091
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3862
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.3861788617886179), 'accuracy': 0.647196261682243, 'precision': 0.42035398230088494, 'recall': 0.8260869565217391, 'f1': 0.5571847507331378, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 3
+  Best TS:   0.3767
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.37668161434977576), 'accuracy': 0.6752336448598131, 'precision': 0.4375, 'recall': 0.7304347826086957, 'f1': 0.5472312703583062, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.4167
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.4166666666666667), 'accuracy': 0.705607476635514, 'precision': 0.4712041884816754, 'recall': 0.782608695652174, 'f1': 0.5882352941176471, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3684
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.3684210526315789), 'accuracy': 0.6074766355140186, 'precision': 0.39357429718875503, 'recall': 0.8521739130434782, 'f1': 0.5384615384615384, 'threshold': 0.5}
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4925 | Acc: 0.8190 | F1: 0.6600
+HybridMamba               TS: 0.5570 | Acc: 0.8509 | F1: 0.7154
+TSMixer                   TS: 0.5138 | Acc: 0.8317 | F1: 0.6789
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3285 | Acc: 0.6752 | F1: 0.4945 | Recall: 0.5913 | Precision: 0.4250
+HybridMamba               TS: 0.4167 | Acc: 0.7056 | F1: 0.5882 | Recall: 0.7826 | Precision: 0.4712
+TSMixer                   TS: 0.2712 | Acc: 0.6986 | F1: 0.4267 | Recall: 0.4174 | Precision: 0.4364
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4927 | Acc: 0.8147 | F1: 0.6602
+HybridMamba               TS: 0.4860 | Acc: 0.8243 | F1: 0.6541
+TSMixer                   TS: 0.5097 | Acc: 0.8392 | F1: 0.6753
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3394 | Acc: 0.6589 | F1: 0.5068 | Recall: 0.6522 | Precision: 0.4144
+HybridMamba               TS: 0.3803 | Acc: 0.6916 | F1: 0.5510 | Recall: 0.7043 | Precision: 0.4525
+TSMixer                   TS: 0.3172 | Acc: 0.7033 | F1: 0.4816 | Recall: 0.5130 | Precision: 0.4538
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4849 | Acc: 0.8179 | F1: 0.6531
+HybridMamba               TS: 0.4850 | Acc: 0.8168 | F1: 0.6532
+TSMixer                   TS: 0.3374 | Acc: 0.5964 | F1: 0.5046
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3677 | Acc: 0.6706 | F1: 0.5377 | Recall: 0.7130 | Precision: 0.4316
+HybridMamba               TS: 0.3699 | Acc: 0.6776 | F1: 0.5400 | Recall: 0.7043 | Precision: 0.4378
+TSMixer                   TS: 0.3466 | Acc: 0.6168 | F1: 0.5148 | Recall: 0.7565 | Precision: 0.3901
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4715 | Acc: 0.7923 | F1: 0.6409
+HybridMamba               TS: 0.5367 | Acc: 0.8456 | F1: 0.6985
+TSMixer                   TS: 0.4033 | Acc: 0.8094 | F1: 0.5748
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3767 | Acc: 0.6752 | F1: 0.5472 | Recall: 0.7304 | Precision: 0.4375
+HybridMamba               TS: 0.3919 | Acc: 0.6846 | F1: 0.5631 | Recall: 0.7565 | Precision: 0.4485
+TSMixer                   TS: 0.3684 | Acc: 0.6075 | F1: 0.5385 | Recall: 0.8522 | Precision: 0.3936
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4639 | Acc: 0.8104 | F1: 0.6337
+HybridMamba               TS: 0.5446 | Acc: 0.8477 | F1: 0.7052
+TSMixer                   TS: 0.4605 | Acc: 0.8253 | F1: 0.6306
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3659 | Acc: 0.6963 | F1: 0.5357 | Recall: 0.6522 | Precision: 0.4545
+HybridMamba               TS: 0.3946 | Acc: 0.6846 | F1: 0.5659 | Recall: 0.7652 | Precision: 0.4490
+TSMixer                   TS: 0.3491 | Acc: 0.6472 | F1: 0.5176 | Recall: 0.7043 | Precision: 0.4091
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3862
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.3861788617886179), 'accuracy': 0.647196261682243, 'precision': 0.42035398230088494, 'recall': 0.8260869565217391, 'f1': 0.5571847507331378, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 3
+  Best TS:   0.3767
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.37668161434977576), 'accuracy': 0.6752336448598131, 'precision': 0.4375, 'recall': 0.7304347826086957, 'f1': 0.5472312703583062, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.4167
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.4166666666666667), 'accuracy': 0.705607476635514, 'precision': 0.4712041884816754, 'recall': 0.782608695652174, 'f1': 0.5882352941176471, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3684
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.3684210526315789), 'accuracy': 0.6074766355140186, 'precision': 0.39357429718875503, 'recall': 0.8521739130434782, 'f1': 0.5384615384615384, 'threshold': 0.5}
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4925 | Acc: 0.8190 | F1: 0.6600
+HybridMamba               TS: 0.5570 | Acc: 0.8509 | F1: 0.7154
+TSMixer                   TS: 0.5138 | Acc: 0.8317 | F1: 0.6789
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3285 | Acc: 0.6752 | F1: 0.4945 | Recall: 0.5913 | Precision: 0.4250
+HybridMamba               TS: 0.4167 | Acc: 0.7056 | F1: 0.5882 | Recall: 0.7826 | Precision: 0.4712
+TSMixer                   TS: 0.2712 | Acc: 0.6986 | F1: 0.4267 | Recall: 0.4174 | Precision: 0.4364
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4927 | Acc: 0.8147 | F1: 0.6602
+HybridMamba               TS: 0.4860 | Acc: 0.8243 | F1: 0.6541
+TSMixer                   TS: 0.5097 | Acc: 0.8392 | F1: 0.6753
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3394 | Acc: 0.6589 | F1: 0.5068 | Recall: 0.6522 | Precision: 0.4144
+HybridMamba               TS: 0.3803 | Acc: 0.6916 | F1: 0.5510 | Recall: 0.7043 | Precision: 0.4525
+TSMixer                   TS: 0.3172 | Acc: 0.7033 | F1: 0.4816 | Recall: 0.5130 | Precision: 0.4538
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4849 | Acc: 0.8179 | F1: 0.6531
+HybridMamba               TS: 0.4850 | Acc: 0.8168 | F1: 0.6532
+TSMixer                   TS: 0.3374 | Acc: 0.5964 | F1: 0.5046
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3677 | Acc: 0.6706 | F1: 0.5377 | Recall: 0.7130 | Precision: 0.4316
+HybridMamba               TS: 0.3699 | Acc: 0.6776 | F1: 0.5400 | Recall: 0.7043 | Precision: 0.4378
+TSMixer                   TS: 0.3466 | Acc: 0.6168 | F1: 0.5148 | Recall: 0.7565 | Precision: 0.3901
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4715 | Acc: 0.7923 | F1: 0.6409
+HybridMamba               TS: 0.5367 | Acc: 0.8456 | F1: 0.6985
+TSMixer                   TS: 0.4033 | Acc: 0.8094 | F1: 0.5748
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3767 | Acc: 0.6752 | F1: 0.5472 | Recall: 0.7304 | Precision: 0.4375
+HybridMamba               TS: 0.3919 | Acc: 0.6846 | F1: 0.5631 | Recall: 0.7565 | Precision: 0.4485
+TSMixer                   TS: 0.3684 | Acc: 0.6075 | F1: 0.5385 | Recall: 0.8522 | Precision: 0.3936
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+Mamba                     TS: 0.4639 | Acc: 0.8104 | F1: 0.6337
+HybridMamba               TS: 0.5446 | Acc: 0.8477 | F1: 0.7052
+TSMixer                   TS: 0.4605 | Acc: 0.8253 | F1: 0.6306
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+Mamba                     TS: 0.3659 | Acc: 0.6963 | F1: 0.5357 | Recall: 0.6522 | Precision: 0.4545
+HybridMamba               TS: 0.3946 | Acc: 0.6846 | F1: 0.5659 | Recall: 0.7652 | Precision: 0.4490
+TSMixer                   TS: 0.3491 | Acc: 0.6472 | F1: 0.5176 | Recall: 0.7043 | Precision: 0.4091
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3862
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.3861788617886179), 'accuracy': 0.647196261682243, 'precision': 0.42035398230088494, 'recall': 0.8260869565217391, 'f1': 0.5571847507331378, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 3
+  Best TS:   0.3767
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.37668161434977576), 'accuracy': 0.6752336448598131, 'precision': 0.4375, 'recall': 0.7304347826086957, 'f1': 0.5472312703583062, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.4167
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.4166666666666667), 'accuracy': 0.705607476635514, 'precision': 0.4712041884816754, 'recall': 0.782608695652174, 'f1': 0.5882352941176471, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3684
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.3684210526315789), 'accuracy': 0.6074766355140186, 'precision': 0.39357429718875503, 'recall': 0.8521739130434782, 'f1': 0.5384615384615384, 'threshold': 0.5}

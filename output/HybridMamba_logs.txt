@@ -1,0 +1,8 @@
+Test Results
+Threat Score: 0.3352
+Accuracy:     0.6620
+Precision:    0.4013
+Recall:       0.6703
+F1 Score:     0.5021
+Threshold:    0.130
+TP=61, TN=176, FP=91, FN=30

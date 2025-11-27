@@ -1,0 +1,24 @@
+Test Results
+Threat Score: 0.3438
+Accuracy:     0.7067
+Precision:    0.4435
+Recall:       0.6044
+F1 Score:     0.5116
+Threshold:    0.150
+TP=55, TN=198, FP=69, FN=36
+Test Results
+Threat Score: 0.3750
+Accuracy:     0.6648
+Precision:    0.4162
+Recall:       0.7912
+F1 Score:     0.5455
+Threshold:    0.080
+TP=72, TN=166, FP=101, FN=19
+Test Results
+Threat Score: 0.3750
+Accuracy:     0.6648
+Precision:    0.4162
+Recall:       0.7912
+F1 Score:     0.5455
+Threshold:    0.080
+TP=72, TN=166, FP=101, FN=19
