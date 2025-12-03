@@ -1,0 +1,635 @@
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.2261 | Acc: 0.7521 | F1: 0.3688
+LogisticRegression        TS: 0.3782 | Acc: 0.8184 | F1: 0.5488
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5942 | Acc: 0.8626 | F1: 0.7455
+HybridMamba               TS: 0.4871 | Acc: 0.8049 | F1: 0.6551
+TSMixer                   TS: 0.5812 | Acc: 0.8417 | F1: 0.7351
+============================================================
+Test set
+Staley                    TS: 0.1216 | Acc: 0.6963 | F1: 0.2169 | Recall: 0.1565 | Precision: 0.3529
+LogisticRegression        TS: 0.2000 | Acc: 0.6916 | F1: 0.3333 | Recall: 0.2870 | Precision: 0.3976
+RandomForest              TS: 0.3884 | Acc: 0.6799 | F1: 0.5595 | Recall: 0.7565 | Precision: 0.4439
+Mamba                     TS: 0.3582 | Acc: 0.6986 | F1: 0.5275 | Recall: 0.6261 | Precision: 0.4557
+HybridMamba               TS: 0.3877 | Acc: 0.6752 | F1: 0.5587 | Recall: 0.7652 | Precision: 0.4400
+TSMixer                   TS: 0.2771 | Acc: 0.7196 | F1: 0.4340 | Recall: 0.4000 | Precision: 0.4742
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.0581 | Acc: 0.7215 | F1: 0.1098
+LogisticRegression        TS: 0.4017 | Acc: 0.8282 | F1: 0.5732
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5616 | Acc: 0.8209 | F1: 0.7192
+HybridMamba               TS: 0.5199 | Acc: 0.8221 | F1: 0.6841
+TSMixer                   TS: 0.3465 | Acc: 0.5926 | F1: 0.5146
+============================================================
+Test set
+Staley                    TS: 0.1932 | Acc: 0.6098 | F1: 0.3239 | Recall: 0.3478 | Precision: 0.3030
+LogisticRegression        TS: 0.1419 | Acc: 0.6893 | F1: 0.2486 | Recall: 0.1913 | Precision: 0.3548
+RandomForest              TS: 0.3691 | Acc: 0.6565 | F1: 0.5392 | Recall: 0.7478 | Precision: 0.4216
+Mamba                     TS: 0.3857 | Acc: 0.6799 | F1: 0.5566 | Recall: 0.7478 | Precision: 0.4433
+HybridMamba               TS: 0.3434 | Acc: 0.6963 | F1: 0.5113 | Recall: 0.5913 | Precision: 0.4503
+TSMixer                   TS: 0.3160 | Acc: 0.5701 | F1: 0.4802 | Recall: 0.7391 | Precision: 0.3556
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.2928 | Acc: 0.8074 | F1: 0.4530
+LogisticRegression        TS: 0.4192 | Acc: 0.8368 | F1: 0.5908
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5110 | Acc: 0.8098 | F1: 0.6764
+HybridMamba               TS: 0.5487 | Acc: 0.8294 | F1: 0.7086
+TSMixer                   TS: 0.3422 | Acc: 0.5448 | F1: 0.5099
+============================================================
+Test set
+Staley                    TS: 0.3042 | Acc: 0.6098 | F1: 0.4665 | Recall: 0.6348 | Precision: 0.3687
+LogisticRegression        TS: 0.2216 | Acc: 0.6472 | F1: 0.3629 | Recall: 0.3739 | Precision: 0.3525
+RandomForest              TS: 0.3766 | Acc: 0.6636 | F1: 0.5472 | Recall: 0.7565 | Precision: 0.4286
+Mamba                     TS: 0.3922 | Acc: 0.7103 | F1: 0.5634 | Recall: 0.6957 | Precision: 0.4734
+HybridMamba               TS: 0.3239 | Acc: 0.6636 | F1: 0.4894 | Recall: 0.6000 | Precision: 0.4132
+TSMixer                   TS: 0.3372 | Acc: 0.6005 | F1: 0.5043 | Recall: 0.7565 | Precision: 0.3783
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.0000 | Acc: 0.7534 | F1: 0.0000
+LogisticRegression        TS: 0.4206 | Acc: 0.8209 | F1: 0.5922
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5781 | Acc: 0.8442 | F1: 0.7326
+HybridMamba               TS: 0.5323 | Acc: 0.8221 | F1: 0.6947
+TSMixer                   TS: 0.4077 | Acc: 0.7914 | F1: 0.5792
+============================================================
+Test set
+Staley                    TS: 0.0168 | Acc: 0.7266 | F1: 0.0331 | Recall: 0.0174 | Precision: 0.3333
+LogisticRegression        TS: 0.3163 | Acc: 0.6869 | F1: 0.4806 | Recall: 0.5391 | Precision: 0.4336
+RandomForest              TS: 0.3734 | Acc: 0.6589 | F1: 0.5437 | Recall: 0.7565 | Precision: 0.4244
+Mamba                     TS: 0.3493 | Acc: 0.6822 | F1: 0.5177 | Recall: 0.6348 | Precision: 0.4371
+HybridMamba               TS: 0.3188 | Acc: 0.6706 | F1: 0.4835 | Recall: 0.5739 | Precision: 0.4177
+TSMixer                   TS: 0.3692 | Acc: 0.6168 | F1: 0.5393 | Recall: 0.8348 | Precision: 0.3983
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.1920 | Acc: 0.7264 | F1: 0.3222
+LogisticRegression        TS: 0.3898 | Acc: 0.8233 | F1: 0.5610
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5546 | Acc: 0.8147 | F1: 0.7135
+HybridMamba               TS: 0.5437 | Acc: 0.8270 | F1: 0.7044
+TSMixer                   TS: 0.4294 | Acc: 0.7472 | F1: 0.6008
+============================================================
+Test set
+Staley                    TS: 0.1014 | Acc: 0.7103 | F1: 0.1842 | Recall: 0.1217 | Precision: 0.3784
+LogisticRegression        TS: 0.2655 | Acc: 0.6963 | F1: 0.4196 | Recall: 0.4087 | Precision: 0.4312
+RandomForest              TS: 0.3793 | Acc: 0.6636 | F1: 0.5500 | Recall: 0.7652 | Precision: 0.4293
+Mamba                     TS: 0.3825 | Acc: 0.6869 | F1: 0.5533 | Recall: 0.7217 | Precision: 0.4486
+HybridMamba               TS: 0.3810 | Acc: 0.6963 | F1: 0.5517 | Recall: 0.6957 | Precision: 0.4571
+TSMixer                   TS: 0.3532 | Acc: 0.6192 | F1: 0.5220 | Recall: 0.7739 | Precision: 0.3938
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 2
+  Best TS:   0.3042
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.30416666666666664), 'accuracy': 0.6098130841121495, 'precision': 0.3686868686868687, 'recall': 0.6347826086956522, 'f1': 0.46645367412140576, 'threshold': 0.5}
+
+Model: LogisticRegression
+  Best Seed: 3
+  Best TS:   0.3163
+  Metrics:   {'name': 'LogisticRegression', 'ts': np.float64(0.3163265306122449), 'accuracy': 0.6869158878504673, 'precision': 0.43356643356643354, 'recall': 0.5391304347826087, 'f1': 0.4806201550387597, 'threshold': 0.5}
+
+Model: RandomForest
+  Best Seed: 0
+  Best TS:   0.3884
+  Metrics:   {'name': 'RandomForest', 'ts': np.float64(0.38839285714285715), 'accuracy': 0.6799065420560748, 'precision': 0.44387755102040816, 'recall': 0.7565217391304347, 'f1': 0.5594855305466238, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 2
+  Best TS:   0.3922
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.39215686274509803), 'accuracy': 0.7102803738317757, 'precision': 0.47337278106508873, 'recall': 0.6956521739130435, 'f1': 0.5633802816901409, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.3877
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.3876651982378855), 'accuracy': 0.6752336448598131, 'precision': 0.44, 'recall': 0.7652173913043478, 'f1': 0.5587301587301587, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3692
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.36923076923076925), 'accuracy': 0.616822429906542, 'precision': 0.3983402489626556, 'recall': 0.8347826086956521, 'f1': 0.5393258426966292, 'threshold': 0.5}
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.3119 | Acc: 0.8160 | F1: 0.4755
+LogisticRegression        TS: 0.3782 | Acc: 0.8184 | F1: 0.5488
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5942 | Acc: 0.8626 | F1: 0.7455
+HybridMamba               TS: 0.4871 | Acc: 0.8049 | F1: 0.6551
+TSMixer                   TS: 0.5812 | Acc: 0.8417 | F1: 0.7351
+============================================================
+Test set
+Staley                    TS: 0.3115 | Acc: 0.6075 | F1: 0.4750 | Recall: 0.6609 | Precision: 0.3707
+LogisticRegression        TS: 0.2000 | Acc: 0.6916 | F1: 0.3333 | Recall: 0.2870 | Precision: 0.3976
+RandomForest              TS: 0.3884 | Acc: 0.6799 | F1: 0.5595 | Recall: 0.7565 | Precision: 0.4439
+Mamba                     TS: 0.3582 | Acc: 0.6986 | F1: 0.5275 | Recall: 0.6261 | Precision: 0.4557
+HybridMamba               TS: 0.3877 | Acc: 0.6752 | F1: 0.5587 | Recall: 0.7652 | Precision: 0.4400
+TSMixer                   TS: 0.2771 | Acc: 0.7196 | F1: 0.4340 | Recall: 0.4000 | Precision: 0.4742
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.3119 | Acc: 0.8160 | F1: 0.4755
+LogisticRegression        TS: 0.4017 | Acc: 0.8282 | F1: 0.5732
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5616 | Acc: 0.8209 | F1: 0.7192
+HybridMamba               TS: 0.5199 | Acc: 0.8221 | F1: 0.6841
+TSMixer                   TS: 0.3465 | Acc: 0.5926 | F1: 0.5146
+============================================================
+Test set
+Staley                    TS: 0.3115 | Acc: 0.6075 | F1: 0.4750 | Recall: 0.6609 | Precision: 0.3707
+LogisticRegression        TS: 0.1419 | Acc: 0.6893 | F1: 0.2486 | Recall: 0.1913 | Precision: 0.3548
+RandomForest              TS: 0.3691 | Acc: 0.6565 | F1: 0.5392 | Recall: 0.7478 | Precision: 0.4216
+Mamba                     TS: 0.3857 | Acc: 0.6799 | F1: 0.5566 | Recall: 0.7478 | Precision: 0.4433
+HybridMamba               TS: 0.3434 | Acc: 0.6963 | F1: 0.5113 | Recall: 0.5913 | Precision: 0.4503
+TSMixer                   TS: 0.3160 | Acc: 0.5701 | F1: 0.4802 | Recall: 0.7391 | Precision: 0.3556
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.3119 | Acc: 0.8160 | F1: 0.4755
+LogisticRegression        TS: 0.4192 | Acc: 0.8368 | F1: 0.5908
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5110 | Acc: 0.8098 | F1: 0.6764
+HybridMamba               TS: 0.5487 | Acc: 0.8294 | F1: 0.7086
+TSMixer                   TS: 0.3422 | Acc: 0.5448 | F1: 0.5099
+============================================================
+Test set
+Staley                    TS: 0.3115 | Acc: 0.6075 | F1: 0.4750 | Recall: 0.6609 | Precision: 0.3707
+LogisticRegression        TS: 0.2216 | Acc: 0.6472 | F1: 0.3629 | Recall: 0.3739 | Precision: 0.3525
+RandomForest              TS: 0.3766 | Acc: 0.6636 | F1: 0.5472 | Recall: 0.7565 | Precision: 0.4286
+Mamba                     TS: 0.3922 | Acc: 0.7103 | F1: 0.5634 | Recall: 0.6957 | Precision: 0.4734
+HybridMamba               TS: 0.3239 | Acc: 0.6636 | F1: 0.4894 | Recall: 0.6000 | Precision: 0.4132
+TSMixer                   TS: 0.3372 | Acc: 0.6005 | F1: 0.5043 | Recall: 0.7565 | Precision: 0.3783
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.3119 | Acc: 0.8160 | F1: 0.4755
+LogisticRegression        TS: 0.4206 | Acc: 0.8209 | F1: 0.5922
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5781 | Acc: 0.8442 | F1: 0.7326
+HybridMamba               TS: 0.5323 | Acc: 0.8221 | F1: 0.6947
+TSMixer                   TS: 0.4077 | Acc: 0.7914 | F1: 0.5792
+============================================================
+Test set
+Staley                    TS: 0.3115 | Acc: 0.6075 | F1: 0.4750 | Recall: 0.6609 | Precision: 0.3707
+LogisticRegression        TS: 0.3163 | Acc: 0.6869 | F1: 0.4806 | Recall: 0.5391 | Precision: 0.4336
+RandomForest              TS: 0.3734 | Acc: 0.6589 | F1: 0.5437 | Recall: 0.7565 | Precision: 0.4244
+Mamba                     TS: 0.3493 | Acc: 0.6822 | F1: 0.5177 | Recall: 0.6348 | Precision: 0.4371
+HybridMamba               TS: 0.3188 | Acc: 0.6706 | F1: 0.4835 | Recall: 0.5739 | Precision: 0.4177
+TSMixer                   TS: 0.3692 | Acc: 0.6168 | F1: 0.5393 | Recall: 0.8348 | Precision: 0.3983
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.3119 | Acc: 0.8160 | F1: 0.4755
+LogisticRegression        TS: 0.3898 | Acc: 0.8233 | F1: 0.5610
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5546 | Acc: 0.8147 | F1: 0.7135
+HybridMamba               TS: 0.5437 | Acc: 0.8270 | F1: 0.7044
+TSMixer                   TS: 0.4294 | Acc: 0.7472 | F1: 0.6008
+============================================================
+Test set
+Staley                    TS: 0.3115 | Acc: 0.6075 | F1: 0.4750 | Recall: 0.6609 | Precision: 0.3707
+LogisticRegression        TS: 0.2655 | Acc: 0.6963 | F1: 0.4196 | Recall: 0.4087 | Precision: 0.4312
+RandomForest              TS: 0.3793 | Acc: 0.6636 | F1: 0.5500 | Recall: 0.7652 | Precision: 0.4293
+Mamba                     TS: 0.3825 | Acc: 0.6869 | F1: 0.5533 | Recall: 0.7217 | Precision: 0.4486
+HybridMamba               TS: 0.3810 | Acc: 0.6963 | F1: 0.5517 | Recall: 0.6957 | Precision: 0.4571
+TSMixer                   TS: 0.3532 | Acc: 0.6192 | F1: 0.5220 | Recall: 0.7739 | Precision: 0.3938
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3115
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.3114754098360656), 'accuracy': 0.6074766355140186, 'precision': 0.37073170731707317, 'recall': 0.6608695652173913, 'f1': 0.475, 'threshold': 0.5}
+
+Model: LogisticRegression
+  Best Seed: 3
+  Best TS:   0.3163
+  Metrics:   {'name': 'LogisticRegression', 'ts': np.float64(0.3163265306122449), 'accuracy': 0.6869158878504673, 'precision': 0.43356643356643354, 'recall': 0.5391304347826087, 'f1': 0.4806201550387597, 'threshold': 0.5}
+
+Model: RandomForest
+  Best Seed: 0
+  Best TS:   0.3884
+  Metrics:   {'name': 'RandomForest', 'ts': np.float64(0.38839285714285715), 'accuracy': 0.6799065420560748, 'precision': 0.44387755102040816, 'recall': 0.7565217391304347, 'f1': 0.5594855305466238, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 2
+  Best TS:   0.3922
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.39215686274509803), 'accuracy': 0.7102803738317757, 'precision': 0.47337278106508873, 'recall': 0.6956521739130435, 'f1': 0.5633802816901409, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.3877
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.3876651982378855), 'accuracy': 0.6752336448598131, 'precision': 0.44, 'recall': 0.7652173913043478, 'f1': 0.5587301587301587, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3692
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.36923076923076925), 'accuracy': 0.616822429906542, 'precision': 0.3983402489626556, 'recall': 0.8347826086956521, 'f1': 0.5393258426966292, 'threshold': 0.5}
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8344 | F1: 0.5872
+LogisticRegression        TS: 0.4696 | Acc: 0.8393 | F1: 0.6391
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5942 | Acc: 0.8626 | F1: 0.7455
+HybridMamba               TS: 0.4871 | Acc: 0.8049 | F1: 0.6551
+TSMixer                   TS: 0.5812 | Acc: 0.8417 | F1: 0.7351
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.1605 | Acc: 0.6822 | F1: 0.2766 | Recall: 0.2261 | Precision: 0.3562
+RandomForest              TS: 0.3884 | Acc: 0.6799 | F1: 0.5595 | Recall: 0.7565 | Precision: 0.4439
+Mamba                     TS: 0.3582 | Acc: 0.6986 | F1: 0.5275 | Recall: 0.6261 | Precision: 0.4557
+HybridMamba               TS: 0.3877 | Acc: 0.6752 | F1: 0.5587 | Recall: 0.7652 | Precision: 0.4400
+TSMixer                   TS: 0.2771 | Acc: 0.7196 | F1: 0.4340 | Recall: 0.4000 | Precision: 0.4742
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8344 | F1: 0.5872
+LogisticRegression        TS: 0.4696 | Acc: 0.8393 | F1: 0.6391
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5616 | Acc: 0.8209 | F1: 0.7192
+HybridMamba               TS: 0.5199 | Acc: 0.8221 | F1: 0.6841
+TSMixer                   TS: 0.3465 | Acc: 0.5926 | F1: 0.5146
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.1605 | Acc: 0.6822 | F1: 0.2766 | Recall: 0.2261 | Precision: 0.3562
+RandomForest              TS: 0.3691 | Acc: 0.6565 | F1: 0.5392 | Recall: 0.7478 | Precision: 0.4216
+Mamba                     TS: 0.3857 | Acc: 0.6799 | F1: 0.5566 | Recall: 0.7478 | Precision: 0.4433
+HybridMamba               TS: 0.3434 | Acc: 0.6963 | F1: 0.5113 | Recall: 0.5913 | Precision: 0.4503
+TSMixer                   TS: 0.3160 | Acc: 0.5701 | F1: 0.4802 | Recall: 0.7391 | Precision: 0.3556
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8344 | F1: 0.5872
+LogisticRegression        TS: 0.4696 | Acc: 0.8393 | F1: 0.6391
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5110 | Acc: 0.8098 | F1: 0.6764
+HybridMamba               TS: 0.5487 | Acc: 0.8294 | F1: 0.7086
+TSMixer                   TS: 0.3422 | Acc: 0.5448 | F1: 0.5099
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.1605 | Acc: 0.6822 | F1: 0.2766 | Recall: 0.2261 | Precision: 0.3562
+RandomForest              TS: 0.3766 | Acc: 0.6636 | F1: 0.5472 | Recall: 0.7565 | Precision: 0.4286
+Mamba                     TS: 0.3922 | Acc: 0.7103 | F1: 0.5634 | Recall: 0.6957 | Precision: 0.4734
+HybridMamba               TS: 0.3239 | Acc: 0.6636 | F1: 0.4894 | Recall: 0.6000 | Precision: 0.4132
+TSMixer                   TS: 0.3372 | Acc: 0.6005 | F1: 0.5043 | Recall: 0.7565 | Precision: 0.3783
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8344 | F1: 0.5872
+LogisticRegression        TS: 0.4696 | Acc: 0.8393 | F1: 0.6391
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5781 | Acc: 0.8442 | F1: 0.7326
+HybridMamba               TS: 0.5323 | Acc: 0.8221 | F1: 0.6947
+TSMixer                   TS: 0.4077 | Acc: 0.7914 | F1: 0.5792
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.1605 | Acc: 0.6822 | F1: 0.2766 | Recall: 0.2261 | Precision: 0.3562
+RandomForest              TS: 0.3734 | Acc: 0.6589 | F1: 0.5437 | Recall: 0.7565 | Precision: 0.4244
+Mamba                     TS: 0.3493 | Acc: 0.6822 | F1: 0.5177 | Recall: 0.6348 | Precision: 0.4371
+HybridMamba               TS: 0.3188 | Acc: 0.6706 | F1: 0.4835 | Recall: 0.5739 | Precision: 0.4177
+TSMixer                   TS: 0.3692 | Acc: 0.6168 | F1: 0.5393 | Recall: 0.8348 | Precision: 0.3983
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8344 | F1: 0.5872
+LogisticRegression        TS: 0.4696 | Acc: 0.8393 | F1: 0.6391
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5546 | Acc: 0.8147 | F1: 0.7135
+HybridMamba               TS: 0.5437 | Acc: 0.8270 | F1: 0.7044
+TSMixer                   TS: 0.4294 | Acc: 0.7472 | F1: 0.6008
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.1605 | Acc: 0.6822 | F1: 0.2766 | Recall: 0.2261 | Precision: 0.3562
+RandomForest              TS: 0.3793 | Acc: 0.6636 | F1: 0.5500 | Recall: 0.7652 | Precision: 0.4293
+Mamba                     TS: 0.3825 | Acc: 0.6869 | F1: 0.5533 | Recall: 0.7217 | Precision: 0.4486
+HybridMamba               TS: 0.3810 | Acc: 0.6963 | F1: 0.5517 | Recall: 0.6957 | Precision: 0.4571
+TSMixer                   TS: 0.3532 | Acc: 0.6192 | F1: 0.5220 | Recall: 0.7739 | Precision: 0.3938
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3862
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.3861788617886179), 'accuracy': 0.647196261682243, 'precision': 0.42035398230088494, 'recall': 0.8260869565217391, 'f1': 0.5571847507331378, 'threshold': 0.5}
+
+Model: LogisticRegression
+  Best Seed: 0
+  Best TS:   0.1605
+  Metrics:   {'name': 'LogisticRegression', 'ts': np.float64(0.16049382716049382), 'accuracy': 0.6822429906542056, 'precision': 0.3561643835616438, 'recall': 0.22608695652173913, 'f1': 0.2765957446808511, 'threshold': 0.5}
+
+Model: RandomForest
+  Best Seed: 0
+  Best TS:   0.3884
+  Metrics:   {'name': 'RandomForest', 'ts': np.float64(0.38839285714285715), 'accuracy': 0.6799065420560748, 'precision': 0.44387755102040816, 'recall': 0.7565217391304347, 'f1': 0.5594855305466238, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 2
+  Best TS:   0.3922
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.39215686274509803), 'accuracy': 0.7102803738317757, 'precision': 0.47337278106508873, 'recall': 0.6956521739130435, 'f1': 0.5633802816901409, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.3877
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.3876651982378855), 'accuracy': 0.6752336448598131, 'precision': 0.44, 'recall': 0.7652173913043478, 'f1': 0.5587301587301587, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3692
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.36923076923076925), 'accuracy': 0.616822429906542, 'precision': 0.3983402489626556, 'recall': 0.8347826086956521, 'f1': 0.5393258426966292, 'threshold': 0.5}
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5828 | Acc: 0.8605 | F1: 0.7364
+HybridMamba               TS: 0.5696 | Acc: 0.8584 | F1: 0.7258
+TSMixer                   TS: 0.5138 | Acc: 0.8317 | F1: 0.6789
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3836 | Acc: 0.6659 | F1: 0.5545 | Recall: 0.7739 | Precision: 0.4320
+Mamba                     TS: 0.3656 | Acc: 0.6636 | F1: 0.5355 | Recall: 0.7217 | Precision: 0.4256
+HybridMamba               TS: 0.3952 | Acc: 0.7033 | F1: 0.5666 | Recall: 0.7217 | Precision: 0.4663
+TSMixer                   TS: 0.2712 | Acc: 0.6986 | F1: 0.4267 | Recall: 0.4174 | Precision: 0.4364
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.6404 | Acc: 0.8882 | F1: 0.7808
+HybridMamba               TS: 0.5047 | Acc: 0.8317 | F1: 0.6708
+TSMixer                   TS: 0.5097 | Acc: 0.8392 | F1: 0.6753
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3772 | Acc: 0.6682 | F1: 0.5478 | Recall: 0.7478 | Precision: 0.4322
+Mamba                     TS: 0.3889 | Acc: 0.6659 | F1: 0.5600 | Recall: 0.7913 | Precision: 0.4333
+HybridMamba               TS: 0.3434 | Acc: 0.6963 | F1: 0.5113 | Recall: 0.5913 | Precision: 0.4503
+TSMixer                   TS: 0.3172 | Acc: 0.7033 | F1: 0.4816 | Recall: 0.5130 | Precision: 0.4538
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4715 | Acc: 0.8616 | F1: 0.6409
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.4651 | Acc: 0.8285 | F1: 0.6349
+HybridMamba               TS: 0.5469 | Acc: 0.8456 | F1: 0.7071
+TSMixer                   TS: 0.3374 | Acc: 0.5964 | F1: 0.5046
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2426 | Acc: 0.7009 | F1: 0.3905 | Recall: 0.3565 | Precision: 0.4316
+RandomForest              TS: 0.3805 | Acc: 0.6729 | F1: 0.5513 | Recall: 0.7478 | Precision: 0.4365
+Mamba                     TS: 0.3902 | Acc: 0.7079 | F1: 0.5614 | Recall: 0.6957 | Precision: 0.4706
+HybridMamba               TS: 0.3270 | Acc: 0.6682 | F1: 0.4929 | Recall: 0.6000 | Precision: 0.4182
+TSMixer                   TS: 0.3466 | Acc: 0.6168 | F1: 0.5148 | Recall: 0.7565 | Precision: 0.3901
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5986 | Acc: 0.8765 | F1: 0.7489
+HybridMamba               TS: 0.5687 | Acc: 0.8562 | F1: 0.7251
+TSMixer                   TS: 0.4033 | Acc: 0.8094 | F1: 0.5748
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3640 | Acc: 0.6612 | F1: 0.5338 | Recall: 0.7217 | Precision: 0.4235
+Mamba                     TS: 0.3662 | Acc: 0.6846 | F1: 0.5361 | Recall: 0.6783 | Precision: 0.4432
+HybridMamba               TS: 0.3333 | Acc: 0.6822 | F1: 0.5000 | Recall: 0.5913 | Precision: 0.4331
+TSMixer                   TS: 0.3684 | Acc: 0.6075 | F1: 0.5385 | Recall: 0.8522 | Precision: 0.3936
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 0.9950 | Acc: 0.9989 | F1: 0.9975
+Mamba                     TS: 0.5347 | Acc: 0.8360 | F1: 0.6969
+HybridMamba               TS: 0.5669 | Acc: 0.8552 | F1: 0.7236
+TSMixer                   TS: 0.4605 | Acc: 0.8253 | F1: 0.6306
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3881 | Acc: 0.6869 | F1: 0.5592 | Recall: 0.7391 | Precision: 0.4497
+Mamba                     TS: 0.3923 | Acc: 0.7033 | F1: 0.5636 | Recall: 0.7130 | Precision: 0.4659
+HybridMamba               TS: 0.3833 | Acc: 0.6729 | F1: 0.5541 | Recall: 0.7565 | Precision: 0.4372
+TSMixer                   TS: 0.3491 | Acc: 0.6472 | F1: 0.5176 | Recall: 0.7043 | Precision: 0.4091
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3862
+  Metrics:   {'name': 'Staley', 'ts': np.float64(0.3861788617886179), 'accuracy': 0.647196261682243, 'precision': 0.42035398230088494, 'recall': 0.8260869565217391, 'f1': 0.5571847507331378, 'threshold': 0.5}
+
+Model: LogisticRegression
+  Best Seed: 0
+  Best TS:   0.2604
+  Metrics:   {'name': 'LogisticRegression', 'ts': np.float64(0.2603550295857988), 'accuracy': 0.7079439252336449, 'precision': 0.4489795918367347, 'recall': 0.3826086956521739, 'f1': 0.4131455399061033, 'threshold': 0.5}
+
+Model: RandomForest
+  Best Seed: 4
+  Best TS:   0.3881
+  Metrics:   {'name': 'RandomForest', 'ts': np.float64(0.3881278538812785), 'accuracy': 0.6869158878504673, 'precision': 0.4497354497354497, 'recall': 0.7391304347826086, 'f1': 0.5592105263157895, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 4
+  Best TS:   0.3923
+  Metrics:   {'name': 'Mamba', 'ts': np.float64(0.3923444976076555), 'accuracy': 0.7032710280373832, 'precision': 0.4659090909090909, 'recall': 0.7130434782608696, 'f1': 0.563573883161512, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.3952
+  Metrics:   {'name': 'HybridMamba', 'ts': np.float64(0.3952380952380952), 'accuracy': 0.7032710280373832, 'precision': 0.46629213483146065, 'recall': 0.7217391304347827, 'f1': 0.5665529010238908, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3684
+  Metrics:   {'name': 'TSMixer', 'ts': np.float64(0.3684210526315789), 'accuracy': 0.6074766355140186, 'precision': 0.39357429718875503, 'recall': 0.8521739130434782, 'f1': 0.5384615384615384, 'threshold': 0.5}
+
+============================================================
+COMPARISON SUMMARY (0)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5828 | Acc: 0.8605 | F1: 0.7364
+HybridMamba               TS: 0.5696 | Acc: 0.8584 | F1: 0.7258
+TSMixer                   TS: 0.5138 | Acc: 0.8317 | F1: 0.6789
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3836 | Acc: 0.6659 | F1: 0.5545 | Recall: 0.7739 | Precision: 0.4320
+Mamba                     TS: 0.3656 | Acc: 0.6636 | F1: 0.5355 | Recall: 0.7217 | Precision: 0.4256
+HybridMamba               TS: 0.3952 | Acc: 0.7033 | F1: 0.5666 | Recall: 0.7217 | Precision: 0.4663
+TSMixer                   TS: 0.2712 | Acc: 0.6986 | F1: 0.4267 | Recall: 0.4174 | Precision: 0.4364
+
+============================================================
+COMPARISON SUMMARY (1)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.6786 | Acc: 0.9042 | F1: 0.8085
+HybridMamba               TS: 0.5047 | Acc: 0.8317 | F1: 0.6708
+TSMixer                   TS: 0.5097 | Acc: 0.8392 | F1: 0.6753
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3772 | Acc: 0.6682 | F1: 0.5478 | Recall: 0.7478 | Precision: 0.4322
+Mamba                     TS: 0.3904 | Acc: 0.6752 | F1: 0.5615 | Recall: 0.7739 | Precision: 0.4406
+HybridMamba               TS: 0.3434 | Acc: 0.6963 | F1: 0.5113 | Recall: 0.5913 | Precision: 0.4503
+TSMixer                   TS: 0.3172 | Acc: 0.7033 | F1: 0.4816 | Recall: 0.5130 | Precision: 0.4538
+
+============================================================
+COMPARISON SUMMARY (2)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4715 | Acc: 0.8616 | F1: 0.6409
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.4651 | Acc: 0.8285 | F1: 0.6349
+HybridMamba               TS: 0.5469 | Acc: 0.8456 | F1: 0.7071
+TSMixer                   TS: 0.3374 | Acc: 0.5964 | F1: 0.5046
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2426 | Acc: 0.7009 | F1: 0.3905 | Recall: 0.3565 | Precision: 0.4316
+RandomForest              TS: 0.3805 | Acc: 0.6729 | F1: 0.5513 | Recall: 0.7478 | Precision: 0.4365
+Mamba                     TS: 0.3902 | Acc: 0.7079 | F1: 0.5614 | Recall: 0.6957 | Precision: 0.4706
+HybridMamba               TS: 0.3270 | Acc: 0.6682 | F1: 0.4929 | Recall: 0.6000 | Precision: 0.4182
+TSMixer                   TS: 0.3466 | Acc: 0.6168 | F1: 0.5148 | Recall: 0.7565 | Precision: 0.3901
+
+============================================================
+COMPARISON SUMMARY (3)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000
+Mamba                     TS: 0.5986 | Acc: 0.8765 | F1: 0.7489
+HybridMamba               TS: 0.5687 | Acc: 0.8562 | F1: 0.7251
+TSMixer                   TS: 0.4033 | Acc: 0.8094 | F1: 0.5748
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3640 | Acc: 0.6612 | F1: 0.5338 | Recall: 0.7217 | Precision: 0.4235
+Mamba                     TS: 0.3662 | Acc: 0.6846 | F1: 0.5361 | Recall: 0.6783 | Precision: 0.4432
+HybridMamba               TS: 0.3333 | Acc: 0.6822 | F1: 0.5000 | Recall: 0.5913 | Precision: 0.4331
+TSMixer                   TS: 0.3684 | Acc: 0.6075 | F1: 0.5385 | Recall: 0.8522 | Precision: 0.3936
+
+============================================================
+COMPARISON SUMMARY (4)
+============================================================
+Train set
+Staley                    TS: 0.4156 | Acc: 0.8562 | F1: 0.5872
+LogisticRegression        TS: 0.4675 | Acc: 0.8605 | F1: 0.6371
+RandomForest              TS: 0.9950 | Acc: 0.9989 | F1: 0.9975
+Mamba                     TS: 0.5347 | Acc: 0.8360 | F1: 0.6969
+HybridMamba               TS: 0.5669 | Acc: 0.8552 | F1: 0.7236
+TSMixer                   TS: 0.4605 | Acc: 0.8253 | F1: 0.6306
+============================================================
+Test set
+Staley                    TS: 0.3862 | Acc: 0.6472 | F1: 0.5572 | Recall: 0.8261 | Precision: 0.4204
+LogisticRegression        TS: 0.2604 | Acc: 0.7079 | F1: 0.4131 | Recall: 0.3826 | Precision: 0.4490
+RandomForest              TS: 0.3881 | Acc: 0.6869 | F1: 0.5592 | Recall: 0.7391 | Precision: 0.4497
+Mamba                     TS: 0.3923 | Acc: 0.7033 | F1: 0.5636 | Recall: 0.7130 | Precision: 0.4659
+HybridMamba               TS: 0.3833 | Acc: 0.6729 | F1: 0.5541 | Recall: 0.7565 | Precision: 0.4372
+TSMixer                   TS: 0.3491 | Acc: 0.6472 | F1: 0.5176 | Recall: 0.7043 | Precision: 0.4091
+
+========================= BEST SEEDS =========================
+
+Model: Staley
+  Best Seed: 0
+  Best TS:   0.3862
+  Metrics:   {'name': 'Staley', 'ts': 0.3861788617886179, 'accuracy': 0.647196261682243, 'precision': 0.42035398230088494, 'recall': 0.8260869565217391, 'f1': 0.5571847507331378, 'threshold': 0.5}
+
+Model: LogisticRegression
+  Best Seed: 0
+  Best TS:   0.2604
+  Metrics:   {'name': 'LogisticRegression', 'ts': 0.2603550295857988, 'accuracy': 0.7079439252336449, 'precision': 0.4489795918367347, 'recall': 0.3826086956521739, 'f1': 0.4131455399061033, 'threshold': 0.5}
+
+Model: RandomForest
+  Best Seed: 4
+  Best TS:   0.3881
+  Metrics:   {'name': 'RandomForest', 'ts': 0.3881278538812785, 'accuracy': 0.6869158878504673, 'precision': 0.4497354497354497, 'recall': 0.7391304347826086, 'f1': 0.5592105263157895, 'threshold': 0.5}
+
+Model: Mamba
+  Best Seed: 4
+  Best TS:   0.3923
+  Metrics:   {'name': 'Mamba', 'ts': 0.3923444976076555, 'accuracy': 0.7032710280373832, 'precision': 0.4659090909090909, 'recall': 0.7130434782608696, 'f1': 0.563573883161512, 'threshold': 0.5}
+
+Model: HybridMamba
+  Best Seed: 0
+  Best TS:   0.3952
+  Metrics:   {'name': 'HybridMamba', 'ts': 0.3952380952380952, 'accuracy': 0.7032710280373832, 'precision': 0.46629213483146065, 'recall': 0.7217391304347827, 'f1': 0.5665529010238908, 'threshold': 0.5}
+
+Model: TSMixer
+  Best Seed: 3
+  Best TS:   0.3684
+  Metrics:   {'name': 'TSMixer', 'ts': 0.3684210526315789, 'accuracy': 0.6074766355140186, 'precision': 0.39357429718875503, 'recall': 0.8521739130434782, 'f1': 0.5384615384615384, 'threshold': 0.5}

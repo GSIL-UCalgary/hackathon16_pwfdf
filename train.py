@@ -12,7 +12,7 @@ from data import PWFDF_Data
 from eval import evaluate, compare_params, evaluate_model, threat_score
 
 from models.log_reg import Staley2017Model, LogisticRegression
-from models.mamba import MambaClassifier, HybridMambaLogisticModel
+from models.mamba import MambaClassifier, HybridMambaLogisticModel, HybridMambaLogisticModel_Mabel, ClusteredMambaModel_Flood
 from models.transformer import TransformerClassifier
 from models.TSMixer import TSMixerClassifier, BestSimpleModel
 from models.randomforest import RandomForestModel, train_random_forest
@@ -297,6 +297,8 @@ def compare_all_approaches():
         lambda: RandomForestModel(numerical_features, random_state=None),
         lambda: MambaClassifier(input_dim=input_dim, n_layers=2),
         lambda: HybridMambaLogisticModel(numerical_features, input_dim=input_dim, n_layers=1),
+        lambda: HybridMambaLogisticModel_Mabel(numerical_features, input_dim=input_dim, n_layers=1),
+        lambda: ClusteredMambaModel_Flood(numerical_features, input_dim=input_dim, n_layers=1),
         lambda: TSMixerClassifier(input_dim=input_dim),
     ]
 
