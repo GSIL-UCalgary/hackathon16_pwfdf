@@ -1075,12 +1075,12 @@ class ClusteredMambaModel_Flood(nn.Module):
             'StormAvgI_mm/h', 
             'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
             'ContributingArea_km2', 
-            'PropHM23', 'dNBR/1000', 'KF', 
+            'PropHM23', 'dNBR/1000', 'KF', 'Missing_Data',
             #'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
         ]
 
         self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
-
+        self.feature_names = self.non_rainfall_features + self.rainfall_features
         self.n_clusters = n_clusters
         
         # Get indices for rainfall vs non-rainfall features

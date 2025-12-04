@@ -87,14 +87,19 @@ def train_logistic(model, input_data, seed, max_iter=1000):
 def train_mamba(seed, model, input_data, max_epochs=200):
     X_train, y_train, X_val, y_val = input_data
     model_save_path = f"./output/{model.name}_model.pth"
-    
+
+    # Hyperparameters for Early Stopping
+    PATIENCE = 15 # The number of epochs to wait for improvement (Increased from 5 as recommended)
+    MIN_DELTA = 1e-4 # Minimum improvement to count as "better" (e.g., 0.0001 TS improvement)
+
     optimizer = optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=5)
-    #scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=max_epochs, eta_min=1e-6)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=8)
 
     train_losses = []
     val_metrics = []
-    best_ts = 0.0
+    
+    best_ts = -float('inf') # Initialize to negative infinity to ensure any TS is an improvement
+    epochs_no_improve = 0
         
     pbar = tqdm(range(max_epochs), desc=f"Training {model.name} Seed={seed}", unit="epoch", disable=False)
 
@@ -104,34 +109,37 @@ def train_mamba(seed, model, input_data, max_epochs=200):
         y_pred, loss = model(X_train, y_train)
         
         loss.backward()
-        #nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0) 
         optimizer.step()
         
         # Evaluation
         model.eval()
         with torch.no_grad():
             val_metrics = evaluate_model(model, X_val, y_val)
+            current_ts = val_metrics['ts']
             
-        #scheduler.step(val_loss) # Update learning rate
-        train_losses.append(loss.item())
+        scheduler.step(current_ts) # Update learning rate
 
+        # --- Early Stopping Logic ---
+        if current_ts > best_ts + MIN_DELTA:
+            # New best model found! Reset counter and save checkpoint.
+            best_ts = current_ts
+            epochs_no_improve = 0
+            torch.save(model.state_dict(), model_save_path) # Save the state dictionary of the model
+        else:
+            # Performance did not improve enough
+            epochs_no_improve += 1
+            if epochs_no_improve >= PATIENCE:
+                tqdm.write(f"\nEarly stopping at epoch {epoch}. Best TS was {best_ts:.4f}.")
+                break # Exit the training loop
+                
+        # --- Progress Bar Update ---
         pbar.set_postfix({
             'Loss': f'{loss.item():.4f}',
-            'TS': f"{val_metrics['ts']:.4f}",
+            'TS': f"{current_ts:.4f}",
             'Acc': f"{val_metrics['accuracy']:.4f}",
-            'F1': f"{val_metrics['f1']:.4f}",
-            'Best': f'{best_ts:.4f}'
+            'BestTS': f'{best_ts:.4f}',
+            'Patience': f'{epochs_no_improve}/{PATIENCE}'
         })
-        
-        #if epoch % 10 == 0 or epoch == max_epochs - 1:
-        #    tqdm.write(f"Epoch {epoch:3d}: Loss={loss.item():.6f}, Train Acc={train_acc:.4f}")
-        #    tqdm.write(f"  Test TS={test_ts:.4f}, Test Acc={test_acc:.4f}, Test F1={test_f1:.4f}")
-        #    tqdm.write(f"  LR={optimizer.param_groups[0]['lr']:.2e}")
-        
-        # Save best model
-        if val_metrics['accuracy'] > best_ts or best_ts == 0.0:
-            best_ts = val_metrics['accuracy']
-            torch.save(model.state_dict(), model_save_path)
 
     
     pbar.close()
@@ -152,6 +160,7 @@ def compare_all_approaches():
     #X_train, X_val, y_train, y_val = X_train_full, [], y_train_full, []
     X_train, X_val, y_train, y_val = train_test_split(X_train_full, y_train_full, test_size=0.1, random_state=42, stratify=y_train_full)
     X_test, y_test, _ = df_data.prepare_data_usgs(data.all_features, split='Test', scaler=scaler)
+    #X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.1, random_state=42, stratify=y_test)
 
     X_train = torch.Tensor(X_train).to(device)
     X_val = torch.Tensor(X_val).to(device)
@@ -215,7 +224,7 @@ def compare_all_approaches():
         #lambda: SpatialMambaContextModel(r_features, pos_weight, 5 + 1)
         lambda: RandomForestModel(random_state=None),
         #lambda: HybridMambaLogisticModel(features, pos_weight, input_dim=input_dim, n_layers=1),
-        #lambda: MultiPathwayHybridModel_og(features=data.all_features, d_model=128, n_layers=6),
+        #lambda: MultiPathwayHybridModel_og(features=data.all_features, d_model=128, n_layers=1),
         lambda: ClusteredMambaModel_Flood(pos_weight, input_dim=input_dim, n_layers=1),
         #lambda: HybridMambaFeatureGroups(features, pos_weight),
         #lambda: HybridGroupedSpatialMambaModel(features=features, spatial_dim=16),
@@ -296,8 +305,12 @@ def compare_all_approaches():
             for approach, results in test_results.items():
                 logging.info(f"{results['name']:25} TS: {results['ts']:.4f} | Acc: {results['accuracy']:.4f} | F1: {results['f1']:.4f} | Recall: {results['recall']:.4f} | Precision: {results['precision']:.4f}")
         else:
-            logging.info(f"Seed={seed} | Train: " + " | ".join([f"{r['name']}: {r['ts']:.4f}" for r in training_results.values()]) + " || Test: " + " | ".join([f"{r['name']}: {r['ts']:.4f}" for r in test_results.values()]))
-
+            logging.info(
+                f"Seed={seed} | "
+                + "Train: " + " | ".join([f"{r['name']}: {r['ts']:.4f}" for r in training_results.values()])
+                + " || Val: " + " | ".join([f"{r['name']}: {r['ts']:.4f}" for r in validation_results.values()])
+                + " || Test: " + " | ".join([f"{r['name']}: {r['ts']:.4f}" for r in test_results.values()])
+            )
     logging.info("\n\n==================== AGGREGATE RESULTS =====================")
     logging.info(f"Summary over {len(seeds)} seeds on the Test Set:")
     

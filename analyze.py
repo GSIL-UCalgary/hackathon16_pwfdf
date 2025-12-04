@@ -1,268 +1,365 @@
-import shap
 import torch
 import numpy as np
+import shap
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from pathlib import Path
 
-from data import PWFDF_Data
+# Assuming your model and data loading code is available
+# from your_model_file import ClusteredMambaModel_Flood
+# from your_data_file import PWFDF_Data, all_features
+
+class SHAPAnalyzer:
+    """SHAP-based feature importance analyzer for ClusteredMambaModel_Flood"""
+    
+    def __init__(self, model, feature_names, device='cuda'):
+        """
+        Initialize SHAP analyzer
+        
+        Args:
+            model: Trained ClusteredMambaModel_Flood instance
+            feature_names: List of feature names
+            device: 'cuda' or 'cpu'
+        """
+        self.model = model
+        self.feature_names = feature_names
+        self.device = device
+        self.model.eval()
+        
+    def create_model_wrapper(self):
+        """
+        Create a wrapper function that SHAP can use
+        Returns probabilities instead of logits
+        """
+        def model_predict(x):
+            # Convert numpy array to torch tensor
+            if isinstance(x, np.ndarray):
+                x = torch.FloatTensor(x).to(self.device)
+            
+            # Ensure correct shape: should be (batch_size, K, features)
+            # where K is the number of neighbors (e.g., 6)
+            # SHAP will flatten the input, so we need to reshape it
+            if len(x.shape) == 2:
+                # Reshape from (batch_size, K*features) to (batch_size, K, features)
+                batch_size = x.shape[0]
+                total_features = x.shape[1]
+                # Infer K and features from total
+                # You may need to adjust this based on your model's expected input
+                K = 6  # Number of neighbors
+                features = total_features // K
+                x = x.reshape(batch_size, K, features)
+            
+            with torch.no_grad():
+                probs, _ = self.model(x)
+            
+            # Return as numpy array
+            return probs.cpu().numpy()
+        
+        return model_predict
+    
+    def calculate_shap_values(self, X_background, X_explain, max_evals=100):
+        """
+        Calculate SHAP values using KernelExplainer
+        
+        Args:
+            X_background: Background dataset for SHAP (e.g., training set sample)
+            X_explain: Dataset to explain (e.g., test set)
+            max_evals: Maximum evaluations for KernelExplainer
+            
+        Returns:
+            explainer: SHAP explainer object
+            shap_values: SHAP values for X_explain
+        """
+        # Convert to numpy if torch tensors
+        if isinstance(X_background, torch.Tensor):
+            X_background = X_background.cpu().numpy()
+        if isinstance(X_explain, torch.Tensor):
+            X_explain = X_explain.cpu().numpy()
+        
+        # Store original shape for later
+        self.original_shape = X_background.shape  # e.g., (100, 6, 27)
+        self.K = X_background.shape[1]  # Number of neighbors
+        self.F = X_background.shape[2]  # Number of features
+        
+        # Flatten the graph structure for SHAP
+        # From (batch, K, features) to (batch, K*features)
+        X_background_flat = X_background.reshape(X_background.shape[0], -1)
+        X_explain_flat = X_explain.reshape(X_explain.shape[0], -1)
+        
+        print(f"Flattened shapes: Background {X_background_flat.shape}, Explain {X_explain_flat.shape}")
+        
+        # Create model wrapper
+        model_fn = self.create_model_wrapper()
+        
+        # Initialize SHAP KernelExplainer
+        print("Initializing SHAP explainer...")
+        explainer = shap.KernelExplainer(
+            model_fn, 
+            X_background_flat,
+            link="identity"  # Use identity link since model already outputs probabilities
+        )
+        
+        # Calculate SHAP values
+        print(f"Calculating SHAP values for {len(X_explain_flat)} samples...")
+        shap_values = explainer.shap_values(
+            X_explain_flat,
+            nsamples=max_evals,
+            silent=False
+        )
+        
+        # Reshape SHAP values back to (samples, K, features)
+        shap_values_reshaped = shap_values.reshape(-1, self.K, self.F)
+        
+        return explainer, shap_values, shap_values_reshaped
+    
+    def plot_summary(self, shap_values, X_explain, save_path='./output/shap_summary.png', 
+                     aggregate_neighbors=True):
+        """
+        Generate SHAP summary plot
+        
+        Args:
+            shap_values: Can be flat (samples, K*F) or reshaped (samples, K, F)
+            X_explain: Original data (samples, K, F)
+            aggregate_neighbors: If True, average SHAP values across neighbors
+        """
+        if isinstance(X_explain, torch.Tensor):
+            X_explain = X_explain.cpu().numpy()
+        
+        # Handle different shapes
+        if len(shap_values.shape) == 3:  # (samples, K, F)
+            if aggregate_neighbors:
+                # Average across neighbors dimension
+                shap_values_plot = shap_values.mean(axis=1)  # (samples, F)
+                X_explain_plot = X_explain.mean(axis=1)  # (samples, F)
+                feature_names = self.feature_names
+            else:
+                # Flatten for plotting
+                shap_values_plot = shap_values.reshape(shap_values.shape[0], -1)
+                X_explain_plot = X_explain.reshape(X_explain.shape[0], -1)
+                # Create feature names with neighbor indices
+                feature_names = [f"{feat}_N{k}" for k in range(self.K) for feat in self.feature_names]
+        else:  # Already flat
+            shap_values_plot = shap_values
+            X_explain_plot = X_explain.reshape(X_explain.shape[0], -1)
+            feature_names = [f"{feat}_N{k}" for k in range(self.K) for feat in self.feature_names]
+            
+        plt.figure(figsize=(10, 8))
+        shap.summary_plot(
+            shap_values_plot, 
+            X_explain_plot, 
+            feature_names=feature_names,
+            show=False
+        )
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Summary plot saved to {save_path}")
+        plt.close()
+    
+    def plot_bar(self, shap_values, save_path='./output/shap_bar.png', aggregate_neighbors=True):
+        """
+        Generate SHAP bar plot showing mean absolute SHAP values
+        
+        Args:
+            shap_values: Can be flat or reshaped
+            aggregate_neighbors: If True, average across neighbors before plotting
+        """
+        if len(shap_values.shape) == 3 and aggregate_neighbors:
+            # Average across neighbors
+            shap_values_plot = shap_values.mean(axis=1)
+            feature_names = self.feature_names
+        elif len(shap_values.shape) == 3:
+            # Flatten
+            shap_values_plot = shap_values.reshape(shap_values.shape[0], -1)
+            feature_names = [f"{feat}_N{k}" for k in range(self.K) for feat in self.feature_names]
+        else:
+            shap_values_plot = shap_values
+            feature_names = [f"{feat}_N{k}" for k in range(self.K) for feat in self.feature_names]
+        
+        plt.figure(figsize=(10, 8))
+        shap.summary_plot(
+            shap_values_plot,
+            feature_names=feature_names,
+            plot_type="bar",
+            show=False
+        )
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Bar plot saved to {save_path}")
+        plt.close()
+    
+    def plot_waterfall(self, shap_values, X_explain, sample_idx=0, 
+                       save_path='./output/shap_waterfall.png'):
+        """Generate waterfall plot for a single prediction"""
+        if isinstance(X_explain, torch.Tensor):
+            X_explain = X_explain.cpu().numpy()
+        if len(X_explain.shape) == 3:
+            X_explain = X_explain.squeeze(1)
+        
+        plt.figure(figsize=(10, 8))
+        shap.waterfall_plot(
+            shap.Explanation(
+                values=shap_values[sample_idx],
+                base_values=np.mean(shap_values),
+                data=X_explain[sample_idx],
+                feature_names=self.feature_names
+            ),
+            show=False
+        )
+        plt.tight_layout()
+        plt.savefig(save_path, dpi=300, bbox_inches='tight')
+        print(f"Waterfall plot saved to {save_path}")
+        plt.close()
+    
+    def plot_force(self, explainer, shap_values, X_explain, sample_idx=0,
+                   save_path='./output/shap_force.html'):
+        """Generate force plot for a single prediction"""
+        if isinstance(X_explain, torch.Tensor):
+            X_explain = X_explain.cpu().numpy()
+        if len(X_explain.shape) == 3:
+            X_explain = X_explain.squeeze(1)
+        
+        force_plot = shap.force_plot(
+            explainer.expected_value,
+            shap_values[sample_idx],
+            X_explain[sample_idx],
+            feature_names=self.feature_names
+        )
+        shap.save_html(save_path, force_plot)
+        print(f"Force plot saved to {save_path}")
+    
+    def get_feature_importance_ranking(self, shap_values, aggregate_neighbors=True):
+        """
+        Get feature importance ranking based on mean absolute SHAP values
+        
+        Args:
+            shap_values: SHAP values (can be flat or reshaped)
+            aggregate_neighbors: If True, average across neighbors
+        
+        Returns:
+            DataFrame with features ranked by importance
+        """
+        if len(shap_values.shape) == 3 and aggregate_neighbors:
+            # Average across neighbors first
+            shap_values_agg = shap_values.mean(axis=1)  # (samples, F)
+            mean_abs_shap = np.abs(shap_values_agg).mean(axis=0)
+            feature_names = self.feature_names
+        elif len(shap_values.shape) == 3:
+            # Flatten and compute for each neighbor separately
+            shap_values_flat = shap_values.reshape(shap_values.shape[0], -1)
+            mean_abs_shap = np.abs(shap_values_flat).mean(axis=0)
+            feature_names = [f"{feat}_N{k}" for k in range(self.K) for feat in self.feature_names]
+        else:
+            mean_abs_shap = np.abs(shap_values).mean(axis=0)
+            feature_names = [f"{feat}_N{k}" for k in range(self.K) for feat in self.feature_names]
+        
+        importance_df = pd.DataFrame({
+            'Feature': feature_names,
+            'Mean_Abs_SHAP': mean_abs_shap
+        })
+        importance_df = importance_df.sort_values('Mean_Abs_SHAP', ascending=False)
+        importance_df['Rank'] = range(1, len(importance_df) + 1)
+        
+        return importance_df
+    
+    def analyze_feature_groups(self, shap_values):
+        """
+        Analyze SHAP values by feature groups (rainfall vs non-rainfall)
+        """
+        rainfall_features = self.model.rainfall_features
+        non_rainfall_features = self.model.non_rainfall_features
+        
+        rainfall_indices = [i for i, f in enumerate(self.feature_names) 
+                          if f in rainfall_features]
+        non_rainfall_indices = [i for i, f in enumerate(self.feature_names) 
+                               if f in non_rainfall_features]
+        
+        rainfall_importance = np.abs(shap_values[:, rainfall_indices]).mean()
+        non_rainfall_importance = np.abs(shap_values[:, non_rainfall_indices]).mean()
+        
+        print("\n=== Feature Group Analysis ===")
+        print(f"Rainfall features importance: {rainfall_importance:.4f}")
+        print(f"Non-rainfall features importance: {non_rainfall_importance:.4f}")
+        
+        return {
+            'rainfall': rainfall_importance,
+            'non_rainfall': non_rainfall_importance
+        }
+    
 import data
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
-output_folder = './output/'
-
-def explain_mamba_model(model, X_train, X_test, feature_names, background_size=100):
-    """
-    Use SHAP to explain Mamba model predictions
-    """
-    # Ensure model is in eval mode
-    model.eval()
-    
-    # Create a wrapper function for SHAP
-    def model_predict(x):
-        if isinstance(x, pd.DataFrame):
-            x = x.values
-        if isinstance(x, np.ndarray):
-            x = torch.FloatTensor(x).to(device)
-        
-        with torch.no_grad():
-            pred, _ = model(x)
-            return pred.cpu().numpy()
-    
-    # Select background data (subset of training data)
-    if background_size > len(X_train):
-        background_size = len(X_train)
-    
-    background_data = X_train[np.random.choice(len(X_train), background_size, replace=False)]
-    
-    print(f"Creating SHAP explainer with {background_size} background samples...")
-    
-    # Create SHAP explainer
-    explainer = shap.Explainer(model_predict, background_data, feature_names=feature_names)
-    
-    # Calculate SHAP values for test set
-    print("Calculating SHAP values...")
-    shap_values = explainer(X_test)
-    
-    return shap_values, explainer
-
-def plot_shap_summary(shap_values, feature_names, max_display=15):
-    """Plot SHAP summary plot"""
-    plt.figure(figsize=(10, 8))
-    shap.summary_plot(shap_values, feature_names=feature_names, max_display=max_display, show=False)
-    plt.tight_layout()
-    plt.savefig(output_folder + 'shap_summary.png')
-
-def plot_shap_bar(shap_values, feature_names, max_display=15):
-    """Plot SHAP bar plot (mean absolute SHAP values)"""
-    plt.figure(figsize=(10, 8))
-    shap.plots.bar(shap_values, max_display=max_display, show=False)
-    plt.tight_layout()
-    plt.savefig(output_folder + 'shap_bar.png')
-
-def plot_feature_importance(shap_values, feature_names, top_k=10):
-    """Custom feature importance plot"""
-    # Calculate mean absolute SHAP values
-    mean_abs_shap = np.abs(shap_values.values).mean(axis=0)
-    
-    # Create DataFrame for easier plotting
-    importance_df = pd.DataFrame({
-        'feature': feature_names,
-        'importance': mean_abs_shap
-    }).sort_values('importance', ascending=True)
-    
-    # Plot
-    plt.figure(figsize=(10, 8))
-    plt.barh(importance_df['feature'].tail(top_k), importance_df['importance'].tail(top_k))
-    plt.xlabel('Mean |SHAP value|')
-    plt.title(f'Top {top_k} Feature Importance (SHAP)')
-    plt.tight_layout()
-    plt.savefig(output_folder + 'shap_feature_importance.png')
-    
-    return importance_df
-
-def analyze_individual_predictions(shap_values, X_test, feature_names, 
-                                 sample_indices=None, n_samples=3):
-    """Analyze individual predictions"""
-    if sample_indices is None:
-        sample_indices = np.random.choice(len(X_test), n_samples, replace=False)
-    
-    for i, idx in enumerate(sample_indices):
-        print(f"\n{'='*50}")
-        print(f"Sample {i+1} (Index {idx})")
-        print(f"{'='*50}")
-        
-        # Force plot
-        plt.figure(figsize=(10, 6))
-        shap.plots.waterfall(shap_values[idx], max_display=10, show=False)
-        plt.title(f"SHAP Explanation for Sample {idx}")
-        plt.tight_layout()
-        plt.savefig(output_folder + 'shap_individual_predictions.png')
-        
-        # Print feature values
-        print("Feature values for this sample:")
-        for j, feature in enumerate(feature_names):
-            print(f"  {feature}: {X_test[idx, j]:.4f}")
-
-def analyze_feature_dependencies(shap_values, X_test, feature_names, target_features=None):
-    """Analyze dependencies between features"""
-    if target_features is None:
-        # Use top 5 most important features
-        mean_abs_shap = np.abs(shap_values.values).mean(axis=0)
-        top_indices = np.argsort(mean_abs_shap)[-5:]
-        target_features = [feature_names[i] for i in top_indices]
-    
-    for feature in target_features:
-        if feature in feature_names:
-            feature_idx = feature_names.index(feature)
-            plt.figure(figsize=(10, 6))
-            shap.dependence_plot(
-                feature_idx, 
-                shap_values.values, 
-                X_test, 
-                feature_names=feature_names,
-                show=False
-            )
-            plt.title(f"SHAP Dependence Plot for {feature}")
-            plt.tight_layout()
-            plt.savefig(output_folder + 'shap_feature_dependencies.png')
-
-def compare_pathway_importance(model, X_test, feature_names):
-    """
-    Compare importance of Mamba pathway vs Logistic pathway
-    """
-    model.eval()
-    
-    # Get pathway contributions
-    mamba_contributions = []
-    logistic_contributions = []
-    
-    with torch.no_grad():
-        for i in range(len(X_test)):
-            x = torch.FloatTensor(X_test[i:i+1]).to(device)
-            
-            if hasattr(model, 'split_features'):
-                non_rainfall_x, rainfall_x = model.split_features(x)
-                
-                mamba_out = model._mamba_forward(non_rainfall_x)
-                logistic_out = model.logistic_layer(rainfall_x)
-                combined = torch.cat([mamba_out, logistic_out], dim=1)
-                final_pred = model.combined_head(combined)
-                
-                mamba_contributions.append(mamba_out.mean().item())
-                logistic_contributions.append(logistic_out.mean().item())
-    
-    # Plot pathway contributions
-    plt.figure(figsize=(10, 6))
-    samples = range(len(mamba_contributions))
-    plt.plot(samples, mamba_contributions, label='Mamba Pathway', alpha=0.7)
-    plt.plot(samples, logistic_contributions, label='Logistic Pathway', alpha=0.7)
-    plt.xlabel('Sample Index')
-    plt.ylabel('Pathway Contribution')
-    plt.title('Mamba vs Logistic Pathway Contributions')
-    plt.legend()
-    plt.savefig(output_folder + 'shap_pathway_importance.png')
-    
-    print(f"Average Mamba pathway contribution: {np.mean(mamba_contributions):.4f}")
-    print(f"Average Logistic pathway contribution: {np.mean(logistic_contributions):.4f}")
-    print(f"Mamba/Logistic ratio: {np.mean(mamba_contributions)/np.mean(logistic_contributions):.2f}")
-
-# Integrated analysis function
-def comprehensive_shap_analysis(model, X_train, X_test, y_test, feature_names):
-    """
-    Comprehensive SHAP analysis for the hybrid Mamba model
-    """
-    print("Starting comprehensive SHAP analysis...")
-    
-    # 1. Calculate SHAP values
-    shap_values, explainer = explain_mamba_model(model, X_train, X_test, feature_names, background_size=100)
-    
-    # 2. Summary plots
-    print("\n1. Feature Importance Summary")
-    plot_shap_summary(shap_values, feature_names)
-    plot_shap_bar(shap_values, feature_names)
-    
-    # 3. Quantitative feature importance
-    print("\n2. Quantitative Feature Importance")
-    importance_df = plot_feature_importance(shap_values, feature_names)
-    print("\nTop 10 Most Important Features:")
-    for i, row in importance_df.tail(10).iterrows():
-        print(f"  {row['feature']}: {row['importance']:.4f}")
-    
-    # 4. Individual prediction explanations
-    print("\n3. Individual Prediction Analysis")
-    analyze_individual_predictions(shap_values, X_test, feature_names)
-    
-    # 5. Feature dependencies
-    print("\n4. Feature Dependency Analysis")
-    analyze_feature_dependencies(shap_values, X_test, feature_names)
-    
-    # 6. Pathway analysis (for hybrid model)
-    if hasattr(model, 'split_features'):
-        print("\n5. Pathway Contribution Analysis")
-        compare_pathway_importance(model, X_test, feature_names)
-    
-    # 7. Cluster analysis
-    print("\n6. SHAP Value Clustering")
-    plt.figure(figsize=(10, 8))
-    shap.plots.heatmap(shap_values, max_display=12, show=False)
-    plt.tight_layout()
-    plt.savefig(output_folder + 'shap_comp_analysis.png')
-    
-    return shap_values, importance_df
-
 def main():
-    df_data = PWFDF_Data()
+    """
+    Main function to run SHAP analysis
+    """
+    # Setup
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    output_dir = Path('./output/shap_analysis')
+    output_dir.mkdir(parents=True, exist_ok=True)
     
+    # Load your data (you'll need to adapt this to your data loading code)
+    print("Loading data...")
+    df_data = data.PWFDF_Data()
     X_train, y_train, scaler = df_data.prepare_data_usgs(data.all_features, split='Training')
     X_test, y_test, _ = df_data.prepare_data_usgs(data.all_features, split='Test', scaler=scaler)
     
-    input_dim = X_train.shape[1]
-
+    # For this example, assuming you have loaded data:
+    X_train = torch.Tensor(X_train).to(device)
+    X_test = torch.Tensor(X_test).to(device)
+    
+    # Load trained model
+    print("Loading model...")
+    input_dim = X_train.shape[-1]
     n_neg = (y_train == 0).sum()
     n_pos = (y_train == 1).sum()
     pos_weight = n_neg / n_pos
+    
+    from models.mamba import ClusteredMambaModel_Flood
 
-    from models.log_reg import Staley2017Model
-    from models.mamba import MambaClassifier, HybridMambaLogisticModel, ClusteredMambaModel_Flood
-    from models.mp_mamba import MultiPathwayHybridModel_og
-    from models.randomforest import RandomForestModel
-    from models.TSMixer import TSMixerClassifier
+    model = ClusteredMambaModel_Flood(pos_weight=pos_weight, input_dim=input_dim, n_layers=1).to(device)
+    
+    # Load best model weights
+    model.load_state_dict(torch.load('./output/best_models/ClusteredMamba_Flood_best.pth'))
+    model.eval()
+    
+    # Initialize SHAP analyzer
+    #feature_names = data.all_features  # Your feature names list
+    feature_names = model.feature_names
+    analyzer = SHAPAnalyzer(model, feature_names, device)
+    
+    # Use a sample of training data as background (for efficiency)
+    background_size = min(100, len(X_train))
+    X_background = X_train[:background_size]
+    
+    # Use test set for explanation (or a sample if too large)
+    explain_size = min(200, len(X_test))
+    X_explain = X_test[:explain_size]
+    
+    # Calculate SHAP values
+    explainer, shap_values_flat, shap_values_reshaped = analyzer.calculate_shap_values(X_background, X_explain, max_evals=100)
+    
+    # Generate visualizations (using reshaped values with neighbor aggregation)
+    print("\nGenerating visualizations...")
+    analyzer.plot_summary(shap_values_reshaped, X_explain, save_path=output_dir / 'shap_summary_aggregated.png', aggregate_neighbors=True)
+    analyzer.plot_bar(shap_values_reshaped, save_path=output_dir / 'shap_bar_aggregated.png', aggregate_neighbors=True)
+    
+    # Also create plots without aggregation to see per-neighbor importance
+    analyzer.plot_summary(shap_values_reshaped, X_explain, save_path=output_dir / 'shap_summary_per_neighbor.png', aggregate_neighbors=False)
+    
+    # Get feature importance ranking (aggregated across neighbors)
+    importance_df = analyzer.get_feature_importance_ranking(shap_values_reshaped, aggregate_neighbors=True)
+    print("\n=== Feature Importance Ranking (Aggregated) ===")
+    print(importance_df.to_string(index=False))
+    importance_df.to_csv(output_dir / 'feature_importance_aggregated.csv', index=False)
+    
+    # Also get per-neighbor importance
+    importance_df_detailed = analyzer.get_feature_importance_ranking(shap_values_reshaped, aggregate_neighbors=False)
+    importance_df_detailed.to_csv(output_dir / 'feature_importance_per_neighbor.csv', index=False)
+    
+    # Analyze feature groups
+    # group_importance = analyzer.analyze_feature_groups(shap_values)
+    
+    print("\nSHAP analysis complete!")
 
-    #model = MambaClassifier(input_dim=X_train.shape[1]).to(device)
-    #model = HybridMambaLogisticModel(numerical_features, input_dim=input_dim, n_layers=1).to(device)
-    #model = train_with_normalization(model, X_train, y_train, X_test, y_test)
-    #model = RandomForestModel(features, random_state=None)
-    #model = TSMixerClassifier(input_dim=input_dim).to(device)
-    #model = MultiPathwayHybridModel_og(features=features, pos_weight=pos_weight, d_model=128, n_layers=6).to(device)
-    model = ClusteredMambaModel_Flood(pos_weight, input_dim=input_dim, n_layers=1)
 
-    model_load_path = f"/home/quinn/projects/pwfdf/output/best_models/ClusteredMamba_Flood_best.pth"
-    model.load_state_dict(torch.load(model_load_path))
-    
-    # SHAP analysis
-    print("\n" + "="*60)
-    print("SHAP FEATURE IMPORTANCE ANALYSIS")
-    print("="*60)
-    
-    shap_values, importance_df = comprehensive_shap_analysis(model, X_train, X_test, y_test, data.all_features)
-    
-    # Additional insights
-    print("\n" + "="*60)
-    print("KEY INSIGHTS")
-    print("="*60)
-    
-    top_features = importance_df.tail(5)['feature'].tolist()
-    print(f"Top 5 most important features: {', '.join(top_features)}")
-    
-    # Analyze rainfall vs non-rainfall features
-    rainfall_features = ['StormAccum_mm', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm']
-    rainfall_importance = importance_df[importance_df['feature'].isin(rainfall_features)]['importance'].sum()
-    non_rainfall_importance = importance_df[~importance_df['feature'].isin(rainfall_features)]['importance'].sum()
-    
-    print(f"Rainfall features total importance: {rainfall_importance:.4f} ({rainfall_importance/(rainfall_importance+non_rainfall_importance)*100:.1f}%)")
-    print(f"Non-rainfall features total importance: {non_rainfall_importance:.4f} ({non_rainfall_importance/(rainfall_importance+non_rainfall_importance)*100:.1f}%)")
-    
 if __name__ == "__main__":
     main()

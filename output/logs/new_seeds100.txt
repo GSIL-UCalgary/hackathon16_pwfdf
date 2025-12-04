@@ -8287,3 +8287,954 @@ Model: ClusteredMamba_Flood
   Best TS:    0.3793
   Best Worst: 0.1524
   Metrics:    {'name': 'ClusteredMamba_Flood', 'ts': np.float64(0.3793103448275862), 'jaccard': 0.3793103448275862, 'accuracy': 0.6635514018691588, 'precision': 0.4292682926829268, 'recall': 0.7652173913043478, 'f1': 0.55, 'threshold': 0.5}
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8318 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3160
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8341 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.2565
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8091 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.2432
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8436 || Test: RandomForest: 0.3660 | ClusteredMamba_Flood: 0.3649
+Seed=4 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8676 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3575
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8203 || Test: RandomForest: 0.3867 | ClusteredMamba_Flood: 0.2877
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8469 || Test: RandomForest: 0.3805 | ClusteredMamba_Flood: 0.3519
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8241 || Test: RandomForest: 0.3778 | ClusteredMamba_Flood: 0.3664
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8381 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3418
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8194 || Test: RandomForest: 0.3825 | ClusteredMamba_Flood: 0.3131
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8084 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.1702
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7739 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3221
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8510 || Test: RandomForest: 0.4076 | ClusteredMamba_Flood: 0.2424
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8128 || Test: RandomForest: 0.3784 | ClusteredMamba_Flood: 0.3600
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7867 || Test: RandomForest: 0.4065 | ClusteredMamba_Flood: 0.3447
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8203 || Test: RandomForest: 0.4123 | ClusteredMamba_Flood: 0.2857
+Seed=16 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8483 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.2474
+Seed=17 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8194 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.3316
+Seed=18 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8194 || Test: RandomForest: 0.3853 | ClusteredMamba_Flood: 0.3033
+Seed=19 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8326 || Test: RandomForest: 0.3904 | ClusteredMamba_Flood: 0.2529
+Seed=20 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8599 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3911
+Seed=21 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8585 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.2903
+Seed=22 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7964 || Test: RandomForest: 0.3733 | ClusteredMamba_Flood: 0.2287
+Seed=23 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8203 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3347
+Seed=24 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8279 || Test: RandomForest: 0.3955 | ClusteredMamba_Flood: 0.2740
+Seed=25 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8241 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.1957
+Seed=26 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8054 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.2541
+Seed=27 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8419 || Test: RandomForest: 0.3717 | ClusteredMamba_Flood: 0.2971
+Seed=28 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.8510 || Test: RandomForest: 0.3929 | ClusteredMamba_Flood: 0.2112
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9945 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3763
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9945 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3180
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9731 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.2071
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9679 || Test: RandomForest: 0.3660 | ClusteredMamba_Flood: 0.2143
+Seed=4 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3220
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9784 || Test: RandomForest: 0.3867 | ClusteredMamba_Flood: 0.2312
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.3805 | ClusteredMamba_Flood: 0.2471
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.3778 | ClusteredMamba_Flood: 0.3180
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.2746
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9945 || Test: RandomForest: 0.3825 | ClusteredMamba_Flood: 0.1946
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9891 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3247
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.2103
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9890 || Test: RandomForest: 0.4076 | ClusteredMamba_Flood: 0.1871
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.3784 | ClusteredMamba_Flood: 0.2300
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.4065 | ClusteredMamba_Flood: 0.3649
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Test: RandomForest: 0.4123 | ClusteredMamba_Flood: 0.3020
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9577 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3932
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9945 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.6667 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3632
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6400 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3333
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.9891 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6400 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.2303
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.6957 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.1633
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 1.0000 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6800 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.1667
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5323 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3713
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6302 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3673
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5045 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3718
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5739 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3660 | ClusteredMamba_Flood: 0.3784
+Seed=4 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5608 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3826
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5015 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3867 | ClusteredMamba_Flood: 0.3729
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5978 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3805 | ClusteredMamba_Flood: 0.4167
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6603 || Val: RandomForest: 0.6957 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3778 | ClusteredMamba_Flood: 0.3285
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5882 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3713
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4696 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4634 || Test: RandomForest: 0.3825 | ClusteredMamba_Flood: 0.3636
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6065 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3506
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6875 || Val: RandomForest: 0.6957 | ClusteredMamba_Flood: 0.7200 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3080
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4761 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.4076 | ClusteredMamba_Flood: 0.3370
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5479 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3784 | ClusteredMamba_Flood: 0.3713
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4869 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4750 || Test: RandomForest: 0.4065 | ClusteredMamba_Flood: 0.3625
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4842 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.4634 || Test: RandomForest: 0.4123 | ClusteredMamba_Flood: 0.3675
+Seed=16 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5545 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.3729
+Seed=17 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5764 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.3663
+Seed=18 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5155 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3853 | ClusteredMamba_Flood: 0.3750
+Seed=19 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5600 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.3904 | ClusteredMamba_Flood: 0.3745
+Seed=20 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6022 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3391
+Seed=21 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4841 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.3590
+Seed=22 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5704 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3733 | ClusteredMamba_Flood: 0.3727
+Seed=23 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5600 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5294 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3777
+Seed=24 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5268 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3955 | ClusteredMamba_Flood: 0.3696
+Seed=25 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5604 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.3886
+Seed=26 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7068 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6667 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.2973
+Seed=27 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5623 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3717 | ClusteredMamba_Flood: 0.3877
+Seed=28 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6705 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6429 || Test: RandomForest: 0.3929 | ClusteredMamba_Flood: 0.3398
+Seed=29 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5655 || Val: RandomForest: 0.6957 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3935 | ClusteredMamba_Flood: 0.3566
+Seed=30 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5258 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3879 | ClusteredMamba_Flood: 0.3805
+Seed=31 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4734 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.3682
+Seed=32 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5512 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5278 || Test: RandomForest: 0.3955 | ClusteredMamba_Flood: 0.3824
+Seed=33 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5719 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3772 | ClusteredMamba_Flood: 0.3810
+Seed=34 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5773 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5294 || Test: RandomForest: 0.4009 | ClusteredMamba_Flood: 0.3896
+Seed=35 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5387 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3729
+Seed=36 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5402 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3648
+Seed=37 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5338 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3860
+Seed=38 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6590 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.6207 || Test: RandomForest: 0.3680 | ClusteredMamba_Flood: 0.3214
+Seed=39 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5880 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5312 || Test: RandomForest: 0.3766 | ClusteredMamba_Flood: 0.3750
+Seed=40 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5585 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3790 | ClusteredMamba_Flood: 0.3919
+Seed=41 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5472 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3911 | ClusteredMamba_Flood: 0.3826
+Seed=42 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6115 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3915 | ClusteredMamba_Flood: 0.3644
+Seed=43 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5497 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3925 | ClusteredMamba_Flood: 0.3347
+Seed=44 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5108 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3822 | ClusteredMamba_Flood: 0.3644
+Seed=45 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5773 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3739 | ClusteredMamba_Flood: 0.3739
+Seed=46 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5402 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5135 || Test: RandomForest: 0.3871 | ClusteredMamba_Flood: 0.3697
+Seed=47 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4721 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.4047 | ClusteredMamba_Flood: 0.3729
+Seed=48 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5646 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3675 | ClusteredMamba_Flood: 0.3730
+Seed=49 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5290 || Val: RandomForest: 0.6800 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3772 | ClusteredMamba_Flood: 0.3818
+Seed=50 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5638 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5758 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3729
+Seed=51 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5266 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3856
+Seed=52 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5458 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3474
+Seed=53 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5929 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3927 | ClusteredMamba_Flood: 0.3559
+Seed=54 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4647 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.4634 || Test: RandomForest: 0.3816 | ClusteredMamba_Flood: 0.3446
+Seed=55 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4985 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3972 | ClusteredMamba_Flood: 0.3644
+Seed=56 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5773 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5938 || Test: RandomForest: 0.4009 | ClusteredMamba_Flood: 0.3729
+Seed=57 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7342 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.7083 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.3035
+Seed=58 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5876 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3761 | ClusteredMamba_Flood: 0.3939
+Seed=59 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5845 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5312 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3830
+Seed=60 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5479 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3801 | ClusteredMamba_Flood: 0.3787
+Seed=61 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5759 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3816 | ClusteredMamba_Flood: 0.3772
+Seed=62 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5350 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3991 | ClusteredMamba_Flood: 0.3713
+Seed=63 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7236 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.7917 || Test: RandomForest: 0.3911 | ClusteredMamba_Flood: 0.3482
+Seed=64 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5734 || Val: RandomForest: 0.7391 | ClusteredMamba_Flood: 0.5758 || Test: RandomForest: 0.3712 | ClusteredMamba_Flood: 0.3761
+Seed=65 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4869 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3867
+Seed=66 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5270 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.3644
+Seed=67 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5860 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3792
+Seed=68 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5739 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3846 | ClusteredMamba_Flood: 0.3833
+Seed=69 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5666 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3790 | ClusteredMamba_Flood: 0.4099
+Seed=70 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4611 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4419 || Test: RandomForest: 0.3728 | ClusteredMamba_Flood: 0.3297
+Seed=71 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5914 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.3803
+Seed=72 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5318 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5135 || Test: RandomForest: 0.3812 | ClusteredMamba_Flood: 0.3713
+Seed=73 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5661 || Val: RandomForest: 0.5417 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.3901 | ClusteredMamba_Flood: 0.3777
+Seed=74 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7793 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.7600 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.2814
+Seed=75 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5281 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5135 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3814
+Seed=76 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6168 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.2973
+Seed=77 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5971 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3945 | ClusteredMamba_Flood: 0.3475
+Seed=78 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6208 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3904 | ClusteredMamba_Flood: 0.3434
+Seed=79 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5670 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.3714
+Seed=80 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5868 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.6000 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3771
+Seed=81 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5060 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.3697
+Seed=82 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5700 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3778 | ClusteredMamba_Flood: 0.3392
+Seed=83 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4839 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4750 || Test: RandomForest: 0.3825 | ClusteredMamba_Flood: 0.3640
+Seed=84 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5123 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3799
+Seed=85 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6367 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3889 | ClusteredMamba_Flood: 0.2811
+Seed=86 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5422 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3826
+Seed=87 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5638 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3784 | ClusteredMamba_Flood: 0.3866
+Seed=88 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5922 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3660 | ClusteredMamba_Flood: 0.3745
+Seed=89 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6867 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5862 || Test: RandomForest: 0.4054 | ClusteredMamba_Flood: 0.3538
+Seed=90 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5545 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5938 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3728
+Seed=91 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4798 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.3583
+Seed=92 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5909 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.4037 | ClusteredMamba_Flood: 0.2965
+Seed=93 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5822 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5294 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3776
+Seed=94 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6073 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3673 | ClusteredMamba_Flood: 0.3069
+Seed=95 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4638 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4318 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3457
+Seed=96 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7447 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.7500 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.3180
+Seed=97 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5425 || Val: RandomForest: 0.6800 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3901 | ClusteredMamba_Flood: 0.3713
+Seed=98 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5895 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.3629
+Seed=99 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7598 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.7600 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.2785
+
+
+==================== AGGREGATE RESULTS =====================
+Summary over 100 seeds on the Test Set:
+
+------------------------------------------------------------
+Model: RandomForest
+  Threat Score (TS):  0.3881 ± 0.0102 (Best: 0.4123, Worst: 0.3660)
+  Accuracy (Acc):     0.6832 ± 0.0126
+  F1 Score (F1):      0.5591 ± 0.0106
+  Recall:             0.7474 ± 0.0149
+  Precision:          0.4468 ± 0.0125
+
+------------------------------------------------------------
+Model: ClusteredMamba_Flood
+  Threat Score (TS):  0.3621 ± 0.0272 (Best: 0.4167, Worst: 0.2785)
+  Accuracy (Acc):     0.6543 ± 0.0238
+  F1 Score (F1):      0.5310 ± 0.0302
+  Recall:             0.7310 ± 0.0719
+  Precision:          0.4186 ± 0.0214
+
+========================= BEST SEEDS =========================
+
+Model: RandomForest
+  Best Seed:  15
+  Best TS:    0.4123
+  Best Worst: 0.3660
+  Metrics:    {'name': 'RandomForest', 'ts': np.float64(0.41232227488151657), 'jaccard': 0.41232227488151657, 'accuracy': 0.7102803738317757, 'precision': 0.47540983606557374, 'recall': 0.7565217391304347, 'f1': 0.5838926174496645, 'threshold': 0.5}
+
+Model: ClusteredMamba_Flood
+  Best Seed:  6
+  Best TS:    0.4167
+  Best Worst: 0.2785
+  Metrics:    {'name': 'ClusteredMamba_Flood', 'ts': np.float64(0.4166666666666667), 'jaccard': 0.4166666666666667, 'accuracy': 0.705607476635514, 'precision': 0.4712041884816754, 'recall': 0.782608695652174, 'f1': 0.5882352941176471, 'threshold': 0.5}
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: MultiPathwayHybrid: 0.5837 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3541
+Seed=1 | Train: MultiPathwayHybrid: 0.4603 || Val: MultiPathwayHybrid: 0.4000 || Test: MultiPathwayHybrid: 0.3369
+Seed=2 | Train: MultiPathwayHybrid: 0.5077 || Val: MultiPathwayHybrid: 0.4828 || Test: MultiPathwayHybrid: 0.3482
+Seed=3 | Train: MultiPathwayHybrid: 0.5388 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3805
+Seed=4 | Train: MultiPathwayHybrid: 0.5276 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3555
+Seed=5 | Train: MultiPathwayHybrid: 0.5236 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3478
+Seed=6 | Train: MultiPathwayHybrid: 0.5069 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3739
+Seed=7 | Train: MultiPathwayHybrid: 0.5052 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3636
+Seed=8 | Train: MultiPathwayHybrid: 0.4929 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3729
+Seed=9 | Train: MultiPathwayHybrid: 0.5388 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3661
+Seed=10 | Train: MultiPathwayHybrid: 0.4853 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3755
+Seed=11 | Train: MultiPathwayHybrid: 0.5520 || Val: MultiPathwayHybrid: 0.5556 || Test: MultiPathwayHybrid: 0.3836
+Seed=12 | Train: MultiPathwayHybrid: 0.5116 || Val: MultiPathwayHybrid: 0.4375 || Test: MultiPathwayHybrid: 0.3745
+Seed=13 | Train: MultiPathwayHybrid: 0.5285 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3621
+Seed=14 | Train: MultiPathwayHybrid: 0.5156 || Val: MultiPathwayHybrid: 0.4828 || Test: MultiPathwayHybrid: 0.3673
+Seed=15 | Train: MultiPathwayHybrid: 0.4819 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3682
+Seed=16 | Train: MultiPathwayHybrid: 0.5033 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3684
+Seed=17 | Train: MultiPathwayHybrid: 0.5639 || Val: MultiPathwayHybrid: 0.4688 || Test: MultiPathwayHybrid: 0.3755
+Seed=18 | Train: MultiPathwayHybrid: 0.5430 || Val: MultiPathwayHybrid: 0.5357 || Test: MultiPathwayHybrid: 0.3439
+Seed=19 | Train: MultiPathwayHybrid: 0.5095 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3500
+Seed=20 | Train: MultiPathwayHybrid: 0.5195 || Val: MultiPathwayHybrid: 0.4828 || Test: MultiPathwayHybrid: 0.3785
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: MultiPathwayHybrid: 0.4801 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3722
+Seed=1 | Train: MultiPathwayHybrid: 0.4773 || Val: MultiPathwayHybrid: 0.4000 || Test: MultiPathwayHybrid: 0.3580
+Seed=2 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=3 | Train: MultiPathwayHybrid: 0.4641 || Val: MultiPathwayHybrid: 0.4324 || Test: MultiPathwayHybrid: 0.3739
+Seed=4 | Train: MultiPathwayHybrid: 0.5217 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3877
+Seed=5 | Train: MultiPathwayHybrid: 0.5135 || Val: MultiPathwayHybrid: 0.4688 || Test: MultiPathwayHybrid: 0.3555
+Seed=6 | Train: MultiPathwayHybrid: 0.4758 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3597
+Seed=7 | Train: MultiPathwayHybrid: 0.5116 || Val: MultiPathwayHybrid: 0.4375 || Test: MultiPathwayHybrid: 0.3777
+Seed=8 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3417
+Seed=9 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3660
+Seed=10 | Train: MultiPathwayHybrid: 0.5280 || Val: MultiPathwayHybrid: 0.4828 || Test: MultiPathwayHybrid: 0.3583
+Seed=11 | Train: MultiPathwayHybrid: 0.5432 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3739
+Seed=12 | Train: MultiPathwayHybrid: 0.4758 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3509
+Seed=13 | Train: MultiPathwayHybrid: 0.5432 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3739
+Seed=14 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3655
+Seed=15 | Train: MultiPathwayHybrid: 0.4786 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3523
+Seed=16 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=17 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3793
+Seed=18 | Train: MultiPathwayHybrid: 0.4941 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3498
+Seed=19 | Train: MultiPathwayHybrid: 0.5033 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3655
+Seed=20 | Train: MultiPathwayHybrid: 0.4572 || Val: MultiPathwayHybrid: 0.4324 || Test: MultiPathwayHybrid: 0.3708
+Seed=21 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3591
+Seed=22 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3793
+Seed=23 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3713
+Seed=24 | Train: MultiPathwayHybrid: 0.4785 || Val: MultiPathwayHybrid: 0.4103 || Test: MultiPathwayHybrid: 0.3492
+Seed=25 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3684
+Seed=26 | Train: MultiPathwayHybrid: 0.4785 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3441
+Seed=27 | Train: MultiPathwayHybrid: 0.4828 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=28 | Train: MultiPathwayHybrid: 0.4735 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3702
+Seed=29 | Train: MultiPathwayHybrid: 0.5217 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3611
+Seed=30 | Train: MultiPathwayHybrid: 0.4799 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=31 | Train: MultiPathwayHybrid: 0.5033 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3555
+Seed=32 | Train: MultiPathwayHybrid: 0.5236 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3640
+Seed=33 | Train: MultiPathwayHybrid: 0.4838 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3655
+Seed=34 | Train: MultiPathwayHybrid: 0.4647 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3667
+Seed=35 | Train: MultiPathwayHybrid: 0.4820 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3697
+Seed=36 | Train: MultiPathwayHybrid: 0.4618 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3651
+Seed=37 | Train: MultiPathwayHybrid: 0.4869 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3678
+Seed=38 | Train: MultiPathwayHybrid: 0.5280 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3822
+Seed=39 | Train: MultiPathwayHybrid: 0.4985 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3745
+Seed=40 | Train: MultiPathwayHybrid: 0.5000 || Val: MultiPathwayHybrid: 0.4688 || Test: MultiPathwayHybrid: 0.3543
+Seed=41 | Train: MultiPathwayHybrid: 0.4758 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3485
+Seed=42 | Train: MultiPathwayHybrid: 0.5432 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3699
+Seed=43 | Train: MultiPathwayHybrid: 0.4870 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3696
+Seed=44 | Train: MultiPathwayHybrid: 0.5432 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3810
+Seed=45 | Train: MultiPathwayHybrid: 0.5217 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3640
+Seed=46 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3597
+Seed=47 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3493
+Seed=48 | Train: MultiPathwayHybrid: 0.4580 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3846
+Seed=49 | Train: MultiPathwayHybrid: 0.4890 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3729
+Seed=50 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3755
+Seed=51 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=52 | Train: MultiPathwayHybrid: 0.5176 || Val: MultiPathwayHybrid: 0.4667 || Test: MultiPathwayHybrid: 0.3822
+Seed=53 | Train: MultiPathwayHybrid: 0.5236 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3625
+Seed=54 | Train: MultiPathwayHybrid: 0.4580 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3625
+Seed=55 | Train: MultiPathwayHybrid: 0.4618 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3729
+Seed=56 | Train: MultiPathwayHybrid: 0.4613 || Val: MultiPathwayHybrid: 0.4706 || Test: MultiPathwayHybrid: 0.3617
+Seed=57 | Train: MultiPathwayHybrid: 0.4459 || Val: MultiPathwayHybrid: 0.4222 || Test: MultiPathwayHybrid: 0.3538
+Seed=58 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3816
+Seed=59 | Train: MultiPathwayHybrid: 0.4965 || Val: MultiPathwayHybrid: 0.4839 || Test: MultiPathwayHybrid: 0.3891
+Seed=60 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3648
+Seed=61 | Train: MultiPathwayHybrid: 0.5236 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3655
+Seed=62 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3669
+Seed=63 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=64 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3730
+Seed=65 | Train: MultiPathwayHybrid: 0.4661 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3675
+Seed=66 | Train: MultiPathwayHybrid: 0.4580 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3655
+Seed=67 | Train: MultiPathwayHybrid: 0.4853 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3508
+Seed=68 | Train: MultiPathwayHybrid: 0.4718 || Val: MultiPathwayHybrid: 0.4000 || Test: MultiPathwayHybrid: 0.3446
+Seed=69 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=70 | Train: MultiPathwayHybrid: 0.4912 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=71 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3481
+Seed=72 | Train: MultiPathwayHybrid: 0.5350 || Val: MultiPathwayHybrid: 0.4688 || Test: MultiPathwayHybrid: 0.3243
+Seed=73 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3686
+Seed=74 | Train: MultiPathwayHybrid: 0.4577 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3621
+Seed=75 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3682
+Seed=76 | Train: MultiPathwayHybrid: 0.4912 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3702
+Seed=77 | Train: MultiPathwayHybrid: 0.4962 || Val: MultiPathwayHybrid: 0.4839 || Test: MultiPathwayHybrid: 0.3611
+Seed=78 | Train: MultiPathwayHybrid: 0.4852 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3793
+Seed=79 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=80 | Train: MultiPathwayHybrid: 0.4824 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3766
+Seed=81 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3745
+Seed=82 | Train: MultiPathwayHybrid: 0.4884 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3105
+Seed=83 | Train: MultiPathwayHybrid: 0.5366 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3707
+Seed=84 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3411
+Seed=85 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3651
+Seed=86 | Train: MultiPathwayHybrid: 0.4647 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=87 | Train: MultiPathwayHybrid: 0.4814 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3566
+Seed=88 | Train: MultiPathwayHybrid: 0.5074 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3640
+Seed=89 | Train: MultiPathwayHybrid: 0.4517 || Val: MultiPathwayHybrid: 0.4222 || Test: MultiPathwayHybrid: 0.3579
+Seed=90 | Train: MultiPathwayHybrid: 0.5375 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3689
+Seed=91 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3621
+Seed=92 | Train: MultiPathwayHybrid: 0.4683 || Val: MultiPathwayHybrid: 0.4324 || Test: MultiPathwayHybrid: 0.3755
+Seed=93 | Train: MultiPathwayHybrid: 0.5172 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3201
+Seed=94 | Train: MultiPathwayHybrid: 0.4970 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3607
+Seed=95 | Train: MultiPathwayHybrid: 0.5175 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3597
+Seed=96 | Train: MultiPathwayHybrid: 0.4949 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3839
+Seed=97 | Train: MultiPathwayHybrid: 0.5217 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3723
+Seed=98 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3669
+Seed=99 | Train: MultiPathwayHybrid: 0.5153 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3723
+
+
+==================== AGGREGATE RESULTS =====================
+Summary over 100 seeds on the Test Set:
+
+------------------------------------------------------------
+Model: MultiPathwayHybrid
+  Threat Score (TS):  0.3646 ± 0.0129 (Best: 0.3891, Worst: 0.3105)
+  Accuracy (Acc):     0.6379 ± 0.0259
+  F1 Score (F1):      0.5343 ± 0.0141
+  Recall:             0.7719 ± 0.0319
+  Precision:          0.4093 ± 0.0180
+
+========================= BEST SEEDS =========================
+
+Model: MultiPathwayHybrid
+  Best Seed:  59
+  Best TS:    0.3891
+  Best Worst: 0.3105
+  Metrics:    {'name': 'MultiPathwayHybrid', 'ts': np.float64(0.3891213389121339), 'jaccard': 0.3891213389121339, 'accuracy': 0.6588785046728972, 'precision': 0.42857142857142855, 'recall': 0.808695652173913, 'f1': 0.5602409638554217, 'threshold': 0.5}
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: MultiPathwayHybrid: 0.4801 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3722
+Seed=1 | Train: MultiPathwayHybrid: 0.4799 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3702
+Seed=2 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=3 | Train: MultiPathwayHybrid: 0.3230 || Val: MultiPathwayHybrid: 0.2800 || Test: MultiPathwayHybrid: 0.2589
+Seed=4 | Train: MultiPathwayHybrid: 0.5217 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3877
+Seed=5 | Train: MultiPathwayHybrid: 0.2749 || Val: MultiPathwayHybrid: 0.2800 || Test: MultiPathwayHybrid: 0.2526
+Seed=6 | Train: MultiPathwayHybrid: 0.4758 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3597
+Seed=7 | Train: MultiPathwayHybrid: 0.5116 || Val: MultiPathwayHybrid: 0.4375 || Test: MultiPathwayHybrid: 0.3777
+Seed=8 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3417
+Seed=9 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3660
+Seed=10 | Train: MultiPathwayHybrid: 0.5280 || Val: MultiPathwayHybrid: 0.4828 || Test: MultiPathwayHybrid: 0.3583
+Seed=11 | Train: MultiPathwayHybrid: 0.5432 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3739
+Seed=12 | Train: MultiPathwayHybrid: 0.4758 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3509
+Seed=13 | Train: MultiPathwayHybrid: 0.5432 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3739
+Seed=14 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3655
+Seed=15 | Train: MultiPathwayHybrid: 0.4786 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3523
+Seed=16 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3729
+Seed=17 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3793
+Seed=18 | Train: MultiPathwayHybrid: 0.4941 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3498
+Seed=19 | Train: MultiPathwayHybrid: 0.5033 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3655
+Seed=20 | Train: MultiPathwayHybrid: 0.4572 || Val: MultiPathwayHybrid: 0.4324 || Test: MultiPathwayHybrid: 0.3708
+Seed=21 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3591
+Seed=22 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3793
+Seed=23 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3713
+Seed=24 | Train: MultiPathwayHybrid: 0.4785 || Val: MultiPathwayHybrid: 0.4103 || Test: MultiPathwayHybrid: 0.3492
+Seed=25 | Train: MultiPathwayHybrid: 0.5257 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3684
+Seed=26 | Train: MultiPathwayHybrid: 0.4785 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3441
+Seed=27 | Train: MultiPathwayHybrid: 0.4828 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=28 | Train: MultiPathwayHybrid: 0.4735 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3702
+Seed=29 | Train: MultiPathwayHybrid: 0.5217 || Val: MultiPathwayHybrid: 0.5172 || Test: MultiPathwayHybrid: 0.3611
+Seed=30 | Train: MultiPathwayHybrid: 0.4799 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3636
+Seed=31 | Train: MultiPathwayHybrid: 0.5033 || Val: MultiPathwayHybrid: 0.4286 || Test: MultiPathwayHybrid: 0.3555
+Seed=32 | Train: MultiPathwayHybrid: 0.5236 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3640
+Seed=33 | Train: MultiPathwayHybrid: 0.4838 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3655
+Seed=34 | Train: MultiPathwayHybrid: 0.4647 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3667
+Seed=35 | Train: MultiPathwayHybrid: 0.4820 || Val: MultiPathwayHybrid: 0.4545 || Test: MultiPathwayHybrid: 0.3697
+Seed=36 | Train: MultiPathwayHybrid: 0.4618 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3651
+Seed=37 | Train: MultiPathwayHybrid: 0.4869 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3678
+Seed=38 | Train: MultiPathwayHybrid: 0.5280 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3822
+Seed=39 | Train: MultiPathwayHybrid: 0.4985 || Val: MultiPathwayHybrid: 0.3947 || Test: MultiPathwayHybrid: 0.3745
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3566
+Seed=1 | Train: MultiPathwayHybrid: 0.4580 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3734
+Seed=2 | Train: MultiPathwayHybrid: 0.4813 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3625
+Seed=3 | Train: MultiPathwayHybrid: 0.5131 || Val: MultiPathwayHybrid: 0.5357 || Test: MultiPathwayHybrid: 0.3705
+Seed=4 | Train: MultiPathwayHybrid: 0.4590 || Val: MultiPathwayHybrid: 0.4815 || Test: MultiPathwayHybrid: 0.3712
+Seed=5 | Train: MultiPathwayHybrid: 0.5059 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3119
+Seed=6 | Train: MultiPathwayHybrid: 0.4706 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.2803
+Seed=7 | Train: MultiPathwayHybrid: 0.4743 || Val: MultiPathwayHybrid: 0.4103 || Test: MultiPathwayHybrid: 0.3447
+Seed=8 | Train: MultiPathwayHybrid: 0.4841 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3651
+Seed=9 | Train: MultiPathwayHybrid: 0.2226 || Val: MultiPathwayHybrid: 0.2247 || Test: MultiPathwayHybrid: 0.2693
+Seed=10 | Train: MultiPathwayHybrid: 0.4533 || Val: MultiPathwayHybrid: 0.3846 || Test: MultiPathwayHybrid: 0.3383
+Seed=11 | Train: MultiPathwayHybrid: 0.4714 || Val: MultiPathwayHybrid: 0.4103 || Test: MultiPathwayHybrid: 0.3409
+Seed=12 | Train: MultiPathwayHybrid: 0.4758 || Val: MultiPathwayHybrid: 0.4211 || Test: MultiPathwayHybrid: 0.3509
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 751 samples
+Val set: 188 samples
+Test set: 428 samples
+Input_data: 751, 751, 188, 188
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: MultiPathwayHybrid: 0.4745 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3594
+Seed=1 | Train: MultiPathwayHybrid: 0.4708 || Val: MultiPathwayHybrid: 0.4783 || Test: MultiPathwayHybrid: 0.3822
+Seed=2 | Train: MultiPathwayHybrid: 0.4745 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3625
+Seed=3 | Train: MultiPathwayHybrid: 0.5125 || Val: MultiPathwayHybrid: 0.5179 || Test: MultiPathwayHybrid: 0.3750
+Seed=4 | Train: MultiPathwayHybrid: 0.4545 || Val: MultiPathwayHybrid: 0.4902 || Test: MultiPathwayHybrid: 0.3640
+Seed=5 | Train: MultiPathwayHybrid: 0.5066 || Val: MultiPathwayHybrid: 0.5185 || Test: MultiPathwayHybrid: 0.3105
+Seed=6 | Train: MultiPathwayHybrid: 0.4696 || Val: MultiPathwayHybrid: 0.4909 || Test: MultiPathwayHybrid: 0.2803
+Seed=7 | Train: MultiPathwayHybrid: 0.4682 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3502
+Seed=8 | Train: MultiPathwayHybrid: 0.4777 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3651
+Seed=9 | Train: MultiPathwayHybrid: 0.4851 || Val: MultiPathwayHybrid: 0.4844 || Test: MultiPathwayHybrid: 0.3843
+Seed=10 | Train: MultiPathwayHybrid: 0.4831 || Val: MultiPathwayHybrid: 0.4615 || Test: MultiPathwayHybrid: 0.3590
+Seed=11 | Train: MultiPathwayHybrid: 0.4606 || Val: MultiPathwayHybrid: 0.4722 || Test: MultiPathwayHybrid: 0.3475
+Seed=12 | Train: MultiPathwayHybrid: 0.4686 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3509
+Seed=13 | Train: MultiPathwayHybrid: 0.4867 || Val: MultiPathwayHybrid: 0.4714 || Test: MultiPathwayHybrid: 0.3125
+Seed=14 | Train: MultiPathwayHybrid: 0.4956 || Val: MultiPathwayHybrid: 0.5000 || Test: MultiPathwayHybrid: 0.3532
+Seed=15 | Train: MultiPathwayHybrid: 0.4747 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3523
+Seed=16 | Train: MultiPathwayHybrid: 0.4776 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3702
+Seed=17 | Train: MultiPathwayHybrid: 0.4627 || Val: MultiPathwayHybrid: 0.4722 || Test: MultiPathwayHybrid: 0.2946
+Seed=18 | Train: MultiPathwayHybrid: 0.4747 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3143
+Seed=19 | Train: MultiPathwayHybrid: 0.4715 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3154
+Seed=20 | Train: MultiPathwayHybrid: 0.4597 || Val: MultiPathwayHybrid: 0.4853 || Test: MultiPathwayHybrid: 0.3755
+Seed=21 | Train: MultiPathwayHybrid: 0.4715 || Val: MultiPathwayHybrid: 0.4789 || Test: MultiPathwayHybrid: 0.3509
+Seed=22 | Train: MultiPathwayHybrid: 0.4579 || Val: MultiPathwayHybrid: 0.4800 || Test: MultiPathwayHybrid: 0.3529
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 751 samples
+Val set: 188 samples
+Test set: 428 samples
+Input_data: 751, 751, 188, 188
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4966 || Val: RandomForest: 0.5556 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.3814 | ClusteredMamba_Flood: 0.3686
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4774 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4853 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3539
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4918 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.4093 | ClusteredMamba_Flood: 0.3656
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4706 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.4605 || Test: RandomForest: 0.4067 | ClusteredMamba_Flood: 0.3532
+Seed=4 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4860 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.4783 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.3671
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4884 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4583 || Test: RandomForest: 0.3991 | ClusteredMamba_Flood: 0.3723
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4852 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.4722 || Test: RandomForest: 0.3962 | ClusteredMamba_Flood: 0.3682
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4822 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.4072 | ClusteredMamba_Flood: 0.3729
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4526 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.4839 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.2953
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4870 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4667 || Test: RandomForest: 0.3929 | ClusteredMamba_Flood: 0.3655
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4820 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.4112 | ClusteredMamba_Flood: 0.3605
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4820 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3962 | ClusteredMamba_Flood: 0.3810
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4503 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4744 || Test: RandomForest: 0.3850 | ClusteredMamba_Flood: 0.3297
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4781 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.4744 || Test: RandomForest: 0.3756 | ClusteredMamba_Flood: 0.3559
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4708 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4865 || Test: RandomForest: 0.3963 | ClusteredMamba_Flood: 0.3783
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4781 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3547
+Seed=16 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4611 || Val: RandomForest: 0.6222 | ClusteredMamba_Flood: 0.4744 || Test: RandomForest: 0.3932 | ClusteredMamba_Flood: 0.3644
+Seed=17 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4829 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4684 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3480
+Seed=18 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4632 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4861 || Test: RandomForest: 0.3897 | ClusteredMamba_Flood: 0.3546
+Seed=19 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4868 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.3812 | ClusteredMamba_Flood: 0.3668
+Seed=20 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4932 || Val: RandomForest: 0.6136 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3652
+Seed=21 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4675 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4795 || Test: RandomForest: 0.3826 | ClusteredMamba_Flood: 0.3059
+Seed=22 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4667 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4805 || Test: RandomForest: 0.3963 | ClusteredMamba_Flood: 0.3755
+Seed=23 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4688 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4722 || Test: RandomForest: 0.3981 | ClusteredMamba_Flood: 0.3808
+Seed=24 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4790 || Val: RandomForest: 0.6087 | ClusteredMamba_Flood: 0.4853 || Test: RandomForest: 0.4067 | ClusteredMamba_Flood: 0.3529
+Seed=25 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4597 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4744 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3047
+Seed=26 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4886 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.3964 | ClusteredMamba_Flood: 0.3648
+Seed=27 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4900 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.3919 | ClusteredMamba_Flood: 0.3673
+Seed=28 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4759 || Val: RandomForest: 0.6087 | ClusteredMamba_Flood: 0.4667 || Test: RandomForest: 0.4027 | ClusteredMamba_Flood: 0.3548
+Seed=29 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4820 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4583 || Test: RandomForest: 0.3991 | ClusteredMamba_Flood: 0.3612
+Seed=30 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4836 || Val: RandomForest: 0.5957 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3962 | ClusteredMamba_Flood: 0.3761
+Seed=31 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4748 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4861 || Test: RandomForest: 0.3677 | ClusteredMamba_Flood: 0.3693
+Seed=32 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4760 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4783 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3605
+Seed=33 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4902 || Val: RandomForest: 0.6222 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.4065 | ClusteredMamba_Flood: 0.3697
+Seed=34 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4700 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3656
+Seed=35 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4895 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.2796
+Seed=36 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4702 || Val: RandomForest: 0.6087 | ClusteredMamba_Flood: 0.4658 || Test: RandomForest: 0.3925 | ClusteredMamba_Flood: 0.3569
+Seed=37 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4809 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4861 || Test: RandomForest: 0.3818 | ClusteredMamba_Flood: 0.3693
+Seed=38 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4902 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3812 | ClusteredMamba_Flood: 0.3766
+Seed=39 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4838 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4722 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3640
+Seed=40 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4837 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.3871 | ClusteredMamba_Flood: 0.3686
+Seed=41 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4805 || Val: RandomForest: 0.6087 | ClusteredMamba_Flood: 0.4722 || Test: RandomForest: 0.3899 | ClusteredMamba_Flood: 0.3836
+Seed=42 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4868 || Val: RandomForest: 0.6444 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.3839 | ClusteredMamba_Flood: 0.3583
+Seed=43 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4762 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3559
+Seed=44 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4853 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.3744 | ClusteredMamba_Flood: 0.3714
+Seed=45 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4620 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.4151 | ClusteredMamba_Flood: 0.3581
+Seed=46 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4844 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4853 || Test: RandomForest: 0.4048 | ClusteredMamba_Flood: 0.3682
+Seed=47 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4540 || Val: RandomForest: 0.5435 | ClusteredMamba_Flood: 0.4684 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.3771
+Seed=48 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4624 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.4762 || Test: RandomForest: 0.3990 | ClusteredMamba_Flood: 0.2528
+Seed=49 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4932 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4521 || Test: RandomForest: 0.4085 | ClusteredMamba_Flood: 0.3471
+Seed=50 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4777 || Val: RandomForest: 0.6047 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3812 | ClusteredMamba_Flood: 0.3548
+Seed=51 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4881 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.3864 | ClusteredMamba_Flood: 0.3478
+Seed=52 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4728 || Val: RandomForest: 0.6087 | ClusteredMamba_Flood: 0.4595 || Test: RandomForest: 0.4151 | ClusteredMamba_Flood: 0.3513
+Seed=53 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4771 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.3818 | ClusteredMamba_Flood: 0.3577
+Seed=54 | Train: RandomForest: 0.9938 | ClusteredMamba_Flood: 0.4828 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4805 || Test: RandomForest: 0.3896 | ClusteredMamba_Flood: 0.3621
+Seed=55 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4615 || Val: RandomForest: 0.6222 | ClusteredMamba_Flood: 0.4595 || Test: RandomForest: 0.3990 | ClusteredMamba_Flood: 0.3498
+Seed=56 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4834 || Val: RandomForest: 0.5957 | ClusteredMamba_Flood: 0.4697 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3116
+Seed=57 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4601 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.4730 || Test: RandomForest: 0.4027 | ClusteredMamba_Flood: 0.3603
+Seed=58 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4870 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.3963 | ClusteredMamba_Flood: 0.3686
+Seed=59 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4950 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.3915 | ClusteredMamba_Flood: 0.3656
+Seed=60 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4504 || Val: RandomForest: 0.6364 | ClusteredMamba_Flood: 0.4754 || Test: RandomForest: 0.4081 | ClusteredMamba_Flood: 0.3529
+Seed=61 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4983 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3651
+Seed=62 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4950 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.3897 | ClusteredMamba_Flood: 0.3484
+Seed=63 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4837 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.4009 | ClusteredMamba_Flood: 0.3667
+Seed=64 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4950 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4930 || Test: RandomForest: 0.3945 | ClusteredMamba_Flood: 0.3590
+Seed=65 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4854 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.3964 | ClusteredMamba_Flood: 0.3729
+Seed=66 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4804 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.4648 || Test: RandomForest: 0.4085 | ClusteredMamba_Flood: 0.3590
+Seed=67 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4739 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.4400 || Test: RandomForest: 0.3915 | ClusteredMamba_Flood: 0.3321
+Seed=68 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4851 || Val: RandomForest: 0.5319 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3713
+Seed=69 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4534 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4833 || Test: RandomForest: 0.3935 | ClusteredMamba_Flood: 0.3578
+Seed=70 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4599 || Val: RandomForest: 0.5435 | ClusteredMamba_Flood: 0.4684 || Test: RandomForest: 0.3945 | ClusteredMamba_Flood: 0.3370
+Seed=71 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4851 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.4714 || Test: RandomForest: 0.4018 | ClusteredMamba_Flood: 0.3660
+Seed=72 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4917 || Val: RandomForest: 0.6087 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.4009 | ClusteredMamba_Flood: 0.3750
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 751 samples
+Val set: 188 samples
+Test set: 428 samples
+Input_data: 751, 751, 188, 188
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5602 || Val: RandomForest: 0.5556 | ClusteredMamba_Flood: 0.5231 || Test: RandomForest: 0.3814 | ClusteredMamba_Flood: 0.3621
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6073 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.6034 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3664
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5644 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.5833 || Test: RandomForest: 0.4093 | ClusteredMamba_Flood: 0.3680
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7381 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.7500 || Test: RandomForest: 0.4067 | ClusteredMamba_Flood: 0.2164
+Seed=4 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6567 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.6226 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.3628
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6056 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.5965 || Test: RandomForest: 0.3991 | ClusteredMamba_Flood: 0.3347
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6481 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.5926 || Test: RandomForest: 0.3962 | ClusteredMamba_Flood: 0.3762
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6906 || Val: RandomForest: 0.5532 | ClusteredMamba_Flood: 0.7000 || Test: RandomForest: 0.4072 | ClusteredMamba_Flood: 0.3529
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5961 || Val: RandomForest: 0.5778 | ClusteredMamba_Flood: 0.5862 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3853
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5720 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.6034 || Test: RandomForest: 0.3929 | ClusteredMamba_Flood: 0.3957
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7371 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.7500 || Test: RandomForest: 0.4112 | ClusteredMamba_Flood: 0.2965
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4837 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.3962 | ClusteredMamba_Flood: 0.3713
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6878 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.7083 || Test: RandomForest: 0.3850 | ClusteredMamba_Flood: 0.3148
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7230 || Val: RandomForest: 0.5745 | ClusteredMamba_Flood: 0.6800 || Test: RandomForest: 0.3756 | ClusteredMamba_Flood: 0.3276
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6481 || Val: RandomForest: 0.5652 | ClusteredMamba_Flood: 0.6154 || Test: RandomForest: 0.3963 | ClusteredMamba_Flood: 0.3424
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4917 || Val: RandomForest: 0.5870 | ClusteredMamba_Flood: 0.4789 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3519
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 939 samples
+Val set: 43 samples
+Test set: 385 samples
+Input_data: 939, 939, 43, 43
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4802 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3750 | ClusteredMamba_Flood: 0.3632
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4755 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.3846 || Test: RandomForest: 0.3676 | ClusteredMamba_Flood: 0.3565
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4627 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3713 | ClusteredMamba_Flood: 0.3671
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4682 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3561 | ClusteredMamba_Flood: 0.3709
+Seed=4 | Train: RandomForest: 0.9950 | ClusteredMamba_Flood: 0.4934 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.3649
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4697 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3507 | ClusteredMamba_Flood: 0.3645
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4745 || Val: RandomForest: 0.4545 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3578 | ClusteredMamba_Flood: 0.3620
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4658 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3610 | ClusteredMamba_Flood: 0.3756
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4670 || Val: RandomForest: 0.4231 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3731 | ClusteredMamba_Flood: 0.3738
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4703 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3788 | ClusteredMamba_Flood: 0.3716
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4777 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.3632
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4827 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3654 | ClusteredMamba_Flood: 0.3649
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4700 || Val: RandomForest: 0.4500 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3842 | ClusteredMamba_Flood: 0.3468
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4814 || Val: RandomForest: 0.4231 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3769 | ClusteredMamba_Flood: 0.3649
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5027 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3671 | ClusteredMamba_Flood: 0.3684
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4706 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3777 | ClusteredMamba_Flood: 0.3628
+Seed=16 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4627 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3682 | ClusteredMamba_Flood: 0.3568
+Seed=17 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4718 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3756 | ClusteredMamba_Flood: 0.3667
+Seed=18 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4682 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3762 | ClusteredMamba_Flood: 0.3540
+Seed=19 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4731 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3750 | ClusteredMamba_Flood: 0.3587
+Seed=20 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4730 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3541 | ClusteredMamba_Flood: 0.3594
+Seed=21 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4858 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3632 | ClusteredMamba_Flood: 0.3598
+Seed=22 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4704 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3719 | ClusteredMamba_Flood: 0.3619
+Seed=23 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4718 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3756 | ClusteredMamba_Flood: 0.3632
+Seed=24 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4624 || Val: RandomForest: 0.5238 | ClusteredMamba_Flood: 0.3750 || Test: RandomForest: 0.3782 | ClusteredMamba_Flood: 0.3578
+Seed=25 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4505 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4074 || Test: RandomForest: 0.3838 | ClusteredMamba_Flood: 0.3500
+Seed=26 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4718 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3632 | ClusteredMamba_Flood: 0.3538
+Seed=27 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4856 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3676 | ClusteredMamba_Flood: 0.3649
+Seed=28 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4827 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3700 | ClusteredMamba_Flood: 0.3624
+Seed=29 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4737 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3810 | ClusteredMamba_Flood: 0.3602
+Seed=30 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4827 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3769 | ClusteredMamba_Flood: 0.3738
+Seed=31 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4709 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3695 | ClusteredMamba_Flood: 0.3645
+Seed=32 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4727 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3814 | ClusteredMamba_Flood: 0.3632
+Seed=33 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4855 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3725 | ClusteredMamba_Flood: 0.3662
+Seed=34 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4842 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3731 | ClusteredMamba_Flood: 0.3619
+Seed=35 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4694 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3679
+Seed=36 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4828 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3750 | ClusteredMamba_Flood: 0.3667
+Seed=37 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4692 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3713 | ClusteredMamba_Flood: 0.3667
+Seed=38 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4827 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3655 | ClusteredMamba_Flood: 0.3649
+Seed=39 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4650 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3776 | ClusteredMamba_Flood: 0.3667
+Seed=40 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4922 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3541 | ClusteredMamba_Flood: 0.3667
+Seed=41 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4816 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3731 | ClusteredMamba_Flood: 0.3667
+Seed=42 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5152 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3596 | ClusteredMamba_Flood: 0.3632
+Seed=43 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4987 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3627 | ClusteredMamba_Flood: 0.3738
+Seed=44 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4706 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3659 | ClusteredMamba_Flood: 0.3665
+Seed=45 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4933 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3575 | ClusteredMamba_Flood: 0.3619
+Seed=46 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4820 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3713 | ClusteredMamba_Flood: 0.3632
+Seed=47 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4859 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3719 | ClusteredMamba_Flood: 0.3581
+Seed=48 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4762 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.3750 || Test: RandomForest: 0.3737 | ClusteredMamba_Flood: 0.3645
+Seed=49 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4868 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3645 | ClusteredMamba_Flood: 0.3775
+Seed=50 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4663 || Val: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3695 | ClusteredMamba_Flood: 0.3619
+Seed=51 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4818 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3979 | ClusteredMamba_Flood: 0.3581
+Seed=52 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4749 || Val: RandomForest: 0.3704 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3615 | ClusteredMamba_Flood: 0.3548
+Seed=53 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4834 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4348 || Test: RandomForest: 0.3663 | ClusteredMamba_Flood: 0.3548
+Seed=54 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4847 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3627 | ClusteredMamba_Flood: 0.3598
+Seed=55 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4847 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3788 | ClusteredMamba_Flood: 0.3632
+Seed=56 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4633 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3671 | ClusteredMamba_Flood: 0.3565
+Seed=57 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4658 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3713 | ClusteredMamba_Flood: 0.3596
+Seed=58 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4730 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3667 | ClusteredMamba_Flood: 0.3687
+Seed=59 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4834 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3532 | ClusteredMamba_Flood: 0.3615
+Seed=60 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4559 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3627 | ClusteredMamba_Flood: 0.3628
+Seed=61 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4706 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3731 | ClusteredMamba_Flood: 0.3662
+Seed=62 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4869 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3606 | ClusteredMamba_Flood: 0.3667
+Seed=63 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4973 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3606 | ClusteredMamba_Flood: 0.3720
+Seed=64 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4781 || Val: RandomForest: 0.4545 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3744 | ClusteredMamba_Flood: 0.3619
+Seed=65 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4788 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3555 | ClusteredMamba_Flood: 0.3684
+Seed=66 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4780 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3763 | ClusteredMamba_Flood: 0.3649
+Seed=67 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4714 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.3750 || Test: RandomForest: 0.3700 | ClusteredMamba_Flood: 0.3438
+Seed=68 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4609 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3695 | ClusteredMamba_Flood: 0.3697
+Seed=69 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4798 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3649
+Seed=70 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4726 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3707 | ClusteredMamba_Flood: 0.3604
+Seed=71 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4707 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.3846 || Test: RandomForest: 0.3687 | ClusteredMamba_Flood: 0.3600
+Seed=72 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4842 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3725 | ClusteredMamba_Flood: 0.3697
+Seed=73 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4841 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3663 | ClusteredMamba_Flood: 0.3667
+Seed=74 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4872 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3645 | ClusteredMamba_Flood: 0.3667
+Seed=75 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4882 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3713 | ClusteredMamba_Flood: 0.3667
+Seed=76 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4738 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3676 | ClusteredMamba_Flood: 0.3667
+Seed=77 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4869 || Val: RandomForest: 0.4762 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3737 | ClusteredMamba_Flood: 0.3615
+Seed=78 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4751 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3831 | ClusteredMamba_Flood: 0.3632
+Seed=79 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4766 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3578 | ClusteredMamba_Flood: 0.3670
+Seed=80 | Train: RandomForest: 0.9950 | ClusteredMamba_Flood: 0.4787 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3695 | ClusteredMamba_Flood: 0.3619
+Seed=81 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4718 || Val: RandomForest: 0.4167 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3645 | ClusteredMamba_Flood: 0.3704
+Seed=82 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4855 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.3750 || Test: RandomForest: 0.3676 | ClusteredMamba_Flood: 0.3541
+Seed=83 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4841 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3846 | ClusteredMamba_Flood: 0.3738
+Seed=84 | Train: RandomForest: 0.9950 | ClusteredMamba_Flood: 0.4778 || Val: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3521 | ClusteredMamba_Flood: 0.3611
+Seed=85 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4822 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3776 | ClusteredMamba_Flood: 0.3598
+Seed=86 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4835 || Val: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3615 | ClusteredMamba_Flood: 0.3532
+Seed=87 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4559 || Val: RandomForest: 0.4400 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3781 | ClusteredMamba_Flood: 0.3796
+Seed=88 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4733 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3627 | ClusteredMamba_Flood: 0.3682
+Seed=89 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4504 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3700 | ClusteredMamba_Flood: 0.3540
+Seed=90 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4814 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3737 | ClusteredMamba_Flood: 0.3500
+Seed=91 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4707 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.3750 || Test: RandomForest: 0.3762 | ClusteredMamba_Flood: 0.3505
+Seed=92 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4781 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3756 | ClusteredMamba_Flood: 0.3649
+Seed=93 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4973 || Val: RandomForest: 0.5000 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3812 | ClusteredMamba_Flood: 0.3720
+Seed=94 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4872 || Val: RandomForest: 0.4762 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3498 | ClusteredMamba_Flood: 0.3632
+Seed=95 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4678 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3695 | ClusteredMamba_Flood: 0.3611
+Seed=96 | Train: RandomForest: 0.9950 | ClusteredMamba_Flood: 0.4387 || Val: RandomForest: 0.4348 | ClusteredMamba_Flood: 0.3793 || Test: RandomForest: 0.3775 | ClusteredMamba_Flood: 0.3268
+Seed=97 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4847 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4167 || Test: RandomForest: 0.3571 | ClusteredMamba_Flood: 0.3581
+Seed=98 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4751 || Val: RandomForest: 0.4583 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3538 | ClusteredMamba_Flood: 0.3598
+Seed=99 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4787 || Val: RandomForest: 0.4783 | ClusteredMamba_Flood: 0.4000 || Test: RandomForest: 0.3700 | ClusteredMamba_Flood: 0.3407
+
+
+==================== AGGREGATE RESULTS =====================
+Summary over 100 seeds on the Test Set:
+
+------------------------------------------------------------
+Model: RandomForest
+  Threat Score (TS):  0.3699 ± 0.0091 (Best: 0.3979, Worst: 0.3498)
+  Accuracy (Acc):     0.6694 ± 0.0127
+  F1 Score (F1):      0.5400 ± 0.0097
+  Recall:             0.7250 ± 0.0128
+  Precision:          0.4304 ± 0.0120
+
+------------------------------------------------------------
+Model: ClusteredMamba_Flood
+  Threat Score (TS):  0.3627 ± 0.0076 (Best: 0.3796, Worst: 0.3268)
+  Accuracy (Acc):     0.6446 ± 0.0154
+  F1 Score (F1):      0.5323 ± 0.0082
+  Recall:             0.7554 ± 0.0178
+  Precision:          0.4111 ± 0.0109
+
+========================= BEST SEEDS =========================
+
+Model: RandomForest
+  Best Seed:  51
+  Best TS:    0.3979
+  Best Worst: 0.3498
+  Metrics:    {'name': 'RandomForest', 'ts': np.float64(0.39790575916230364), 'jaccard': 0.39790575916230364, 'accuracy': 0.7012987012987013, 'precision': 0.4634146341463415, 'recall': 0.7378640776699029, 'f1': 0.5692883895131086, 'threshold': 0.5}
+
+Model: ClusteredMamba_Flood
+  Best Seed:  87
+  Best TS:    0.3796
+  Best Worst: 0.3268
+  Metrics:    {'name': 'ClusteredMamba_Flood', 'ts': np.float64(0.37962962962962965), 'jaccard': 0.37962962962962965, 'accuracy': 0.6519480519480519, 'precision': 0.4205128205128205, 'recall': 0.7961165048543689, 'f1': 0.5503355704697986, 'threshold': 0.5}
+
+
+
+========================= Comparison =========================
+Total samples: 1550
+Training set: 845 samples
+Val set: 94 samples
+Test set: 428 samples
+Input_data: 845, 845, 94, 94
+Seeds: range(0, 100)
+Features Count: 27
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015']
+Seed=0 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5323 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3713
+Seed=1 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6302 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3673
+Seed=2 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5045 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3718
+Seed=3 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5739 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3660 | ClusteredMamba_Flood: 0.3784
+Seed=4 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5608 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3826
+Seed=5 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5015 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3867 | ClusteredMamba_Flood: 0.3729
+Seed=6 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5978 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3805 | ClusteredMamba_Flood: 0.4167
+Seed=7 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6603 || Val: RandomForest: 0.6957 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3778 | ClusteredMamba_Flood: 0.3285
+Seed=8 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5882 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3713
+Seed=9 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4696 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4634 || Test: RandomForest: 0.3825 | ClusteredMamba_Flood: 0.3636
+Seed=10 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6065 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3506
+Seed=11 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6875 || Val: RandomForest: 0.6957 | ClusteredMamba_Flood: 0.7200 || Test: RandomForest: 0.3946 | ClusteredMamba_Flood: 0.3080
+Seed=12 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4761 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.4076 | ClusteredMamba_Flood: 0.3370
+Seed=13 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5479 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3784 | ClusteredMamba_Flood: 0.3713
+Seed=14 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4869 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4750 || Test: RandomForest: 0.4065 | ClusteredMamba_Flood: 0.3625
+Seed=15 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4842 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.4634 || Test: RandomForest: 0.4123 | ClusteredMamba_Flood: 0.3675
+Seed=16 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5545 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.3729
+Seed=17 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5764 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.3663
+Seed=18 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5155 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3853 | ClusteredMamba_Flood: 0.3750
+Seed=19 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5600 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.3904 | ClusteredMamba_Flood: 0.3745
+Seed=20 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6022 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3973 | ClusteredMamba_Flood: 0.3391
+Seed=21 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4841 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.3590
+Seed=22 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5704 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3733 | ClusteredMamba_Flood: 0.3727
+Seed=23 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5600 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5294 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3777
+Seed=24 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5268 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3955 | ClusteredMamba_Flood: 0.3696
+Seed=25 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5604 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.3886
+Seed=26 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7068 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6667 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.2973
+Seed=27 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5623 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3717 | ClusteredMamba_Flood: 0.3877
+Seed=28 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6705 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.6429 || Test: RandomForest: 0.3929 | ClusteredMamba_Flood: 0.3398
+Seed=29 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5655 || Val: RandomForest: 0.6957 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3935 | ClusteredMamba_Flood: 0.3566
+Seed=30 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5258 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.4857 || Test: RandomForest: 0.3879 | ClusteredMamba_Flood: 0.3805
+Seed=31 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4734 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.3682
+Seed=32 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5512 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5278 || Test: RandomForest: 0.3955 | ClusteredMamba_Flood: 0.3824
+Seed=33 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5719 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3772 | ClusteredMamba_Flood: 0.3810
+Seed=34 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5773 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5294 || Test: RandomForest: 0.4009 | ClusteredMamba_Flood: 0.3896
+Seed=35 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5387 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3729
+Seed=36 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5402 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3648
+Seed=37 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5338 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3860
+Seed=38 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6590 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.6207 || Test: RandomForest: 0.3680 | ClusteredMamba_Flood: 0.3214
+Seed=39 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5880 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5312 || Test: RandomForest: 0.3766 | ClusteredMamba_Flood: 0.3750
+Seed=40 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5585 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3790 | ClusteredMamba_Flood: 0.3919
+Seed=41 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5472 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3911 | ClusteredMamba_Flood: 0.3826
+Seed=42 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6115 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3915 | ClusteredMamba_Flood: 0.3644
+Seed=43 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5497 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3925 | ClusteredMamba_Flood: 0.3347
+Seed=44 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5108 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3822 | ClusteredMamba_Flood: 0.3644
+Seed=45 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5773 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3739 | ClusteredMamba_Flood: 0.3739
+Seed=46 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5402 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5135 || Test: RandomForest: 0.3871 | ClusteredMamba_Flood: 0.3697
+Seed=47 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4721 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.4359 || Test: RandomForest: 0.4047 | ClusteredMamba_Flood: 0.3729
+Seed=48 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5646 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3675 | ClusteredMamba_Flood: 0.3730
+Seed=49 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5290 || Val: RandomForest: 0.6800 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3772 | ClusteredMamba_Flood: 0.3818
+Seed=50 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5638 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5758 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3729
+Seed=51 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5266 || Val: RandomForest: 0.5600 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3856
+Seed=52 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5458 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3474
+Seed=53 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5929 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3927 | ClusteredMamba_Flood: 0.3559
+Seed=54 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4647 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.4634 || Test: RandomForest: 0.3816 | ClusteredMamba_Flood: 0.3446
+Seed=55 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4985 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3972 | ClusteredMamba_Flood: 0.3644
+Seed=56 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5773 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5938 || Test: RandomForest: 0.4009 | ClusteredMamba_Flood: 0.3729
+Seed=57 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7342 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.7083 || Test: RandomForest: 0.4019 | ClusteredMamba_Flood: 0.3035
+Seed=58 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5876 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3761 | ClusteredMamba_Flood: 0.3939
+Seed=59 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5845 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5312 || Test: RandomForest: 0.3833 | ClusteredMamba_Flood: 0.3830
+Seed=60 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5479 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3801 | ClusteredMamba_Flood: 0.3787
+Seed=61 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5759 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3816 | ClusteredMamba_Flood: 0.3772
+Seed=62 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5350 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3991 | ClusteredMamba_Flood: 0.3713
+Seed=63 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7236 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.7917 || Test: RandomForest: 0.3911 | ClusteredMamba_Flood: 0.3482
+Seed=64 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5734 || Val: RandomForest: 0.7391 | ClusteredMamba_Flood: 0.5758 || Test: RandomForest: 0.3712 | ClusteredMamba_Flood: 0.3761
+Seed=65 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4869 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.4038 | ClusteredMamba_Flood: 0.3867
+Seed=66 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5270 || Val: RandomForest: 0.6522 | ClusteredMamba_Flood: 0.5000 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.3644
+Seed=67 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5860 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3909 | ClusteredMamba_Flood: 0.3792
+Seed=68 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5739 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5806 || Test: RandomForest: 0.3846 | ClusteredMamba_Flood: 0.3833
+Seed=69 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5666 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3790 | ClusteredMamba_Flood: 0.4099
+Seed=70 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4611 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4419 || Test: RandomForest: 0.3728 | ClusteredMamba_Flood: 0.3297
+Seed=71 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5914 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.4028 | ClusteredMamba_Flood: 0.3803
+Seed=72 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5318 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5135 || Test: RandomForest: 0.3812 | ClusteredMamba_Flood: 0.3713
+Seed=73 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5661 || Val: RandomForest: 0.5417 | ClusteredMamba_Flood: 0.5588 || Test: RandomForest: 0.3901 | ClusteredMamba_Flood: 0.3777
+Seed=74 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7793 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.7600 || Test: RandomForest: 0.3874 | ClusteredMamba_Flood: 0.2814
+Seed=75 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5281 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5135 || Test: RandomForest: 0.3956 | ClusteredMamba_Flood: 0.3814
+Seed=76 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6168 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.2973
+Seed=77 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5971 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3945 | ClusteredMamba_Flood: 0.3475
+Seed=78 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6208 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3904 | ClusteredMamba_Flood: 0.3434
+Seed=79 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5670 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.3714
+Seed=80 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5868 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.6000 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3771
+Seed=81 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5060 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.3697
+Seed=82 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5700 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.3778 | ClusteredMamba_Flood: 0.3392
+Seed=83 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4839 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4750 || Test: RandomForest: 0.3825 | ClusteredMamba_Flood: 0.3640
+Seed=84 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5123 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.4000 | ClusteredMamba_Flood: 0.3799
+Seed=85 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6367 || Val: RandomForest: 0.6250 | ClusteredMamba_Flood: 0.5667 || Test: RandomForest: 0.3889 | ClusteredMamba_Flood: 0.2811
+Seed=86 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5422 || Val: RandomForest: 0.5833 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3826
+Seed=87 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5638 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5143 || Test: RandomForest: 0.3784 | ClusteredMamba_Flood: 0.3866
+Seed=88 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5922 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5455 || Test: RandomForest: 0.3660 | ClusteredMamba_Flood: 0.3745
+Seed=89 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6867 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.5862 || Test: RandomForest: 0.4054 | ClusteredMamba_Flood: 0.3538
+Seed=90 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5545 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5938 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3728
+Seed=91 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4798 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.4872 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.3583
+Seed=92 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5909 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5625 || Test: RandomForest: 0.4037 | ClusteredMamba_Flood: 0.2965
+Seed=93 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5822 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5294 || Test: RandomForest: 0.3860 | ClusteredMamba_Flood: 0.3776
+Seed=94 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.6073 || Val: RandomForest: 0.6667 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3673 | ClusteredMamba_Flood: 0.3069
+Seed=95 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.4638 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.4318 || Test: RandomForest: 0.3881 | ClusteredMamba_Flood: 0.3457
+Seed=96 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7447 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.7500 || Test: RandomForest: 0.3795 | ClusteredMamba_Flood: 0.3180
+Seed=97 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5425 || Val: RandomForest: 0.6800 | ClusteredMamba_Flood: 0.5429 || Test: RandomForest: 0.3901 | ClusteredMamba_Flood: 0.3713
+Seed=98 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.5895 || Val: RandomForest: 0.6400 | ClusteredMamba_Flood: 0.5484 || Test: RandomForest: 0.3829 | ClusteredMamba_Flood: 0.3629
+Seed=99 | Train: RandomForest: 1.0000 | ClusteredMamba_Flood: 0.7598 || Val: RandomForest: 0.6000 | ClusteredMamba_Flood: 0.7600 || Test: RandomForest: 0.3884 | ClusteredMamba_Flood: 0.2785
+
+
+==================== AGGREGATE RESULTS =====================
+Summary over 100 seeds on the Test Set:
+
+------------------------------------------------------------
+Model: RandomForest
+  Threat Score (TS):  0.3881 ± 0.0102 (Best: 0.4123, Worst: 0.3660)
+  Accuracy (Acc):     0.6832 ± 0.0126
+  F1 Score (F1):      0.5591 ± 0.0106
+  Recall:             0.7474 ± 0.0149
+  Precision:          0.4468 ± 0.0125
+
+------------------------------------------------------------
+Model: ClusteredMamba_Flood
+  Threat Score (TS):  0.3621 ± 0.0272 (Best: 0.4167, Worst: 0.2785)
+  Accuracy (Acc):     0.6543 ± 0.0238
+  F1 Score (F1):      0.5310 ± 0.0302
+  Recall:             0.7310 ± 0.0719
+  Precision:          0.4186 ± 0.0214
+
+========================= BEST SEEDS =========================
+
+Model: RandomForest
+  Best Seed:  15
+  Best TS:    0.4123
+  Best Worst: 0.3660
+  Metrics:    {'name': 'RandomForest', 'ts': np.float64(0.41232227488151657), 'jaccard': 0.41232227488151657, 'accuracy': 0.7102803738317757, 'precision': 0.47540983606557374, 'recall': 0.7565217391304347, 'f1': 0.5838926174496645, 'threshold': 0.5}
+
+Model: ClusteredMamba_Flood
+  Best Seed:  6
+  Best TS:    0.4167
+  Best Worst: 0.2785
+  Metrics:    {'name': 'ClusteredMamba_Flood', 'ts': np.float64(0.4166666666666667), 'jaccard': 0.4166666666666667, 'accuracy': 0.705607476635514, 'precision': 0.4712041884816754, 'recall': 0.782608695652174, 'f1': 0.5882352941176471, 'threshold': 0.5}
