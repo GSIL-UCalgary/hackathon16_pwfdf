@@ -93,7 +93,7 @@ def train_mamba(seed, model, input_data, max_epochs=200):
     MIN_DELTA = 1e-4 # Minimum improvement to count as "better" (e.g., 0.0001 TS improvement)
 
     optimizer = optim.AdamW(model.parameters(), lr=1e-3, weight_decay=0.01)
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=8)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=10)
 
     train_losses = []
     val_metrics = []
@@ -129,6 +129,7 @@ def train_mamba(seed, model, input_data, max_epochs=200):
             # Performance did not improve enough
             epochs_no_improve += 1
             if epochs_no_improve >= PATIENCE:
+                #pass
                 tqdm.write(f"\nEarly stopping at epoch {epoch}. Best TS was {best_ts:.4f}.")
                 break # Exit the training loop
                 
@@ -195,7 +196,7 @@ def compare_all_approaches():
     n_pos = (y_train == 1).sum()
     pos_weight = n_neg / n_pos
 
-    output_file = './output/logs/new_seeds100.txt'
+    output_file = './output/logs/new2_seeds100.txt'
 
     # Setup logging to both console and file
     logging.basicConfig(
@@ -208,10 +209,10 @@ def compare_all_approaches():
     )
 
     from models.log_reg import Staley2017Model, LogisticRegression
-    from models.mamba import SimpleMamba, ClusteredMambaModel_Flood
+    from models.mamba import SimpleMamba, ClusteredMambaModel_Flood, ClusteredMambaModel_GatedFusion, HybridMambaMLPModel
     from models.new_mamba import MultiBranchWithGlobalMamba
     from models.mp_mamba import MultiPathwayHybridModel_og
-    from models.transformer import TransformerClassifier
+    from models.transformer import TransformerClassifier, SimpleTransformerClassifier
     from models.TSMixer import TSMixerClassifier, BestSimpleModel, Test, StaticMLPModel
     from models.randomforest import RandomForestModel, train_random_forest
     from models.graph_mamba import GraphMambaModel, KNNMambaClassifier
@@ -219,31 +220,35 @@ def compare_all_approaches():
     from models.graph import FixedNeighborhoodGNN
 
     models = [
-        #lambda: Staley2017Model(data.all_features, duration='15min'),
+        lambda: Staley2017Model(data.all_features, duration='15min'),
         #lambda: SpatialMambaHybridModel(r_features, pos_weight),
         #lambda: SpatialMambaContextModel(r_features, pos_weight, 5 + 1)
         lambda: RandomForestModel(random_state=None),
         #lambda: HybridMambaLogisticModel(features, pos_weight, input_dim=input_dim, n_layers=1),
-        #lambda: MultiPathwayHybridModel_og(features=data.all_features, d_model=128, n_layers=1),
+        lambda: MultiPathwayHybridModel_og(features=data.all_features, d_model=64, n_layers=2),
         lambda: ClusteredMambaModel_Flood(pos_weight, input_dim=input_dim, n_layers=1),
+        lambda: SimpleTransformerClassifier(),
         #lambda: HybridMambaFeatureGroups(features, pos_weight),
         #lambda: HybridGroupedSpatialMambaModel(features=features, spatial_dim=16),
         #lambda: HybridGroupedSpatialMambaModel2(features=features, spatial_dim=16),
-        #lambda: GraphMambaModel(max_neighbors=5, hidden_dim=128),
-        #lambda: KNNMambaClassifier(all_features=data.all_features, pos_weight=pos_weight, d_model=64, n_layers=2), # <-- ADD THIS LINE
+        lambda: GraphMambaModel(max_neighbors=5, hidden_dim=16),
+        lambda: KNNMambaClassifier(all_features=data.all_features, pos_weight=pos_weight, d_model=64, n_layers=2), # <-- ADD THIS LINE
         #lambda: MultiBranchMamba(feature_names=data.all_features, d_model=16, d_state=16, n_classes=1, fusion_method='attention'),
-        #lambda: SimpleMamba(d_model=256, d_state=32),
+        lambda: SimpleMamba(d_model=128, d_state=64, d_conv=4, expand=2),
         #lambda: FixedNeighborhoodGNN(len(data.all_features), hidden_features=32),
         #lambda: SimplifiedMPHModel()
+        #lambda: HybridMambaMLPModel(),
+        #lambda: TSMixerClassifier()
     ]
 
     all_test_results = {model().name: [] for model in models}
 
     #seeds = [1, 42]
     #seeds = [0, 10, 42, 51]
-    seeds = range(0, 100)
+    seeds = range(0, 1)
     epochs = 100
     input_data = [X_train, y_train, X_val, y_val]
+    #input_data = [X_train, y_train, X_test, y_test]
 
     logging.info("\n\n\n========================= Comparison =========================")
     logging.info(f"Total samples: {len(df_data.df)}")
@@ -257,6 +262,8 @@ def compare_all_approaches():
 
     for seed in tqdm(seeds, desc="Seeds", position=0):
         for make_model in models:
+            #setup_seed(seed)
+            seed = 42
             setup_seed(seed)
             model = make_model().to(device)
 

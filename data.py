@@ -9,6 +9,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder, RobustScaler
 import geopandas as gpd
 from shapely.geometry import Point
 from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
 
 from graph import create_connectivity_graph
 
@@ -90,12 +91,12 @@ def get_usgs_mask(df, duration):
     #mask = ~df.isnull().any(axis=1).values
     return mask
 
-def fill_nan(df):
+def fill_(df):
     #
     # Filling in NaN values
     #
     # Strategy 1: Remove rows with critical missing values
-    critical_features = ['UTM_X', 'UTM_Y']
+    critical_features = ['UTM_X', 'UTM_Y'] # never missing anyways
     df = df.dropna(subset=critical_features)
 
     # Strategy 2: Fill storm-related features with 0 (assuming no storm = 0)
@@ -124,6 +125,9 @@ def fill_nan(df):
 
     return df
 
+def fill_nan(df):
+    return df.fillna(-1000)
+
 def normalize(df, scaler=None):
     all_features = list(df.columns)
     features_to_include = [
@@ -135,9 +139,9 @@ def normalize(df, scaler=None):
         'Peak_I30_mm/h',
         'Peak_I60_mm/h',
         'ContributingArea_km2',
-        'Acc015_mm',
-        'Acc030_mm',
-        'Acc060_mm',
+        #'Acc015_mm',
+        #'Acc030_mm',
+        #'Acc060_mm',
         'KF_Acc015'
     ]
 
@@ -220,8 +224,22 @@ class PWFDF_Data:
                 df.loc[mask, 'Longitude'] = lons
                 df.loc[mask, 'Latitude'] = lats
 
+
+
             # new training test split?
-            
+            if False:
+                indices = df.index
+                train_indices, test_indices = train_test_split(
+                    indices,
+                    test_size=0.2,
+                    random_state=42, # Use a random_state for reproducible results
+                    shuffle=True # Shuffle the data before splitting
+                )
+
+                df.loc[train_indices, 'Database'] = 'Training'
+                df.loc[test_indices, 'Database'] = 'Test'
+
+
 
             print("Missing Data:")
             print(f"Total: {df['Missing_Data'].sum()} / {len(df)}")
@@ -233,7 +251,7 @@ class PWFDF_Data:
             print(f"Saving CSV ({self.path})")
             df.to_csv(self.path, index=False)
 
-            edge_df = create_connectivity_graph(df, self.graph_path, k=3, max_dist=4.0)
+            edge_df = create_connectivity_graph(df, self.graph_path, k=5, max_dist=4.0)
 
         else:
             df = pd.read_csv(self.path)
@@ -274,11 +292,11 @@ class PWFDF_Data:
         
         # 1. Filtering and Cleaning
         df = df[df['Database'] == split].copy()
-        mask = get_usgs_mask(df, duration) # Assuming this function exists
+        #mask = get_usgs_mask(df, duration) # Assuming this function exists
         df = fill_nan(df)                   # Assuming this function exists
 
-        if split == 'Test':
-            df = df[mask].copy() 
+        #if split == 'Test':
+        #    df = df[mask].copy()
 
         df, scaler = normalize(df, scaler)
 

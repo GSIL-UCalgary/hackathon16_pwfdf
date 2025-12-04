@@ -53,7 +53,7 @@ class TSMixerClassifier(nn.Module):
             #nn.Sigmoid()
         )
         
-    def forward(self, x):
+    def forward(self, x, target=None):
         # x: [B, input_dim] for tabular data
         if len(x.shape) == 2:
             # Reshape to [B, seq_len, input_dim]
@@ -62,12 +62,10 @@ class TSMixerClassifier(nn.Module):
         for block in self.model:
             x = block(x)
         
+        #if 
+
         return self.classifier(x).squeeze(-1)
     
-
-
-
-
 import torch
 import torch.nn as nn
 from mamba_ssm import Mamba

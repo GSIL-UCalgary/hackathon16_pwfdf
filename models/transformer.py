@@ -166,3 +166,134 @@ class TransformerClassifier(nn.Module):
         x = self.transformer(x)  # (batch_size, 1, n_embd)
         x = x.squeeze(1)  # (batch_size, n_embd)
         return self.classifier(x).squeeze(-1)
+    
+import torch
+import torch.nn as nn
+from torch.nn import TransformerEncoder, TransformerEncoderLayer
+import numpy as np
+from typing import Optional, Tuple
+
+from data import all_features
+
+class SimpleTransformerClassifier(nn.Module):
+    """
+    Corrected Transformer-based model for binary classification.
+
+    Correction: Treats KF (Soil Erodibility Index) as a continuous numerical feature.
+    All 4 selected features are now treated as numerical "tokens" in the sequence.
+
+    1. All 4 features are embedded using nn.Linear.
+    2. Uses a learnable [CLS] token for dedicated sequence aggregation.
+    """
+    
+    def __init__(self, duration='15min', d_model=64, nhead=4, dim_feedforward=128, num_layers=1, dropout=0.1, **kwargs):
+        """
+        Initializes the Transformer classifier.
+        
+        Args:
+            duration (str): Used for selecting the correct rainfall feature.
+            d_model (int): The dimension of the model (input/output of attention).
+        """
+        super().__init__()
+        self.name = 'CorrectedTransformerClassifier'
+        self.d_model = d_model
+        
+        # 1. Feature Selection Logic (Matches RandomForestModel)
+        # ALL 4 features are now treated as Numerical/Continuous
+        self.numerical_features = ['PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm']
+        
+        # Get indices for feature selection from the full list
+        self.feature_indices = [all_features.index(feat) for feat in self.numerical_features if feat in all_features]
+        self.num_features = len(self.feature_indices) # This is 4
+        
+        # The sequence length is the number of features + CLS token
+        self.sequence_length = self.num_features + 1 # 4 features + 1 for [CLS]
+        
+        # 2. Feature Embeddings (All 4 features are numerical)
+        # A. Embedding for ALL Numerical Features (4 tokens)
+        # We map the 1D numerical value to the d_model dimension
+        self.numerical_embedding = nn.Linear(1, d_model)
+
+        # B. [CLS] Token (The 0th token in the sequence)
+        self.cls_token = nn.Parameter(torch.randn(1, 1, d_model))
+        
+        # 3. Positional Encoding (Learnable, size depends on the new sequence length)
+        self.positional_encoding = nn.Parameter(torch.randn(1, self.sequence_length, d_model))
+        
+        # 4. Transformer Encoder
+        encoder_layer = TransformerEncoderLayer(
+            d_model=d_model, 
+            nhead=nhead, 
+            dim_feedforward=dim_feedforward, 
+            dropout=dropout, 
+            batch_first=True
+        )
+        self.transformer_encoder = TransformerEncoder(encoder_layer, num_layers=num_layers)
+        
+        # 5. Classification Head (MLP)
+        # This processes the [CLS] token's output embedding
+        self.classification_head = nn.Sequential(
+            nn.LayerNorm(d_model),
+            nn.Linear(d_model, d_model // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(d_model // 2, 1) # Output a single logit for binary classification
+        )
+
+        # 6. Loss Function
+        self.loss_fn = nn.BCEWithLogitsLoss()
+
+
+    def forward(self, x: torch.Tensor, target: Optional[torch.Tensor] = None) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
+        """
+        Predict logits and calculate loss (if target is provided).
+        
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch_size, 1, num_total_features).
+            target (torch.Tensor, optional): Labels (B,).
+        
+        Returns:
+            Tuple[torch.Tensor, Optional[torch.Tensor]]: 
+                - Predicted probabilities (after sigmoid), shape (B,).
+                - Calculated loss, or None if target is not provided.
+        """
+        B = x.size(0)
+        
+        # 1. Feature Selection
+        # Select all 4 numerical features (B, 4)
+        numerical_data = x[:, 0, self.feature_indices] 
+        
+        # 2. Feature Embedding
+        # Reshape to (B, 4, 1) and map to d_model (B, 4, d_model)
+        feature_sequence = self.numerical_embedding(numerical_data.unsqueeze(-1))
+        
+        # 3. Concatenate [CLS] Token
+        # cls_tokens (B, 1, d_model)
+        cls_tokens = self.cls_token.expand(B, -1, -1) 
+        
+        # enc_input (B, 5, d_model): ([CLS], Feature_1, Feature_2, Feature_3, Feature_4)
+        enc_input = torch.cat([cls_tokens, feature_sequence], dim=1)
+
+        # 4. Add Positional Encoding
+        enc_input = enc_input + self.positional_encoding.expand(B, -1, -1)
+        
+        # 5. Transformer Encoder Pass
+        # transformer_output (B, 5, d_model)
+        transformer_output = self.transformer_encoder(enc_input)
+        
+        # 6. Extract [CLS] Token Output
+        # cls_output (B, d_model)
+        cls_output = transformer_output[:, 0, :]
+        
+        # 7. Classification Head
+        # Logits shape: (B, 1) -> squeezed to (B,)
+        logits = self.classification_head(cls_output).squeeze(-1)
+        
+        # 8. Compute Probabilities and Loss
+        probs = torch.sigmoid(logits)
+        
+        loss = None
+        if target is not None:
+            loss = self.loss_fn(logits, target.float())
+
+        return probs, loss

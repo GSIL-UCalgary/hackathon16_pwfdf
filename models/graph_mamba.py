@@ -98,7 +98,6 @@ class GraphMambaModel(nn.Module):
         self.spatial_pool = nn.AdaptiveAvgPool1d(1)
         
         # --- 3. Spectral Branch (Processes central node with simple MLP) ---
-        # Spectral branch just uses MLP since pathway Mambas already processed temporal features
         self.spectral_mlp = nn.Sequential(
             nn.Linear(hidden_dim, hidden_dim),
             nn.ReLU(),

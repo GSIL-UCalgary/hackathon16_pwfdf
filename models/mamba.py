@@ -984,7 +984,18 @@ class SimpleMamba(nn.Module):
     def __init__(self, d_model=64, d_state=16, d_conv=4, expand=2,):
         super().__init__()
         self.name = 'SimpleMamba'
-        limited_features = ['PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'GaugeDist_m', 'ContributingArea_km2']
+        #limited_features = ['PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm']
+        limited_features = [
+            'UTM_X', 'UTM_Y', 
+            'GaugeDist_m', 
+            'StormDur_H', 
+            'StormAccum_mm', 
+            'StormAvgI_mm/h', 
+            'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
+            'ContributingArea_km2', 
+            'PropHM23', 'dNBR/1000', 'KF',
+            'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
+        ]
         self.feature_indices = [all_features.index(feat) for feat in limited_features if feat in all_features]
 
         self.n_features = len(self.feature_indices)  # PropHM23, dNBR/1000, KF, Acc015_mm
@@ -1037,8 +1048,8 @@ class SimpleMamba(nn.Module):
         x = self.norm1(x)
         
         # Mamba processing with residual
-        #x = x + self.mamba(x)
-        #x = self.norm2(x)
+        x = x + self.mamba(x)
+        x = self.norm2(x)
         
         # Feedforward with residual
         x = x + self.ff(x)
@@ -1061,11 +1072,53 @@ class SimpleMamba(nn.Module):
 from data import all_features
 from eval import ThreatScoreLoss
 
+class WeightedSumHead(nn.Module):
+    def __init__(self, d_model, dropout):
+        super().__init__()
+        # 1. Project to 3 weights
+        self.attention_weights = nn.Linear(d_model * 3, 3) 
+        # 2. Final prediction head (takes d_model input, as the weighted sum is d_model)
+        self.final_head = nn.Sequential(
+            nn.Linear(d_model, 32),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(32, 1),
+        )
+
+    def forward(self, mamba_non_rain, mamba_rain, missing_data_out):
+        # Concatenate for weight calculation (like your original combined input)
+        combined_for_weights = torch.cat([mamba_non_rain, mamba_rain, missing_data_out], dim=1) 
+        
+        # Calculate attention weights (Softmax forces weights to sum to 1)
+        weights = F.softmax(self.attention_weights(combined_for_weights), dim=1) 
+        
+        # Split weights
+        w_non_rain = weights[:, 0].unsqueeze(1) # (B, 1)
+        w_rain = weights[:, 1].unsqueeze(1)     # (B, 1)
+        w_missing = weights[:, 2].unsqueeze(1)  # (B, 1)
+        
+        # Weighted Sum (Final feature vector is still d_model)
+        weighted_sum = (
+            w_non_rain * mamba_non_rain + 
+            w_rain * mamba_rain + 
+            w_missing * missing_data_out
+        )
+        
+        # Final Prediction
+        output = self.final_head(weighted_sum)
+        return output
+
+# In your main model's __init__:
+# 
+# In your main model's forward:
+# output = self.combined_head(mamba_out_non_rain, mamba_out_rain, missing_data_out)
+
 class ClusteredMambaModel_Flood(nn.Module):
     def __init__(self, pos_weight, input_dim=16, d_model=64, n_layers=4, dropout=0.1, n_clusters=1000):
         super().__init__()
         self.d_model = d_model
         self.name = 'ClusteredMamba_Flood'
+        self.n_clusters = n_clusters
 
         self.non_rainfall_features = [
             #'UTM_X', 'UTM_Y', 
@@ -1075,40 +1128,32 @@ class ClusteredMambaModel_Flood(nn.Module):
             'StormAvgI_mm/h', 
             'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
             'ContributingArea_km2', 
-            'PropHM23', 'dNBR/1000', 'KF', 'Missing_Data',
+            'PropHM23', 'dNBR/1000', 'KF',
             #'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
         ]
 
         self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
-        self.feature_names = self.non_rainfall_features + self.rainfall_features
-        self.n_clusters = n_clusters
+
         
-        # Get indices for rainfall vs non-rainfall features
+
         self.rainfall_indices = [all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
         self.non_rainfall_indices = [all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
-        #self.non_rainfall_indices = [i for i in range(len(all_features)) if i not in self.rainfall_indices]
 
         # --- 1. Clustering Projections ---
         # Instead of explicit clustering, we use a learned projection to a cluster space.
         
         # Non-Rainfall Clustering Projection
         self.non_rainfall_dim = len(self.non_rainfall_indices)
-        if self.non_rainfall_dim > 0:
-            self.non_rainfall_cluster_proj = nn.Linear(self.non_rainfall_dim, n_clusters)
+        self.non_rainfall_cluster_proj = nn.Linear(self.non_rainfall_dim, n_clusters)
             
         # Rainfall Clustering Projection
         self.rainfall_dim = len(self.rainfall_indices)
-        if self.rainfall_dim > 0:
-            self.rainfall_cluster_proj = nn.Linear(self.rainfall_dim, n_clusters)
-        
+        self.rainfall_cluster_proj = nn.Linear(self.rainfall_dim, n_clusters)
+
         # --- 2. Mamba Pathways ---
-        
-        # Mamba pathway for non-rainfall (takes n_clusters input)
         self.mamba_input_proj_non_rain = nn.Linear(n_clusters, d_model)
-        
-        # Mamba pathway for rainfall (takes n_clusters input)
         self.mamba_input_proj_rain = nn.Linear(n_clusters, d_model)
-        
+
         # Mamba backbone (shared)
         # Note: Mamba (SSM) layers excel at capturing sequential/temporal dependencies.
         self.mamba_layers = nn.ModuleList([
@@ -1125,7 +1170,7 @@ class ClusteredMambaModel_Flood(nn.Module):
         # --- 3. Combined Output Head ---
         # Combined output: Mamba output (d_model) + Mamba_Rain output (d_model)
         self.combined_head = nn.Sequential(
-            nn.Linear(d_model + d_model, 32),
+            nn.Linear(d_model * 2, 32),
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(32, 1),
@@ -1150,13 +1195,13 @@ class ClusteredMambaModel_Flood(nn.Module):
         x = x.unsqueeze(1)  # (batch_size, 1, n_clusters)
         x = input_proj(x)   # (batch_size, 1, d_model)
         
+
         for mamba_layer, norm in zip(self.mamba_layers, self.mamba_norms):
             residual = x
             x = mamba_layer(x)
             x = norm(x)
             x = self.dropout(x)
-            # The residual connection is essential in deep networks.
-            x = residual + x  # Residual connection
+            x = residual + x 
         
         x = x.mean(dim=1)  # Pool across the sequence dimension (length 1) -> (batch_size, d_model)
         return x
@@ -1175,10 +1220,10 @@ class ClusteredMambaModel_Flood(nn.Module):
         # Use the same Mamba layers for both, but different input projections.
         mamba_out_non_rain = self._mamba_forward(non_rainfall_clustered, self.mamba_input_proj_non_rain)
         mamba_out_rain = self._mamba_forward(rainfall_clustered, self.mamba_input_proj_rain)
-        
+
         # 3. Combine and Predict
         combined = torch.cat([mamba_out_non_rain, mamba_out_rain], dim=1) # (batch_size, 2 * d_model)
-        
+
         # Final prediction
         output = self.combined_head(combined)
         output = output.squeeze(-1)
@@ -1189,3 +1234,250 @@ class ClusteredMambaModel_Flood(nn.Module):
             return probs, loss
 
         return probs, None
+    
+class ClusteredMambaModel_GatedFusion(nn.Module):
+    def __init__(self, pos_weight, input_dim=16, d_model=64, n_layers=4, dropout=0.1, n_clusters=1000):
+        super().__init__()
+        self.d_model = d_model
+        self.name = 'ClusteredMamba_GatedFusion'
+        self.n_clusters = n_clusters
+
+        self.non_rainfall_features = [
+            #'UTM_X', 'UTM_Y', 
+            #'GaugeDist_m', 
+            #'StormDur_H', 
+            #'StormAccum_mm', 
+            #'StormAvgI_mm/h', 
+            #'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
+            #'ContributingArea_km2', 
+            'PropHM23', 'dNBR/1000', 'KF',
+            #'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
+        ]
+
+        self.missing_data_feature = ['Missing_Data']
+
+        self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
+        
+        self.rainfall_indices = [all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
+        self.missing_data_index = [all_features.index(feat) for feat in self.missing_data_feature if feat in all_features]
+        self.non_rainfall_indices = [all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
+        
+        # --- 1. Clustering Projections ---
+        self.non_rainfall_dim = len(self.non_rainfall_indices)
+        self.non_rainfall_cluster_proj = nn.Linear(self.non_rainfall_dim, n_clusters)
+        self.rainfall_dim = len(self.rainfall_indices)
+        self.rainfall_cluster_proj = nn.Linear(self.rainfall_dim, n_clusters)
+        
+        # --- 2. Mamba Input Projections ---
+        self.mamba_input_proj_non_rain = nn.Linear(n_clusters, d_model)
+        self.mamba_input_proj_rain = nn.Linear(n_clusters, d_model)
+        
+        # --- 3. Missing Data Embedding (The Gating Feature) ---
+        self.missing_data_dim = len(self.missing_data_index) # Should be 1
+        self.missing_data_embedding = nn.Linear(self.missing_data_dim, d_model)
+        
+        # --- Gating Mechanism ---
+        # The Missing Data embedding creates a gate vector for the Rainfall pathway
+        self.rainfall_gate_layer = nn.Sequential(
+            nn.Linear(d_model, d_model),
+            nn.Sigmoid() # Restricts output between 0 (fully closed) and 1 (fully open)
+        )
+        
+        # --- 4. Mamba Backbone (Shared) ---
+        self.mamba_layers = nn.ModuleList([
+            Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2)
+            for _ in range(n_layers)
+        ])
+        
+        self.mamba_norms = nn.ModuleList([
+            nn.LayerNorm(d_model)
+            for _ in range(n_layers)
+        ])
+        
+        # --- 5. Combined Output Head (Input: 2 * d_model from Gated Rain + Non-Rain) ---
+        self.combined_head = nn.Sequential(
+            nn.Linear(d_model * 2, 32), # Fusing Gated Rain and Non-Rain
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(32, 1),
+        )
+        
+        self.dropout = nn.Dropout(dropout)
+        self.loss_fn = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]))
+        
+    def split_features(self, x):
+        """Split input into non-rainfall, rainfall, and missing data features"""
+        non_rainfall_x = x[:, 0, self.non_rainfall_indices]
+        rainfall_x = x[:, 0, self.rainfall_indices]
+        missing_data_x = x[:, 0, self.missing_data_index] 
+        return non_rainfall_x, rainfall_x, missing_data_x
+    
+    def _mamba_forward(self, x, input_proj):
+        # Applies the sequence of Mamba layers (same as previous correct implementation)
+        x = x.unsqueeze(1)    
+        x = input_proj(x)     
+        
+        for mamba_layer, norm in zip(self.mamba_layers, self.mamba_norms):
+            residual = x
+            x = mamba_layer(x)
+            x = norm(x)
+            x = self.dropout(x)
+            x = residual + x 
+        
+        x = x.mean(dim=1)  # (batch_size, d_model)
+        return x
+
+    def forward(self, x, target=None):
+        non_rainfall_x_raw, rainfall_x_raw, missing_data_x_raw = self.split_features(x)
+        
+        # 1. Clustering & Mamba Forward Pass
+        non_rainfall_clustered = self.non_rainfall_cluster_proj(non_rainfall_x_raw)
+        mamba_out_non_rain = self._mamba_forward(non_rainfall_clustered, self.mamba_input_proj_non_rain)
+        
+        rainfall_clustered = self.rainfall_cluster_proj(rainfall_x_raw)
+        mamba_out_rain = self._mamba_forward(rainfall_clustered, self.mamba_input_proj_rain)
+        
+        # 2. Missing Data Embedding
+        # (B, 1) -> (B, d_model)
+        missing_data_embedding = self.missing_data_embedding(missing_data_x_raw)
+        
+        # 3. Gating Fusion
+        
+        # Compute the gate: A vector of size d_model, restricted to [0, 1]
+        # If 'Missing_Data' is high (1), the gate will learn to push values towards 0 (suppression).
+        # If 'Missing_Data' is low (0), the gate will learn to push values towards 1 (full pass-through).
+        gate = self.rainfall_gate_layer(missing_data_embedding)
+        
+        # Apply the gate to the Rainfall Mamba output (Element-wise multiplication)
+        gated_mamba_out_rain = mamba_out_rain * gate # (B, d_model)
+        
+        # 4. Final Combination and Predict
+        # Concatenate the Gated Rain output and the Non-Rain output
+        combined = torch.cat([mamba_out_non_rain, gated_mamba_out_rain], dim=1) 
+        
+        # Final prediction
+        output = self.combined_head(combined)
+        output = output.squeeze(-1)
+        probs = torch.sigmoid(output)
+
+        if target is not None:
+            # We are using BCEWithLogitsLoss, so we use the raw 'output' before sigmoid
+            loss = self.loss_fn(output, target)
+            return probs, loss
+
+        return probs, None
+
+class HybridMambaMLPModel(nn.Module):
+    
+    def __init__(self, d_model=32, mamba_layers=1, hidden_mlp_dim=16, num_classes=1):
+        """
+        Initializes the Hybrid Mamba-MLP Model.
+        
+        d_model: Internal dimension for Mamba and feature embedding.
+        mamba_layers: Number of Mamba blocks to stack.
+        hidden_mlp_dim: Hidden dimension for the MLP branch.
+        num_classes: Number of output classes (1 for binary prediction).
+        """
+        super().__init__()
+        self.name = 'HybridMambaMLP'
+        
+
+        self.mamba_features = ['PropHM23', 'dNBR/1000', 'KF']
+        self.mlp = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm']
+
+        # --- Feature Indexing (Matches RandomForestModel) ---
+        # Assuming all_features is defined globally or passed (for simplicity, we hardcode)
+        # In a real setup, you'd need the feature indices:
+        self.mamba_feature_indices = [all_features.index(feat) for feat in self.mamba_features if feat in all_features]
+        self.mlp_feature_index = [all_features.index(feat) for feat in self.mlp if feat in all_features]
+        
+        # Features for Mamba: 'dNBR/1000', 'KF', 'PropHM23' (Sequence Length = 3)
+        # Feature for MLP: 'Acc015_mm' (Input Dim = 1)
+        
+        # --- Mamba Branch (Sequence features: 3 static features) ---
+        # 1. Embed the 1D input into d_model dimension for the Mamba block
+        self.mamba_embed = nn.Linear(1, d_model) 
+        
+        # 2. Mamba blocks (or a single block)
+        self.mamba_blocks = nn.ModuleList([
+            Mamba(d_model=d_model) # Replace with actual Mamba
+            for _ in range(mamba_layers)
+        ])
+        
+        # --- MLP Branch (Single feature: Rainfall) ---
+        self.mlp_branch = nn.Sequential(
+            nn.Linear(len(self.mlp_feature_index), hidden_mlp_dim), # Input size 1 ('Acc015_mm')
+            nn.ReLU(),
+            nn.Linear(hidden_mlp_dim, d_model), # Output d_model for concatenation
+            nn.ReLU()
+        )
+        
+        # --- Final Classification Head ---
+        # Input size: d_model (from Mamba output) + d_model (from MLP output)
+        self.classifier = nn.Sequential(
+            nn.Linear(2 * d_model, d_model),
+            nn.ReLU(),
+            nn.Linear(d_model, num_classes),
+            nn.Sigmoid() # For binary classification
+        )
+
+        self.loss_fn = nn.BCELoss()
+        
+    def forward(self, x, target=None):
+        """
+        Forward pass for the hybrid model.
+        
+        Args:
+            x: torch.Tensor of shape (batch_size, 1, num_all_features)
+        
+        Returns:
+            torch.Tensor of predicted probabilities (batch_size, 1)
+        """
+        
+        # --- 1. Prepare Inputs ---
+        # The input x has shape (batch_size, 1, num_all_features)
+        # We need to squeeze the channel dim: (batch_size, num_all_features)
+        
+        # Mamba Features (dNBR, KF, PropHM23) - Indices 0, 1, 2 for this example
+        # Shape: (batch_size, 3)
+        # Note: Indexing must be based on the actual feature order in all_features
+        x_mamba = x[:, 0, self.mamba_feature_indices] 
+        
+        # MLP Feature (Acc015_mm) - Index 3 for this example
+        # Shape: (batch_size, 1)
+        x_mlp = x[:, 0, self.mlp_feature_index] 
+
+        # --- 2. Mamba Branch ---
+        # Reshape Mamba input from (B, L) to (B, L, 1) where L=3
+        # This treats each of the 3 features as a single item in a sequence.
+        x_mamba_reshaped = x_mamba.unsqueeze(-1) 
+        
+        # Embed: (B, L, 1) -> (B, L, d_model)
+        mamba_out = self.mamba_embed(x_mamba_reshaped) 
+        
+        # Pass through Mamba blocks
+        for block in self.mamba_blocks:
+            mamba_out = block(mamba_out)
+            
+        # Select the output from the final sequence element (L-1) 
+        # This represents the sequence state after processing all 3 features.
+        # Shape: (B, d_model)
+        mamba_final_output = mamba_out[:, -1, :] 
+
+        # --- 3. MLP Branch ---
+        # Shape: (B, 1) -> (B, d_model)
+        mlp_output = self.mlp_branch(x_mlp) 
+
+        # --- 4. Classification Head ---
+        # Concatenate Mamba and MLP outputs: (B, 2 * d_model)
+        combined_features = torch.cat([mamba_final_output, mlp_output], dim=1)
+        
+        # Final prediction: (B, 1)
+        final_probs = self.classifier(combined_features).squeeze(1)
+        
+        if target is not None:
+            loss = self.loss_fn(final_probs, target)
+            return final_probs, loss
+
+        # Return probability tensor and None (to match the original model's signature)
+        return final_probs, None
