@@ -1,47 +1,121 @@
 import torch
+import torch.nn as nn
 from torch.nn import functional as F
 from torch.utils.data import Dataset, DataLoader
 
 import numpy as np
 from sklearn.metrics import roc_auc_score, roc_curve, confusion_matrix
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, jaccard_score
 
 threshold = 0.5
 
 def threat_score(y_true, y_pred):
     """Threat Score = TP / (TP + FN + FP)"""
-    y_pred_binary = (y_pred >= threshold).astype(int)
-    tn, fp, fn, tp = confusion_matrix(y_true, y_pred_binary, labels=[0, 1]).ravel()
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
     
     if (tp + fn + fp) == 0:
         return 0.0
     return tp / (tp + fn + fp)
 
-def evaluate(model, X_test, y_test):
+def threat_score_loss(probs, targets, epsilon=1e-6):
+    """
+    Calculates the negative of the differentiable Threat Score (Jaccard Index/IoU).
+    Outputs are logits, targets are 0 or 1.
+    """
+    targets = targets.float() # Ensure targets are float
+        
+    # 2. Calculate differentiable components
+    TP_approx = torch.sum(targets * probs)
+    FN_approx = torch.sum(targets * (1 - probs))
+    FP_approx = torch.sum((1 - targets) * probs)
+    
+    # 3. Threat Score (TS) calculation
+    denominator = TP_approx + FN_approx + FP_approx + epsilon
+    threat_score = TP_approx / denominator
+    
+    # 4. Loss is the negative of the metric
+    loss = -threat_score
+    return loss
+
+class ThreatScoreLoss(nn.Module):
+    """
+    A differentiable approximation of the 1 - Threat Score (CSI) loss.
+    This loss is equivalent to a variant of the Dice/F-beta loss.
+    
+    It focuses on minimizing False Negatives (FN) and False Positives (FP)
+    while maximizing True Positives (TP).
+    """
+    def __init__(self, epsilon=1e-6):
+        super(ThreatScoreLoss, self).__init__()
+        self.epsilon = epsilon
+
+    def forward(self, y_pred, y_true):
+        # Flatten tensors for simpler calculation
+        y_pred = y_pred.view(-1)
+        y_true = y_true.view(-1).float() # Ensure targets are float (0.0 or 1.0)
+
+        # 1. True Positives (TP) approximation:
+        # y_pred * y_true -> High when both are 1.0. This is the intersection.
+        intersection = (y_pred * y_true).sum()
+
+        # 2. False Positives (FP) approximation:
+        # y_pred * (1 - y_true) -> High when prediction is 1.0 and true is 0.0.
+        fp = (y_pred * (1 - y_true)).sum()
+
+        # 3. False Negatives (FN) approximation:
+        # (1 - y_pred) * y_true -> High when prediction is 0.0 and true is 1.0.
+        fn = ((1 - y_pred) * y_true).sum()
+        
+        # --- TS Differentiable Approximation (Dice-like) ---
+        # The true TS denominator is (TP + FP + FN)
+        # We use a similar structure that is differentiable:
+        
+        numerator = intersection 
+        
+        # Denominator: TP + FP + FN. 
+        # This is equivalent to: (y_pred * y_true) + (y_pred * (1-y_true)) + ((1-y_pred) * y_true)
+        # which simplifies mathematically to: y_pred + y_true - (y_pred * y_true)
+        denominator = numerator + fp + fn
+        
+        # The metric to maximize (Threat Score approximation):
+        # ts_approx = numerator / denominator
+        ts_approx = (numerator + self.epsilon) / (denominator + self.epsilon)
+        
+        # The loss to minimize: 1 - ts_approx
+        loss = 1.0 - ts_approx
+
+        return loss
+
+def evaluate_model(model, X_test, y_test):
+    """Evaluate model and return metrics"""
     model.eval()
     with torch.no_grad():
-        y_pred = model(X_test).cpu().numpy().flatten()
+        y_pred, _ = model(X_test, None)
+        y_pred = y_pred.cpu().numpy()
     
     y_pred_binary = (y_pred >= threshold).astype(int)
-    tn, fp, fn, tp = confusion_matrix(y_test.cpu().numpy(), y_pred_binary, labels=[0, 1]).ravel()
+    y_test = y_test.cpu().numpy()
+
+    ts = threat_score(y_test, y_pred_binary)
+    jaccard = jaccard_score(y_test, y_pred_binary, pos_label=1)
+    accuracy = accuracy_score(y_test, y_pred_binary)
+    precision = precision_score(y_test, y_pred_binary, zero_division=0)
+    recall = recall_score(y_test, y_pred_binary, zero_division=0)
+    f1 = f1_score(y_test, y_pred_binary, zero_division=0)
     
-    ts = tp / (tp + fn + fp) if (tp + fn + fp) > 0 else 0.0
-    accuracy = (tp + tn) / (tp + tn + fp + fn)
-    precision = tp / (tp + fp) if (tp + fp) > 0 else 0
-    recall = tp / (tp + fn) if (tp + fn) > 0 else 0
-    f1 = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
-    
-    print(f"{'='*50}")
-    print(f"Test Results")
-    print(f"Threat Score: {ts:.4f}")
-    print(f"Accuracy:     {accuracy:.4f}")
-    print(f"Precision:    {precision:.4f}")
-    print(f"Recall:       {recall:.4f}")
-    print(f"F1 Score:     {f1:.4f}")
-    print(f"Threshold:    {threshold:.3f}")
-    print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
-    
-    return ts
+    tn, fp, fn, tp = confusion_matrix(y_test, y_pred_binary, labels=[0, 1]).ravel()
+    #print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
+
+    return {
+        'name': model.name,
+        'ts': ts,
+        'jaccard': jaccard,
+        'accuracy': accuracy,
+        'precision': precision,
+        'recall': recall,
+        'f1': f1,
+        'threshold': threshold
+    }
 
 def compare_params(models, durations):
     """Compare learned vs published Staley 2017 parameters"""
@@ -65,39 +139,3 @@ def compare_params(models, durations):
             learn = models[dur].state_dict()[param].item()
             diff = learn - pub
             print(f"{param:<8} {pub:<12.4f} {learn:<12.4f} {diff:<12.4f}")
-
-from models.mamba import create_spatial_tensors
-
-def evaluate_model(model, X_test, y_test):
-    if model.spatial:
-        X_test_spatial = create_spatial_tensors(X_test, model.features, k_neighbors=8)
-        X_test = (X_test, X_test_spatial)
-
-    """Evaluate model and return metrics"""
-    model.eval()
-    with torch.no_grad():
-        y_pred, _ = model(X_test, None)
-        y_pred = y_pred.cpu().numpy()
-    
-    y_pred_binary = (y_pred >= threshold).astype(int)
-    #print(y_pred_binary)
-
-    y_test = y_test.cpu().numpy()
-    ts = threat_score(y_test, y_pred_binary)
-    accuracy = accuracy_score(y_test, y_pred_binary)
-    precision = precision_score(y_test, y_pred_binary, zero_division=0)
-    recall = recall_score(y_test, y_pred_binary, zero_division=0)
-    f1 = f1_score(y_test, y_pred_binary, zero_division=0)
-    
-    tn, fp, fn, tp = confusion_matrix(y_test, y_pred_binary, labels=[0, 1]).ravel()
-    #print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
-
-    return {
-        'name': model.name,
-        'ts': ts,
-        'accuracy': accuracy,
-        'precision': precision,
-        'recall': recall,
-        'f1': f1,
-        'threshold': threshold
-    }

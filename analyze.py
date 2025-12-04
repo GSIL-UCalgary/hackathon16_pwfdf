@@ -6,12 +6,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 from data import PWFDF_Data
-from models.log_reg import Staley2017Model
-from models.mamba import MambaClassifier, HybridMambaLogisticModel
-from models.mp_mamba import MultiPathwayHybridModel_og
-from models.randomforest import RandomForestModel
-from models.TSMixer import TSMixerClassifier
-from train import features
+import data
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -110,8 +105,7 @@ def analyze_individual_predictions(shap_values, X_test, feature_names,
         for j, feature in enumerate(feature_names):
             print(f"  {feature}: {X_test[idx, j]:.4f}")
 
-def analyze_feature_dependencies(shap_values, X_test, feature_names, 
-                               target_features=None):
+def analyze_feature_dependencies(shap_values, X_test, feature_names, target_features=None):
     """Analyze dependencies between features"""
     if target_features is None:
         # Use top 5 most important features
@@ -219,36 +213,32 @@ def comprehensive_shap_analysis(model, X_train, X_test, y_test, feature_names):
     return shap_values, importance_df
 
 def main():
-    data = PWFDF_Data()
+    df_data = PWFDF_Data()
     
-    X_train, y_train, scaler = data.prepare_data_usgs(features, split='Training')
-    X_test, y_test, _ = data.prepare_data_usgs(features, split='Test', scaler=scaler)
+    X_train, y_train, scaler = df_data.prepare_data_usgs(data.all_features, split='Training')
+    X_test, y_test, _ = df_data.prepare_data_usgs(data.all_features, split='Test', scaler=scaler)
     
-    '''
-    numerical_features = [
-        #'UTM_X', 'UTM_Y', 
-        'GaugeDist_m', 
-        'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 
-        'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
-        'ContributingArea_km2', 
-        'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 
-        'Acc030_mm', 'Acc060_mm'
-    ]
-    '''
     input_dim = X_train.shape[1]
 
     n_neg = (y_train == 0).sum()
     n_pos = (y_train == 1).sum()
     pos_weight = n_neg / n_pos
 
+    from models.log_reg import Staley2017Model
+    from models.mamba import MambaClassifier, HybridMambaLogisticModel, ClusteredMambaModel_Flood
+    from models.mp_mamba import MultiPathwayHybridModel_og
+    from models.randomforest import RandomForestModel
+    from models.TSMixer import TSMixerClassifier
+
     #model = MambaClassifier(input_dim=X_train.shape[1]).to(device)
     #model = HybridMambaLogisticModel(numerical_features, input_dim=input_dim, n_layers=1).to(device)
     #model = train_with_normalization(model, X_train, y_train, X_test, y_test)
     #model = RandomForestModel(features, random_state=None)
     #model = TSMixerClassifier(input_dim=input_dim).to(device)
-    model = MultiPathwayHybridModel_og(features=features, pos_weight=pos_weight, d_model=128, n_layers=6).to(device)
+    #model = MultiPathwayHybridModel_og(features=features, pos_weight=pos_weight, d_model=128, n_layers=6).to(device)
+    model = ClusteredMambaModel_Flood(pos_weight, input_dim=input_dim, n_layers=1)
 
-    model_load_path = f"/home/quinn/projects/pwfdf/output/best_models/MultiPathwayHybrid_143_best.pth"
+    model_load_path = f"/home/quinn/projects/pwfdf/output/best_models/ClusteredMamba_Flood_best.pth"
     model.load_state_dict(torch.load(model_load_path))
     
     # SHAP analysis
@@ -256,7 +246,7 @@ def main():
     print("SHAP FEATURE IMPORTANCE ANALYSIS")
     print("="*60)
     
-    shap_values, importance_df = comprehensive_shap_analysis(model, X_train, X_test, y_test, features)
+    shap_values, importance_df = comprehensive_shap_analysis(model, X_train, X_test, y_test, data.all_features)
     
     # Additional insights
     print("\n" + "="*60)

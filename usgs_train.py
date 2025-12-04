@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-from eval import evaluate, compare_params, threat_score
+from eval import evaluate_model, compare_params, threat_score, threshold
 from models.log_reg import Staley2017Model
 
 from data import PWFDF_Data
@@ -54,7 +54,7 @@ def prepare_data(pwfdf_data, duration='15min', split='Training'):
     X = X[mask]
     y = y[mask]
 
-    return torch.Tensor(X).to(device), torch.Tensor(y).to(device)
+    return torch.Tensor(X).to(device).unsqueeze(1), torch.Tensor(y).to(device)
 
 def train(model, X_train, y_train, X_test, y_test, max_iter=1000):    
     print(f"Training on {len(y_train)} samples")
@@ -85,15 +85,16 @@ def train(model, X_train, y_train, X_test, y_test, max_iter=1000):
     def closure():
         nonlocal iteration
         optimizer.zero_grad()
-        y_pred = model(X_train)
+        y_pred, _ = model(X_train)
         loss = criterion(y_pred, y_train)
         loss.backward()
         
         if iteration % 10 == 0:
             model.eval()
             with torch.no_grad():
-                y_test_pred = model(X_test).cpu().numpy().flatten()
-            test_ts = threat_score(y_test.cpu().numpy(), y_test_pred)
+                y_test_pred, _ = model(X_test)
+                y_test_pred_binary = (y_test_pred >= threshold).cpu().numpy().flatten().astype(int)
+            test_ts = threat_score(y_test.cpu().numpy(), y_test_pred_binary)
             model.train()
             
             print(f"Iter {iteration}: Loss={loss.item():.6f}, Test TS={test_ts:.4f}")
@@ -141,7 +142,18 @@ def main():
         
         print(f"\n{'='*50}")
         print(f"Test Set Results for {model.duration}")
-        evaluate(model, X_test, y_test)
+
+        results = evaluate_model(model, X_test, y_test)
+        print(f"{'='*50}")
+        print(f"Test Results")
+        print(f"Threat Score: {results['ts']:.4f}")
+        print(f"Accuracy:     {results['accuracy']:.4f}")
+        print(f"Precision:    {results['precision']:.4f}")
+        print(f"Recall:       {results['recall']:.4f}")
+        print(f"F1 Score:     {results['f1']:.4f}")
+        print(f"Threshold:    {results['threshold']:.3f}")
+        #print(f"TP={tp}, TN={tn}, FP={fp}, FN={fn}")
+
         print(f"\nLearned Parameters:")
         print(f"  B  = {model.B.item():.4f}")
         print(f"  Ct = {model.Ct.item():.4f}")

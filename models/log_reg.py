@@ -53,6 +53,8 @@ class Staley2017Model(nn.Module):
         Args:
             x: Full feature matrix (batch_size, num_features)
         """
+        x = x[:, 0, :]
+
         # Extract the specific features we need
         T = x[:, self.T_idx]
         F = x[:, self.F_idx]

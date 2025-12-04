@@ -3,6 +3,8 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mamba_ssm import Mamba
 
+from eval import threat_score_loss
+
 class MambaClassifier(nn.Module):
     def __init__(self, input_dim=16, d_model=64, n_layers=4, dropout=0.1):
         super().__init__()
@@ -55,29 +57,6 @@ class MambaClassifier(nn.Module):
         x = x.mean(dim=1)  # (batch_size, d_model)
         
         return self.output_head(x).squeeze(-1)
-
-def threat_score_loss(outputs, targets, epsilon=1e-6):
-    """
-    Calculates the negative of the differentiable Threat Score (Jaccard Index/IoU).
-    Outputs are logits, targets are 0 or 1.
-    """
-    targets = targets.float() # Ensure targets are float
-    
-    # 1. Convert logits to probabilities
-    probs = torch.sigmoid(outputs)
-    
-    # 2. Calculate differentiable components
-    TP_approx = torch.sum(targets * probs)
-    FN_approx = torch.sum(targets * (1 - probs))
-    FP_approx = torch.sum((1 - targets) * probs)
-    
-    # 3. Threat Score (TS) calculation
-    denominator = TP_approx + FN_approx + FP_approx + epsilon
-    threat_score = TP_approx / denominator
-    
-    # 4. Loss is the negative of the metric
-    loss = -threat_score
-    return loss
 
 class HybridMambaLogisticModel(nn.Module):
     def __init__(self, features, pos_weight, input_dim=16, d_model=64, n_layers=4, dropout=0.1):
@@ -994,3 +973,219 @@ class HybridGroupedSpatialMambaModel2(nn.Module):
             loss = None
         
         return probs, loss
+
+from data import all_features
+
+class SimpleMamba(nn.Module):
+    """
+    Simple Mamba model that uses only 4 features and node 0.
+    Features: PropHM23, dNBR/1000, KF, Acc015_mm
+    """
+    def __init__(self, d_model=64, d_state=16, d_conv=4, expand=2,):
+        super().__init__()
+        self.name = 'SimpleMamba'
+        limited_features = ['PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'GaugeDist_m', 'ContributingArea_km2']
+        self.feature_indices = [all_features.index(feat) for feat in limited_features if feat in all_features]
+
+        self.n_features = len(self.feature_indices)  # PropHM23, dNBR/1000, KF, Acc015_mm
+        self.d_model = d_model
+        
+        # Input projection
+        self.input_proj = nn.Linear(self.n_features, d_model)
+        self.norm1 = nn.LayerNorm(d_model)
+        
+        # Mamba block
+        self.mamba = Mamba(d_model=d_model, d_state=d_state, d_conv=d_conv, expand=expand)
+        self.norm2 = nn.LayerNorm(d_model)
+        
+        # Feedforward network
+        self.ff = nn.Sequential(
+            nn.Linear(d_model, d_model * 2),
+            nn.GELU(),
+            #nn.Dropout(0.1),
+            nn.Linear(d_model * 2, d_model)
+        )
+        self.norm3 = nn.LayerNorm(d_model)
+        
+        self.output = nn.Sequential(
+            nn.Linear(d_model, d_model // 2),
+            nn.GELU(),
+            nn.Dropout(0.1),
+            nn.Linear(d_model // 2, 1),
+            nn.Sigmoid()
+        )
+        
+        self.loss_fn = nn.BCELoss()
+    
+    def forward(self, x, targets=None):
+        """
+        Args:
+            x: Input tensor of shape (batch, 4) - only node 0 features
+               Features in order: PropHM23, dNBR/1000, KF, Acc015_mm
+            targets: Target tensor of shape (batch,)
+        
+        Returns:
+            If targets provided: (loss, predictions)
+            If targets None: predictions only
+        """
+        x = x[:, :, self.feature_indices]
+        
+        #x = x.unsqueeze(1)
+
+        # Input projection
+        x = self.input_proj(x)  # (batch, 1, d_model)
+        x = self.norm1(x)
+        
+        # Mamba processing with residual
+        #x = x + self.mamba(x)
+        #x = self.norm2(x)
+        
+        # Feedforward with residual
+        x = x + self.ff(x)
+        x = self.norm3(x)
+        
+        # Remove sequence dimension
+        x = x.squeeze(1)  # (batch, d_model)
+        
+        # Output prediction
+        probs = self.output(x)  # (batch, n_classes)
+        probs = probs[:, 0].squeeze(-1)  # (batch,)
+        
+        # Calculate loss if targets provided
+        if targets is not None:
+            loss = self.loss_fn(probs, targets)
+            return probs, loss
+        
+        return probs, None
+    
+from data import all_features
+from eval import ThreatScoreLoss
+
+class ClusteredMambaModel_Flood(nn.Module):
+    def __init__(self, pos_weight, input_dim=16, d_model=64, n_layers=4, dropout=0.1, n_clusters=1000):
+        super().__init__()
+        self.d_model = d_model
+        self.name = 'ClusteredMamba_Flood'
+
+        self.non_rainfall_features = [
+            #'UTM_X', 'UTM_Y', 
+            'GaugeDist_m', 
+            'StormDur_H', 
+            #'StormAccum_mm', 
+            'StormAvgI_mm/h', 
+            'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h',
+            'ContributingArea_km2', 
+            'PropHM23', 'dNBR/1000', 'KF', 
+            #'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
+        ]
+
+        self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
+
+        self.n_clusters = n_clusters
+        
+        # Get indices for rainfall vs non-rainfall features
+        self.rainfall_indices = [all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
+        self.non_rainfall_indices = [all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
+        #self.non_rainfall_indices = [i for i in range(len(all_features)) if i not in self.rainfall_indices]
+
+        # --- 1. Clustering Projections ---
+        # Instead of explicit clustering, we use a learned projection to a cluster space.
+        
+        # Non-Rainfall Clustering Projection
+        self.non_rainfall_dim = len(self.non_rainfall_indices)
+        if self.non_rainfall_dim > 0:
+            self.non_rainfall_cluster_proj = nn.Linear(self.non_rainfall_dim, n_clusters)
+            
+        # Rainfall Clustering Projection
+        self.rainfall_dim = len(self.rainfall_indices)
+        if self.rainfall_dim > 0:
+            self.rainfall_cluster_proj = nn.Linear(self.rainfall_dim, n_clusters)
+        
+        # --- 2. Mamba Pathways ---
+        
+        # Mamba pathway for non-rainfall (takes n_clusters input)
+        self.mamba_input_proj_non_rain = nn.Linear(n_clusters, d_model)
+        
+        # Mamba pathway for rainfall (takes n_clusters input)
+        self.mamba_input_proj_rain = nn.Linear(n_clusters, d_model)
+        
+        # Mamba backbone (shared)
+        # Note: Mamba (SSM) layers excel at capturing sequential/temporal dependencies.
+        self.mamba_layers = nn.ModuleList([
+            Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2)
+            for _ in range(n_layers)
+        ])
+        
+        # Layer normalization for Mamba
+        self.mamba_norms = nn.ModuleList([
+            nn.LayerNorm(d_model)
+            for _ in range(n_layers)
+        ])
+        
+        # --- 3. Combined Output Head ---
+        # Combined output: Mamba output (d_model) + Mamba_Rain output (d_model)
+        self.combined_head = nn.Sequential(
+            nn.Linear(d_model + d_model, 32),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(32, 1),
+            #nn.Sigmoid()
+        )
+        
+        self.dropout = nn.Dropout(dropout)
+        self.loss_fn = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]))
+        #self.loss_fn = ThreatScoreLoss()
+        
+    def split_features(self, x):
+        """Split input into rainfall and non-rainfall features"""
+        # x shape: (batch_size, num_features)
+        non_rainfall_x = x[:, 0, self.non_rainfall_indices]
+        rainfall_x = x[:, 0, self.rainfall_indices]
+        return non_rainfall_x, rainfall_x
+    
+    def _mamba_forward(self, x, input_proj):
+        # x shape: (batch_size, n_clusters)
+        
+        # Mamba requires an input sequence, so we unsqueeze to create a sequence of length 1
+        x = x.unsqueeze(1)  # (batch_size, 1, n_clusters)
+        x = input_proj(x)   # (batch_size, 1, d_model)
+        
+        for mamba_layer, norm in zip(self.mamba_layers, self.mamba_norms):
+            residual = x
+            x = mamba_layer(x)
+            x = norm(x)
+            x = self.dropout(x)
+            # The residual connection is essential in deep networks.
+            x = residual + x  # Residual connection
+        
+        x = x.mean(dim=1)  # Pool across the sequence dimension (length 1) -> (batch_size, d_model)
+        return x
+    
+    def forward(self, x, target=None):
+        non_rainfall_x_raw, rainfall_x_raw = self.split_features(x)
+        
+        # 1. Clustering Step (Projection)
+        # Non-Rainfall: (batch_size, non_rainfall_dim) -> (batch_size, n_clusters)
+        non_rainfall_clustered = self.non_rainfall_cluster_proj(non_rainfall_x_raw)
+        
+        # Rainfall: (batch_size, rainfall_dim) -> (batch_size, n_clusters)
+        rainfall_clustered = self.rainfall_cluster_proj(rainfall_x_raw)
+        
+        # 2. Mamba Forward Pass on Clustered Data
+        # Use the same Mamba layers for both, but different input projections.
+        mamba_out_non_rain = self._mamba_forward(non_rainfall_clustered, self.mamba_input_proj_non_rain)
+        mamba_out_rain = self._mamba_forward(rainfall_clustered, self.mamba_input_proj_rain)
+        
+        # 3. Combine and Predict
+        combined = torch.cat([mamba_out_non_rain, mamba_out_rain], dim=1) # (batch_size, 2 * d_model)
+        
+        # Final prediction
+        output = self.combined_head(combined)
+        output = output.squeeze(-1)
+        probs = torch.sigmoid(output)
+
+        if target is not None:
+            loss = self.loss_fn(output, target)
+            return probs, loss
+
+        return probs, None

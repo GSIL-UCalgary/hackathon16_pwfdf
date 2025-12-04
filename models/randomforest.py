@@ -6,6 +6,8 @@ import torch.nn as nn
 
 from eval import threat_score
 
+from data import all_features
+
 class RandomForestModel(nn.Module):
     """
     Random Forest wrapper that uses the same 4 features as Staley2017Model:
@@ -15,12 +17,17 @@ class RandomForestModel(nn.Module):
     - R (Rainfall): Accumulated rainfall (duration-dependent)
     """
     
-    def __init__(self, features, duration='15min', n_estimators=100, max_depth=None, 
+    def __init__(self, duration='15min', n_estimators=100, max_depth=None, 
                  min_samples_split=2, min_samples_leaf=1, max_features='sqrt',
                  random_state=None):
         super().__init__()
         self.name = 'RandomForest'
-        self.features = features
+
+        limited_features = ['PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm']
+        #limited_features = ['Peak_I15_mm/h', 'StormAccum_mm', 'StormDur_H', 'PropHM23', 'ContributingArea_km2', 'KF', 'dNBR/1000']
+        self.feature_indices = [all_features.index(feat) for feat in limited_features if feat in all_features]
+
+        '''
         self.duration = duration
         self.spatial = False
         
@@ -38,10 +45,11 @@ class RandomForestModel(nn.Module):
 
         feature_name = duration_map[duration]
         self.R_idx = features.index(feature_name) if feature_name in features else 0 # SETS TO 0 IF THAT FEATURE IS NOT PASSED IN
-        
+        '''
+
         # Store the 4 feature indices
-        self.feature_indices = [self.T_idx, self.F_idx, self.S_idx, self.R_idx]
-        self.feature_names = ['PropHM23', 'dNBR/1000', 'KF', f'Acc_{duration}']
+        #self.feature_indices = [self.T_idx, self.F_idx, self.S_idx, self.R_idx]
+        self.feature_names = limited_features
         
         # Initialize sklearn Random Forest
         self.rf = RandomForestClassifier(
@@ -76,13 +84,8 @@ class RandomForestModel(nn.Module):
         else:
             x_np = x
         
-        # Extract only the 4 features we need
-        x_selected = x_np[:, self.feature_indices]
-        
-        # Get probabilities for positive class
+        x_selected = x_np[:, 0, self.feature_indices]
         probs = self.rf.predict_proba(x_selected)[:, 1]
-        
-        # Convert back to torch tensor
         return torch.tensor(probs, dtype=torch.float32), None
     
     def fit(self, X, y):
@@ -104,9 +107,7 @@ class RandomForestModel(nn.Module):
         else:
             y_np = y
         
-        # Extract only the 4 features
-        X_selected = X_np[:, self.feature_indices]
-        
+        X_selected = X_np[:, 0, self.feature_indices]
         self.rf.fit(X_selected, y_np)
         self.is_fitted = True
         
@@ -120,51 +121,8 @@ class RandomForestModel(nn.Module):
         importances = self.rf.feature_importances_
         return dict(zip(self.feature_names, importances))
 
-
-class RandomForestModelOptimized(RandomForestModel):
-    """
-    Optimized Random Forest using same 4 features as Staley2017Model.
-    """
-    
-    def __init__(self, features, duration='15min', random_state=None):
-        super().__init__(
-            features=features,
-            duration=duration,
-            n_estimators=200,
-            max_depth=15,
-            min_samples_split=10,
-            min_samples_leaf=5,
-            max_features='sqrt',
-            random_state=random_state
-        )
-        self.name = 'RandomForest_Optimized'
-
-
-def train_random_forest(model, input_data, seed, max_iter=None):
-    """
-    Training function for Random Forest models.
-    
-    Args:
-        model: RandomForestModel instance
-        X_train: Training features
-        y_train: Training labels
-        X_test: Test features (for evaluation)
-        y_test: Test labels (for evaluation)
-        seed: Random seed
-        max_iter: Ignored (for compatibility with other training functions)
-    
-    Returns:
-        Trained model
-    """
+def train_random_forest(model: RandomForestModel, input_data):
     X_train, y_train, X_val, y_val = input_data
-
     model.fit(X_train, y_train)
-    
-    #model.eval()
-    #with torch.no_grad():
-    #    y_test_pred = model(X_val).cpu().numpy()
-    
-    #test_ts = threat_score(y_val.cpu().numpy(), y_test_pred)
-    #print(f"  Test Threat Score: {test_ts:.4f}")
-    
+    print(model.get_feature_importance())
     return model
