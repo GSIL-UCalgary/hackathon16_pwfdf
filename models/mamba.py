@@ -104,15 +104,15 @@ class HybridMambaLogisticModel(nn.Module):
             'dropout': dropout
         }
 
-        self.feature_indices = [globals.all_features.index(feat) for feat in features if feat in all_features]
+        self.feature_indices = [globals.all_features.index(feat) for feat in features if feat in globals.all_features]
         self.input_dim = len(self.feature_indices)
         self.features = features
 
         self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
         self.non_rainfall_features = [feat for feat in self.features if feat not in self.rainfall_features]
 
-        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
-        self.non_rainfall_indices = [globals.all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
+        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in globals.all_features]
+        self.non_rainfall_indices = [globals.all_features.index(feat) for feat in self.non_rainfall_features if feat in globals.all_features]
     
         self.mamba_input_proj = nn.Linear(1, d_model)
         
@@ -1133,11 +1133,14 @@ class WeightedSumHead(nn.Module):
 # output = self.combined_head(mamba_out_non_rain, mamba_out_rain, missing_data_out)
 
 class ClusteredMambaModel_Flood(nn.Module):
-    def __init__(self, pos_weight, input_dim=16, d_model=64, n_layers=4, dropout=0.1, n_clusters=1000):
+    def __init__(self, features, pos_weight, d_model=64, n_layers=4, dropout=0.1, n_clusters=1000):
         super().__init__()
         self.d_model = d_model
         self.name = 'ClusteredMamba_Flood'
         self.n_clusters = n_clusters
+        self.hyperparameters = {
+            "d_model": 64,
+        }
 
         self.non_rainfall_features = [
             #'UTM_X', 'UTM_Y', 
@@ -1153,9 +1156,7 @@ class ClusteredMambaModel_Flood(nn.Module):
 
         self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
 
-        
-
-        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
+        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in globals.all_features]
         self.non_rainfall_indices = [globals.all_features.index(feat) for feat in self.non_rainfall_features if feat in globals.all_features]
 
         # --- 1. Clustering Projections ---

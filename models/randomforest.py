@@ -100,3 +100,21 @@ def train_random_forest(model: RandomForestModel, input_data):
     model.fit(X_train, y_train)
     print(model.get_feature_importance())
     return model
+
+class RandomModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.name = 'RandomModel'
+        self.loss_fn = nn.BCELoss()
+
+
+    def forward(self, X, y):
+        batch_size = X.size(0)
+        output_shape = (batch_size, 1)
+        output = torch.rand(output_shape).squeeze(-1).to(globals.device)
+
+        if y is not None:
+            loss = self.loss_fn(output, y)
+            return output, loss
+
+        return output, 0

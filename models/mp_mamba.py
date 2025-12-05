@@ -24,7 +24,7 @@ class MultiPathwayHybridModel_og(nn.Module):
         }
 
         # --- 1. Define Feature Groups ---
-        self.feature_groups = {
+        self.feature_groups_old = {
             #'Fire': ['Fire_ID', 'Fire_SegID'],
             'Terrain': ['PropHM23', 'ContributingArea_km2'],
             'Burn': ['dNBR/1000', 'PropHM23'],
@@ -33,16 +33,33 @@ class MultiPathwayHybridModel_og(nn.Module):
             'Rain_Intensity': ['Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'StormAvgI_mm/h'],
             'Storm': ['StormDur_H', 'GaugeDist_m']
         }
+
+        self.feature_groups = {
+            #'Fire': ['Fire_ID', 'Fire_SegID'],
+            'Fire': ['Latitude', 'Longitude'],
+            'Terrain': ['PropHM23', 'ContributingArea_km2', 'Area_x_Distance', 'Area_per_Distance'],
+            'Burn': ['dNBR/1000', 'PropHM23', 'Burn_x_Peak', 'Burn_x_Accum', 'Burn_x_KF', 
+                    'HighMod_x_Peak', 'High_Burn_Severity'],
+            'Soil': ['KF', 'KF_x_I15', 'KF_x_I30', 'KF_x_Accum', 'Erosion_Potential'],
+            'Rain_Accumulation': ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm',
+                                'Early_to_Total_Ratio', 'Early_to_Late_Ratio'],
+            'Rain_Intensity': ['Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'StormAvgI_mm/h',
+                            'I15_to_Duration', 'I30_to_Duration', 'Peak_to_Avg_Ratio',
+                            'Exceeds_I15_Threshold', 'Exceeds_I30_Threshold', 'Storm_Energy'],
+            'Storm': ['StormDur_H', 'GaugeDist_m', 'StormMonth', 'Is_Summer', 'Is_Monsoon']
+        }
         
         # --- 2. Determine Feature Indices and Pathway Dimensions ---
         self.group_indices = {}
         self.pathway_modules = nn.ModuleDict()
-        
+
         for group_name, group_list in self.feature_groups.items():
             indices = [globals.all_features.index(feat) for feat in group_list if feat in features]
             self.group_indices[group_name] = indices
             input_dim = len(indices)
             
+            print(f"{group_name}: {input_dim}")
+
             # Define specialized pathways for each group
             if group_name in ['Fire', 'Terrain', 'Soil', 'Storm']:
                 # Simple MLP/Linear layer for static/simple features
@@ -81,7 +98,7 @@ class MultiPathwayHybridModel_og(nn.Module):
         # Calculate the total concatenated dimension for the combined head
         # Fire (8) + Terrain (8) + Burn (4) + Soil (8) + Rain_Accumulation (d_model=64) + Rain_Intensity (d_model=64) + Storm (8)
         self.output_dim_map = {
-            'Fire': 0, 'Terrain': 4, 'Burn': 4, 'Soil': 4, 
+            'Fire': 4, 'Terrain': 4, 'Burn': 4, 'Soil': 4, 
             'Rain_Accumulation': d_model, 'Rain_Intensity': d_model, 'Storm': 4
         }
         total_combined_dim = sum(self.output_dim_map.values())

@@ -18,7 +18,6 @@ from eval import evaluate_model, threat_score
 import logging
 
 #torch.set_default_device('cuda') 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 USE_WANDB = True
 WANDB_PROJECT='PWFDF'
 
@@ -229,7 +228,7 @@ from models.mamba import HybridMambaLogisticModel, MambaClassifier, ClusteredMam
 from models.mp_mamba import MultiPathwayHybridModel_og
 #from models.transformer import TransformerClassifier, SimpleTransformerClassifier, AttentionClassifier
 #from models.TSMixer import TSMixerClassifier, BestSimpleModel, Test, StaticMLPModel
-from models.randomforest import RandomForestModel, train_random_forest
+from models.randomforest import RandomForestModel, train_random_forest, RandomModel
 #from models.graph_mamba import GraphMambaModel, KNNMambaClassifier
 #from models.fusion_mamba import MultiBranchMamba
 #from models.graph import FixedNeighborhoodGNN
@@ -250,13 +249,13 @@ def load_data():
     X_test, y_test, _ = df_data.prepare_data_usgs(globals.all_features, split='Test', scaler=scaler)
     X_test, X_val, y_test, y_val = train_test_split(X_test, y_test, test_size=0.5, random_state=42, stratify=y_test)
 
-    X_train = torch.Tensor(X_train).to(device)
-    X_val = torch.Tensor(X_val).to(device)
-    X_test = torch.Tensor(X_test).to(device)
+    X_train = torch.Tensor(X_train).to(globals.device)
+    X_val = torch.Tensor(X_val).to(globals.device)
+    X_test = torch.Tensor(X_test).to(globals.device)
 
-    y_train = torch.Tensor(y_train).to(device)
-    y_val = torch.Tensor(y_val).to(device)
-    y_test = torch.Tensor(y_test).to(device)
+    y_train = torch.Tensor(y_train).to(globals.device)
+    y_val = torch.Tensor(y_val).to(globals.device)
+    y_test = torch.Tensor(y_test).to(globals.device)
 
     for i, feature in enumerate(globals.all_features):
         print(f"{feature}: {X_train[0][0][i]}")
@@ -296,20 +295,21 @@ def compare_all_approaches():
 
 
     models = [
+        lambda: RandomModel(),
         lambda: Staley2017Model(duration='15min'),
         #lambda: SpatialMambaHybridModel(r_features, pos_weight),
         #lambda: SpatialMambaContextModel(r_features, pos_weight, 5 + 1)
         lambda: RandomForestModel(used_features, random_state=None),
         lambda: TabNetModel(used_features),
+        lambda: MultiPathwayHybridModel_og(used_features, d_model=128, n_layers=6, dropout=0.1),
         #lambda: MambaClassifier(used_features, d_model=16, d_state=64, d_conv=4, expand=2, n_layers=6, dropout=0.2),
         #lambda: AttentionClassifier(used_features, d_model=128, n_heads=8, n_layers=3, dropout=0.3)
         lambda: SimpleModel(used_features, {"layers": 4, "d_model": 32, "dropout": 0.1, "hidden_dim": 8, "pos_weight": pos_weight,}),
         lambda: SimpleAttention(used_features, {"layers": 4, "d_model": 64, "dropout": 0.1, "hidden_dim": 8, "pos_weight": pos_weight,}),
         lambda: SimpleMamba(used_features, {"layers": 6, "d_model": 64, "dropout": 0.1, "hidden_dim": 8, "pos_weight": pos_weight,}),
         #lambda: FeatureGroupModel(pos_weight, d_model=32, dropout=0.1),
-        #lambda: HybridMambaLogisticModel(used_features, pos_weight, d_model=128,  d_state=16, d_conv=4, expand=2, n_layers=4, dropout=0.1),
-        #lambda: MultiPathwayHybridModel_og(used_features, d_model=128, n_layers=6, dropout=0.1),
-        #lambda: ClusteredMambaModel_Flood(pos_weight, input_dim=input_dim, n_layers=1),
+        lambda: HybridMambaLogisticModel(used_features, pos_weight, d_model=128,  d_state=16, d_conv=4, expand=2, n_layers=4, dropout=0.1),
+        lambda: ClusteredMambaModel_Flood(used_features, pos_weight, d_model=64, n_layers=4, dropout=0.1, n_clusters=1000),
         #lambda: SimpleTransformerClassifier(),
         #lambda: HybridMambaFeatureGroups(features, pos_weight),
         #lambda: HybridGroupedSpatialMambaModel(features=features, spatial_dim=16),
@@ -347,7 +347,7 @@ def compare_all_approaches():
     for seed in tqdm(seeds, desc="Seeds", position=0):
         for make_model in models:
             setup_seed(seed)
-            model = make_model().to(device)
+            model = make_model().to(globals.device)
 
             if model.name == 'Staley' or model.name == 'LogisticRegression':
                 model = train_logistic(model, input_data, seed, max_iter=epochs)
@@ -355,6 +355,8 @@ def compare_all_approaches():
                 model = train_random_forest(model, input_data)
             elif model.name == 'TabNetModel':
                 model = train_tabnet(model, input_data)
+            elif model.name == 'RandomModel':
+                pass
             else:
                 model = train_mamba(seed, model, input_data, max_epochs=epochs)
 
@@ -591,7 +593,7 @@ def do_hyperparameter():
         # Other models (Staley2017Model, RandomForestModel) do not have hyperparameters defined here
     }
 
-    seeds = [0]
+    seeds = [42]
     epochs = 500
     all_best_hps = {}
 
@@ -618,7 +620,7 @@ def do_hyperparameter():
 
 if __name__ == "__main__":
 
-    output_file = './output/logs/hps_sweep2.txt'
+    output_file = './output/logs/tabnet.txt'
 
     # Setup logging to both console and file
     logging.basicConfig(
