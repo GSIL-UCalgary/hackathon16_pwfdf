@@ -3,22 +3,24 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
+import globals
+
 class Staley2017Model(nn.Module):
     """
     Staley et al. (2017) logistic regression model:
     p = 1 / (1 + exp(-(B + Ct*T*R + Cf*F*R + Cs*S*R)))
     """
     
-    def __init__(self, features, duration='15min'):
+    def __init__(self, duration='15min'):
         super().__init__()
         self.duration = duration
         self.name = 'Staley'
         self.spatial = False
         
         # Feature indices for T, F, S
-        self.T_idx = features.index('PropHM23')
-        self.F_idx = features.index('dNBR/1000')
-        self.S_idx = features.index('KF') 
+        self.T_idx = globals.all_features.index('PropHM23')
+        self.F_idx = globals.all_features.index('dNBR/1000')
+        self.S_idx = globals.all_features.index('KF') 
         
         # Rainfall index based on duration
         duration_map = {
@@ -28,7 +30,7 @@ class Staley2017Model(nn.Module):
         }
 
         feature_name = duration_map[duration]
-        self.R_idx = features.index(feature_name) if feature_name in features else 0 # SETS TO 0 IF THAT FEATURE IS NOT PASSED IN
+        self.R_idx = globals.all_features.index(feature_name) if feature_name in globals.all_features else 0 # SETS TO 0 IF THAT FEATURE IS NOT PASSED IN
 
         # Initialize all parameters at 0
         #self.B = nn.Parameter(torch.tensor([0.0]))

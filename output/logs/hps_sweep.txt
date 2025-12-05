@@ -1,0 +1,43 @@
+
+--- Starting Sweep for SimpleMamba ---
+
+--- Starting Sweep for SimpleMamba ---
+
+--- Starting Sweep for SimpleMamba ---
+
+--- Starting Sweep for SimpleMamba ---
+New Best TS: 0.5385 with HPs: {'layers': 2, 'd_model': 16, 'dropout': 0.1}
+New Best TS: 0.5517 with HPs: {'layers': 2, 'd_model': 16, 'dropout': 0.2}
+New Best TS: 0.5632 with HPs: {'layers': 2, 'd_model': 32, 'dropout': 0.1}
+New Best TS: 0.5714 with HPs: {'layers': 2, 'd_model': 64, 'dropout': 0.1}
+New Best TS: 0.5824 with HPs: {'layers': 4, 'd_model': 16, 'dropout': 0.1}
+New Best TS: 0.6000 with HPs: {'layers': 4, 'd_model': 64, 'dropout': 0.1}
+New Best TS: 0.6118 with HPs: {'layers': 6, 'd_model': 64, 'dropout': 0.1}
+Found BEST HPs for SimpleMamba: {'layers': 6, 'd_model': 64, 'dropout': 0.1, 'pos_weight': tensor(3.5693, device='cuda:0')}
+
+--- Starting Sweep for SimpleModel ---
+New Best TS: 0.4331 with HPs: {'layers': 4, 'd_model': 16, 'dropout': 0.1}
+New Best TS: 0.4560 with HPs: {'layers': 4, 'd_model': 16, 'dropout': 0.3}
+New Best TS: 0.4831 with HPs: {'layers': 4, 'd_model': 32, 'dropout': 0.1}
+Found BEST HPs for SimpleModel: {'layers': 4, 'd_model': 32, 'dropout': 0.1, 'pos_weight': tensor(3.5693, device='cuda:0')}
+
+--- Starting Sweep for SimpleAttention ---
+New Best TS: 0.5000 with HPs: {'layers': 2, 'd_model': 32, 'dropout': 0.1}
+New Best TS: 0.5088 with HPs: {'layers': 2, 'd_model': 64, 'dropout': 0.1}
+New Best TS: 0.5238 with HPs: {'layers': 4, 'd_model': 64, 'dropout': 0.1}
+Found BEST HPs for SimpleAttention: {'layers': 4, 'd_model': 64, 'dropout': 0.1, 'pos_weight': tensor(3.5693, device='cuda:0')}
+
+--- Final Training for SimpleMamba with Best HPs ---
+Final Model: SimpleMamba | Average Test TS: 0.5714
+
+--- Final Training for SimpleModel with Best HPs ---
+Final Model: SimpleModel | Average Test TS: 0.4141
+
+--- Final Training for SimpleAttention with Best HPs ---
+Final Model: SimpleAttention | Average Test TS: 0.4771
+
+
+========================= FINAL LEADERBOARD =========================
+SimpleMamba               | Avg Test TS: 0.5714
+SimpleAttention           | Avg Test TS: 0.4771
+SimpleModel               | Avg Test TS: 0.4141

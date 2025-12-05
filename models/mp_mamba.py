@@ -3,22 +3,29 @@ import torch.nn as nn
 from mamba_ssm import Mamba 
 
 from models.mamba import threat_score_loss
-from eval import ThreatScoreLoss
+from eval import ThreatScoreLoss, ComboLoss
+import globals
 
 class MultiPathwayHybridModel_og(nn.Module):
-    def __init__(self, features, input_dim=16, d_model=64, n_layers=4, dropout=0.1):
+    def __init__(self, features, d_model=64, n_layers=4, dropout=0.1):
         super().__init__()
-        self.input_dim = input_dim
         self.d_model = d_model
         self.duration = '15min'
         self.name = 'MultiPathwayHybrid'
         self.spatial = False
-        
-        self.all_features = features
-        
+            
+        self.hyperparameters = {
+            'd_model': d_model,
+            #'d_state': d_state,
+            #'d_conv': d_conv,
+            #'expand': expand,
+            'n_layers': n_layers,
+            'dropout': dropout
+        }
+
         # --- 1. Define Feature Groups ---
         self.feature_groups = {
-            'Fire': ['Fire_ID', 'Fire_SegID'],
+            #'Fire': ['Fire_ID', 'Fire_SegID'],
             'Terrain': ['PropHM23', 'ContributingArea_km2'],
             'Burn': ['dNBR/1000', 'PropHM23'],
             'Soil': ['KF'],
@@ -32,7 +39,7 @@ class MultiPathwayHybridModel_og(nn.Module):
         self.pathway_modules = nn.ModuleDict()
         
         for group_name, group_list in self.feature_groups.items():
-            indices = [self.all_features.index(feat) for feat in group_list if feat in self.all_features]
+            indices = [globals.all_features.index(feat) for feat in group_list if feat in features]
             self.group_indices[group_name] = indices
             input_dim = len(indices)
             
@@ -54,7 +61,7 @@ class MultiPathwayHybridModel_og(nn.Module):
             elif group_name in ['Rain_Accumulation', 'Rain_Intensity']:
                 # Mamba pathway for sequence-like/complex time-series features
                 # The Mamba layer will take the input dim and project to d_model, then process
-                mamba_input_proj = nn.Linear(input_dim, d_model)
+                mamba_input_proj = nn.Linear(1, d_model)
                 mamba_layers = nn.ModuleList([
                     Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2,) 
                     for _ in range(n_layers)
@@ -74,7 +81,7 @@ class MultiPathwayHybridModel_og(nn.Module):
         # Calculate the total concatenated dimension for the combined head
         # Fire (8) + Terrain (8) + Burn (4) + Soil (8) + Rain_Accumulation (d_model=64) + Rain_Intensity (d_model=64) + Storm (8)
         self.output_dim_map = {
-            'Fire': 4, 'Terrain': 4, 'Burn': 4, 'Soil': 4, 
+            'Fire': 0, 'Terrain': 4, 'Burn': 4, 'Soil': 4, 
             'Rain_Accumulation': d_model, 'Rain_Intensity': d_model, 'Storm': 4
         }
         total_combined_dim = sum(self.output_dim_map.values())
@@ -85,18 +92,19 @@ class MultiPathwayHybridModel_og(nn.Module):
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(d_model, 1),
-            nn.Sigmoid() #for binary classification if needed
+            #nn.Sigmoid() #for binary classification if needed
         )
         
         self.dropout = nn.Dropout(dropout)
-        self.loss_fn = ThreatScoreLoss()
+        #self.loss_fn = ThreatScoreLoss()
+        self.loss_fn = ComboLoss()
         #self.loss_fn = nn.BCELoss()
 
     def _mamba_forward(self, x, pathway_modules):
         """Dedicated forward pass for Mamba pathways."""
         
         # x shape: (batch_size, feature_dim)
-        x = x.unsqueeze(1) # (batch_size, 1, feature_dim) - Mamba expects a sequence dimension
+        x = x.unsqueeze(-1) # (batch_size, 1, feature_dim) - Mamba expects a sequence dimension
         x = pathway_modules['proj'](x) # (batch_size, 1, d_model)
         
         # Mamba layers
@@ -111,7 +119,6 @@ class MultiPathwayHybridModel_og(nn.Module):
         return x
 
     def forward(self, x, target=None):
-        B, N, F = x.shape
         x = x[:, 0, :]
         batch_outputs = []
         
@@ -132,6 +139,7 @@ class MultiPathwayHybridModel_og(nn.Module):
             
         combined = torch.cat(batch_outputs, dim=1)
         output = self.combined_head(combined).squeeze(-1)
+        probs = torch.sigmoid(output)
 
         if target != None:
             #loss = threat_score_loss(output, target)
@@ -139,5 +147,5 @@ class MultiPathwayHybridModel_og(nn.Module):
         else:
             loss = None
 
-        return output, loss
+        return probs, loss
     

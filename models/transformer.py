@@ -195,7 +195,7 @@ class SimpleTransformerClassifier(nn.Module):
             d_model (int): The dimension of the model (input/output of attention).
         """
         super().__init__()
-        self.name = 'CorrectedTransformerClassifier'
+        self.name = 'TFClassifier'
         self.d_model = d_model
         
         # 1. Feature Selection Logic (Matches RandomForestModel)
@@ -297,3 +297,84 @@ class SimpleTransformerClassifier(nn.Module):
             loss = self.loss_fn(logits, target.float())
 
         return probs, loss
+    
+from eval import ComboLoss
+
+class AttentionClassifier(nn.Module):
+    def __init__(self, features, d_model=128, n_heads=8, n_layers=3, dropout=0.3, 
+                 ff_dim=256):
+        super().__init__()
+        self.feature_indices = [all_features.index(feat) for feat in features if feat in all_features]
+        self.hyperparameters = {
+            'd_model': d_model,
+            'n_heads': n_heads,
+            'n_layers': n_layers,
+            'dropout': dropout,
+            'ff_dim': ff_dim
+        }
+        self.input_dim = len(self.feature_indices)
+        self.d_model = d_model
+        self.name = 'Attention'
+        
+        # Project each feature to d_model
+        self.feature_projection = nn.Linear(1, d_model)
+        
+        # Learnable feature embeddings (positional encoding for features)
+        self.feature_embeddings = nn.Parameter(
+            torch.randn(1, self.input_dim, d_model) * 0.02
+        )
+        
+        # Multi-head self-attention layers
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=d_model,
+            nhead=n_heads,
+            dim_feedforward=ff_dim,
+            dropout=dropout,
+            activation='gelu',
+            batch_first=True,
+            norm_first=True  # Pre-norm is more stable
+        )
+        self.transformer = nn.TransformerEncoder(
+            encoder_layer,
+            num_layers=n_layers
+        )
+        
+        # Output head
+        self.output_head = nn.Sequential(
+            nn.Linear(d_model, d_model // 2),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(d_model // 2, 64),
+            nn.GELU(),
+            nn.Dropout(dropout * 0.5),
+            nn.Linear(64, 1)
+        )
+        
+        self.loss_fn = ComboLoss()
+        
+    def forward(self, x, target=None):
+        # x: B, T, F -> take first timestep
+        x = x[:, 0, self.feature_indices]  # B, F
+        batch_size = x.shape[0]
+        
+        # Project each feature independently
+        x = x.unsqueeze(-1)  # B, F, 1
+        x = self.feature_projection(x)  # B, F, d_model
+        
+        # Add feature embeddings (like positional encoding)
+        x = x + self.feature_embeddings
+        
+        # Self-attention across features
+        x = self.transformer(x)  # B, F, d_model
+        
+        # Aggregate: mean pooling over features
+        x = x.mean(dim=1)  # B, d_model
+        
+        # Classification
+        x = self.output_head(x).squeeze(-1)
+        probs = torch.sigmoid(x)
+        
+        if target is not None:
+            loss = self.loss_fn(x, target)
+            return probs, loss
+        return probs, None

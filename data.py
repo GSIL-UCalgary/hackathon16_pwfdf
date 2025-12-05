@@ -5,13 +5,14 @@ import numpy as np
 import pandas as pd
 from pyproj import Proj, transform, Transformer
 
-from sklearn.preprocessing import StandardScaler, LabelEncoder, RobustScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder, RobustScaler, MinMaxScaler
 import geopandas as gpd
 from shapely.geometry import Point
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 
 from graph import create_connectivity_graph
+import globals
 
 # Downloads all of the hazard assessments to dir
 def download_pwfdf_collection():
@@ -91,7 +92,7 @@ def get_usgs_mask(df, duration):
     #mask = ~df.isnull().any(axis=1).values
     return mask
 
-def fill_(df):
+def fill_nan2(df):
     #
     # Filling in NaN values
     #
@@ -125,9 +126,6 @@ def fill_(df):
 
     return df
 
-def fill_nan(df):
-    return df.fillna(-1000)
-
 def normalize(df, scaler=None):
     all_features = list(df.columns)
     features_to_include = [
@@ -139,10 +137,14 @@ def normalize(df, scaler=None):
         'Peak_I30_mm/h',
         'Peak_I60_mm/h',
         'ContributingArea_km2',
-        #'Acc015_mm',
-        #'Acc030_mm',
-        #'Acc060_mm',
-        'KF_Acc015'
+        'Acc015_mm',
+        'Acc030_mm',
+        'Acc060_mm',
+        'KF'
+        'KF_Acc015',
+        'Latitude',
+        'Longitude',
+        'State',
     ]
 
     normalize_features = [f for f in features_to_include if f in all_features]
@@ -150,7 +152,7 @@ def normalize(df, scaler=None):
     # Assuming 'scaler' is None initially (for training set) or an existing scaler (for test set)
     if len(normalize_features) != 0:
         if scaler is None:
-            scaler = StandardScaler()
+            scaler = MinMaxScaler()
             # Fit and transform ONLY the selected columns
             df[normalize_features] = scaler.fit_transform(df[normalize_features])
             print(f"\nNormalized {len(normalize_features)} features (fitted new scaler)")
@@ -158,13 +160,80 @@ def normalize(df, scaler=None):
             # Use provided scaler (for test set)
             # Transform ONLY the selected columns
             df[normalize_features] = scaler.transform(df[normalize_features])
+
             print(f"\nNormalized {len(normalize_features)} features (using provided scaler)")
             
         return df, scaler
     else:
         return df, None
 
-all_features = None
+# Add these to your dataframe BEFORE training
+def engineer_debris_flow_features(df):
+    """Create physics-based features for debris flow prediction"""
+    
+    # Intensity-Duration ratios (critical for debris flows)
+    df['I15_to_Duration'] = df['Peak_I15_mm/h'] / (df['StormDur_H'] + 0.1)
+    df['I30_to_Duration'] = df['Peak_I30_mm/h'] / (df['StormDur_H'] + 0.1)
+    df['Peak_to_Avg_Ratio'] = df['Peak_I15_mm/h'] / (df['StormAvgI_mm/h'] + 0.1)
+    
+    # Burn severity interactions (fire + rain = debris flow!)
+    df['Burn_x_Peak'] = df['dNBR/1000'] * df['Peak_I15_mm/h']
+    df['Burn_x_Accum'] = df['dNBR/1000'] * df['StormAccum_mm']
+    df['Burn_x_KF'] = df['dNBR/1000'] * df['KF']
+    df['HighMod_x_Peak'] = df['PropHM23'] * df['Peak_I15_mm/h']
+    
+    # KF (soil erodibility) interactions
+    df['KF_x_I15'] = df['KF'] * df['Peak_I15_mm/h']
+    df['KF_x_I30'] = df['KF'] * df['Peak_I30_mm/h']
+    df['KF_x_Accum'] = df['KF'] * df['StormAccum_mm']
+    
+    # Topographic features
+    df['Area_x_Distance'] = df['ContributingArea_km2'] * df['GaugeDist_m']
+    df['Area_per_Distance'] = df['ContributingArea_km2'] / (df['GaugeDist_m'] + 1)
+    
+    # Temporal patterns (early intensity matters!)
+    df['Early_to_Total_Ratio'] = df['Acc015_mm'] / (df['StormAccum_mm'] + 0.1)
+    df['Early_to_Late_Ratio'] = df['Acc015_mm'] / (df['Acc060_mm'] + 0.1)
+    df['Acc_Acceleration'] = (df['Acc015_mm'] - df['Acc030_mm'] + df['Acc060_mm']) / 3
+    
+    # Critical thresholds (debris flows have known intensity thresholds)
+    df['Exceeds_I15_Threshold'] = (df['Peak_I15_mm/h'] > 24).astype(float)
+    df['Exceeds_I30_Threshold'] = (df['Peak_I30_mm/h'] > 20).astype(float)
+    df['High_Burn_Severity'] = (df['dNBR/1000'] > 0.45).astype(float)
+    
+    # Storm energy proxies
+    df['Storm_Energy'] = df['StormAccum_mm'] * df['Peak_I15_mm/h']
+    df['Erosion_Potential'] = df['KF'] * df['Peak_I15_mm/h'] * df['dNBR/1000']
+    
+    # Seasonal patterns
+    df['Is_Summer'] = df['StormMonth'].isin([6, 7, 8]).astype(float)
+    df['Is_Monsoon'] = df['StormMonth'].isin([7, 8, 9]).astype(float)
+    
+    return df
+
+def extract_storm_month(date_str):
+    if pd.isna(date_str):
+        return None
+    
+    date_str = str(date_str).strip()
+    
+    # Check if it's a range format (e.g., "9/10-9/12/2002")
+    if '-' in date_str and '/' in date_str:
+        # It's likely a date range like "9/10-9/12/2002"
+        start_date = date_str.split('-')[0].strip()
+        
+        # If start date doesn't have year, get it from the end
+        if start_date.count('/') == 1:
+            year = date_str.split('/')[-1]
+            start_date = f"{start_date}/{year}"
+        
+        date_str = start_date
+    
+    # Now parse the date (handles both "2011-08-11" and "9/10/2002" formats)
+    try:
+        return pd.to_datetime(date_str).month
+    except:
+        return None
 
 class PWFDF_Data:
     # original data
@@ -206,6 +275,7 @@ class PWFDF_Data:
             df['Latitude'] = None
             df['Longitude'] = None
             df['KF_Acc015'] = df['KF'] * df['Acc015_mm']
+            df['StormMonth'] = df['StormDate'].apply(extract_storm_month)
 
             for zone in df['UTM_Zone'].unique():
                 # Build a transformer for this zone
@@ -224,20 +294,43 @@ class PWFDF_Data:
                 df.loc[mask, 'Longitude'] = lons
                 df.loc[mask, 'Latitude'] = lats
 
-
+            df = engineer_debris_flow_features(df)
 
             # new training test split?
-            if False:
+            if True:
+                unique_sites = df['Fire_SegID'].unique()
+                train_sites, test_sites = train_test_split(
+                    unique_sites,
+                    test_size=0.40,
+                    random_state=42,
+                    shuffle=True
+                )
+
+                print(f"Total sites: {len(unique_sites)}")
+                print(f"Training sites: {len(train_sites)}")
+                print(f"Testing sites: {len(test_sites)}")
+                
+                train_mask = df['Fire_SegID'].isin(train_sites)
+                test_mask = df['Fire_SegID'].isin(test_sites)
+
+                df.loc[train_mask, 'Database'] = 'Training'
+                df.loc[test_mask, 'Database'] = 'Test'
+
+                print(f"Training observations: {df['Database'].value_counts().get('Training', 0)}")
+                print(f"Testing observations: {df['Database'].value_counts().get('Test', 0)}")
+
+                '''
                 indices = df.index
                 train_indices, test_indices = train_test_split(
                     indices,
-                    test_size=0.2,
+                    test_size=0.4,
                     random_state=42, # Use a random_state for reproducible results
                     shuffle=True # Shuffle the data before splitting
                 )
-
+                
                 df.loc[train_indices, 'Database'] = 'Training'
                 df.loc[test_indices, 'Database'] = 'Test'
+                '''
 
 
 
@@ -247,6 +340,8 @@ class PWFDF_Data:
             test_df = df[df['Database'] == 'Test']
             print(f"Training: {train_df['Missing_Data'].sum()} / {len(train_df)}")
             print(f"Test: {test_df['Missing_Data'].sum()} / {len(test_df)}")
+
+            #df = df.fillna(-1)
 
             print(f"Saving CSV ({self.path})")
             df.to_csv(self.path, index=False)
@@ -260,15 +355,14 @@ class PWFDF_Data:
         self.df = df 
         self.graph_df = edge_df
 
-        global all_features 
-        all_features = list(df.columns) 
+        globals.all_features = list(df.columns) 
 
         # features that shouldn't be included in the input
-        all_features.remove('Response')
-        all_features.remove('Database')
-        all_features.remove('StormDate')
-        all_features.remove('StormStart')
-        all_features.remove('StormEnd')
+        globals.all_features.remove('Response')
+        globals.all_features.remove('Database')
+        globals.all_features.remove('StormDate')
+        globals.all_features.remove('StormStart')
+        globals.all_features.remove('StormEnd')
 
     def prepare_data_usgs(self, features, split='Training', duration='15min', scaler=None, max_neighbors=5):
         """
@@ -292,13 +386,13 @@ class PWFDF_Data:
         
         # 1. Filtering and Cleaning
         df = df[df['Database'] == split].copy()
-        #mask = get_usgs_mask(df, duration) # Assuming this function exists
-        df = fill_nan(df)                   # Assuming this function exists
+        #mask = get_usgs_mask(df, duration)
 
         #if split == 'Test':
         #    df = df[mask].copy()
 
         df, scaler = normalize(df, scaler)
+        df = df.fillna(-1)
 
         X_matrix = df[features].values
         y = df['Response'].values

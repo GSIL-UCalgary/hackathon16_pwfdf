@@ -3,20 +3,37 @@ import torch.nn as nn
 import torch.nn.functional as F
 from mamba_ssm import Mamba
 
-from eval import threat_score_loss
+from eval import threat_score_loss, ThreatScoreLogitsLoss, ComboLoss, ThreatScoreLoss
+import globals    
 
 class MambaClassifier(nn.Module):
-    def __init__(self, input_dim=16, d_model=64, n_layers=4, dropout=0.1):
+    def __init__(self, features, d_model=64, d_state=16, d_conv=4, expand=2, n_layers=4, dropout=0.1):
         super().__init__()
-        self.input_dim = input_dim
+        self.feature_indices = [globals.all_features.index(feat) for feat in features if feat in globals.all_features]
+
+        self.hyperparameters = {
+            'd_model': d_model,
+            'd_state': d_state,
+            'd_conv': d_conv,
+            'expand': expand,
+            'n_layers': n_layers,
+            'dropout': dropout
+        }
+
+        self.input_dim = len(self.feature_indices)
         self.d_model = d_model
         self.duration = '15min'
         self.name = 'Mamba'
 
-        self.input_proj = nn.Linear(input_dim, d_model)
-        
+        self.input_proj = nn.Linear(1, d_model)
+        #self.input_proj = nn.Sequential(
+        #    nn.Linear(1, d_model*2),  # Project 1 -> Intermediate Size
+        #    nn.ReLU(),
+        #    nn.LayerNorm(d_model*2),  # Optional but helpful stabilization
+        #    nn.Linear(d_model*2, d_model) # Project down to the required d_model size
+        #)
         self.mamba_layers = nn.ModuleList([
-            Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2)
+            Mamba(d_model=d_model, d_state=d_state, d_conv=d_conv, expand=expand)
             #nn.Linear(d_model, d_model)
             for _ in range(n_layers)
         ])
@@ -35,16 +52,22 @@ class MambaClassifier(nn.Module):
             nn.Linear(32, 1),
             #nn.Sigmoid()
         )
+
+        self.feature_embeddings = nn.Parameter(torch.zeros(1, self.input_dim, d_model))
+
+        #self.loss_fn = nn.BCELoss()
+        #self.loss_fn = nn.BCEWithLogitsLoss()
+        self.loss_fn = ComboLoss()
+        #self.loss_fn = ThreatScoreLogitsLoss()
         
-    def forward(self, x):
-        # x shape: (batch_size, seq_len, input_dim)
-        # For tabular data, we treat each sample as sequence of length 1
-        if len(x.shape) == 2:
-            x = x.unsqueeze(1)  # (batch_size, 1, input_dim)
+    def forward(self, x, target=None):
+        x = x[:, 0, self.feature_indices] # B, F
+        x = x.unsqueeze(-1) # B, F, 1
         
         # Input projection
         x = self.input_proj(x)
-        
+        x = x + self.feature_embeddings
+
         # Mamba layers
         for mamba_layer, norm in zip(self.mamba_layers, self.norms):
             residual = x
@@ -55,47 +78,47 @@ class MambaClassifier(nn.Module):
         
         # Global average pooling over sequence dimension
         x = x.mean(dim=1)  # (batch_size, d_model)
-        
-        return self.output_head(x).squeeze(-1)
+        x = self.output_head(x).squeeze(-1)
+        probs = torch.sigmoid(x)
+
+        if target is not None:
+            loss = self.loss_fn(x, target)
+            return probs, loss
+
+        return probs, None
 
 class HybridMambaLogisticModel(nn.Module):
-    def __init__(self, features, pos_weight, input_dim=16, d_model=64, n_layers=4, dropout=0.1):
+    def __init__(self, features, pos_weight, d_model=64, d_state=16, d_conv=4, expand=2, n_layers=4, dropout=0.1):
         super().__init__()
-        self.input_dim = input_dim
         self.d_model = d_model
         self.duration = '15min'
         self.name = 'HybridMamba'
         self.spatial = False
         
-        features_to_remove = ['UTM_X', 'UTM_Y', 'Fire_ID', 'Fire_SegID']
-        self.features = [f for f in features if f not in features_to_remove]
-        remove_indices = [features.index(f) for f in features_to_remove]
-        #self.utm_x_idx = features.index("UTM_X")
-        #self.utm_y_idx = features.index("UTM_Y")
+        self.hyperparameters = {
+            'd_model': d_model,
+            'd_state': d_state,
+            'd_conv': d_conv,
+            'expand': expand,
+            'n_layers': n_layers,
+            'dropout': dropout
+        }
 
-        self.keep_indices = torch.tensor([
-            i for i in range(len(features)) 
-            #if i not in [self.utm_x_idx, self.utm_y_idx]
-            if i not in remove_indices
-        ])
+        self.feature_indices = [globals.all_features.index(feat) for feat in features if feat in all_features]
+        self.input_dim = len(self.feature_indices)
+        self.features = features
 
         self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
-        self.all_features = self.features
-        
-        # Get indices for rainfall vs non-rainfall features
-        self.rainfall_indices = [self.all_features.index(feat) for feat in self.rainfall_features if feat in self.all_features]
-        self.non_rainfall_indices = [i for i in range(len(self.all_features)) if i not in self.rainfall_indices]
-        
-        #print(f"Rainfall features ({len(self.rainfall_indices)}): {self.rainfall_features}")
-        #print(f"Non-rainfall features ({len(self.non_rainfall_indices)}): {[self.all_features[i] for i in self.non_rainfall_indices]}")
-        
-        # Mamba pathway for non-rainfall features
-        self.mamba_input_dim = len(self.non_rainfall_indices)
-        self.mamba_input_proj = nn.Linear(self.mamba_input_dim, d_model)
+        self.non_rainfall_features = [feat for feat in self.features if feat not in self.rainfall_features]
+
+        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
+        self.non_rainfall_indices = [globals.all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
+    
+        self.mamba_input_proj = nn.Linear(1, d_model)
         
         # Mamba backbone
         self.mamba_layers = nn.ModuleList([
-            Mamba(d_model=d_model, d_state=16, d_conv=4, expand=2,)
+            Mamba(d_model=d_model, d_state=d_state, d_conv=d_conv, expand=expand,)
             #nn.Linear(d_model, d_model)
             for _ in range(n_layers)
         ])
@@ -123,7 +146,8 @@ class HybridMambaLogisticModel(nn.Module):
         )
         
         self.dropout = nn.Dropout(dropout)
-        #self.criterion = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]))
+        #self.loss_fn = nn.BCEWithLogitsLoss(pos_weight=torch.tensor([pos_weight]))
+        self.loss_fn = ComboLoss()
 
 
     def split_features(self, x):
@@ -134,9 +158,9 @@ class HybridMambaLogisticModel(nn.Module):
         return non_rainfall_x, rainfall_x
     
     def forward(self, x, target=None):
-        x = x[:, self.keep_indices]  # [B, F-2]
+        x = x[:, 0, :]  # [B, F]
 
-        non_rainfall_x, rainfall_x = self.split_features(x)
+        non_rainfall_x, rainfall_x = self.split_features(x) # [B, F]
         
         mamba_out = self._mamba_forward(non_rainfall_x)
         logistic_out = self.logistic_layer(rainfall_x)  # (batch_size, 1)
@@ -147,16 +171,16 @@ class HybridMambaLogisticModel(nn.Module):
         output = self.combined_head(combined).squeeze(-1)
 
         if target != None:
-            #loss = self.criterion(output, target)
-            loss = threat_score_loss(output, target)
+            loss = self.loss_fn(output, target)
+            #loss = threat_score_loss(output, target)
         else:
             loss = None
 
         return torch.sigmoid(output), loss
     
     def _mamba_forward(self, x):
-        x = x.unsqueeze(1)  # (batch_size, 1, mamba_input_dim)
-        x = self.mamba_input_proj(x)  # (batch_size, 1, d_model)
+        x = x.unsqueeze(-1)  # (batch_size, mamba_input_dim, 1)
+        x = self.mamba_input_proj(x)  # (batch_size, mamba_input_dim, d_model)
         
         for mamba_layer, norm in zip(self.mamba_layers, self.mamba_norms):
             residual = x
@@ -974,8 +998,6 @@ class HybridGroupedSpatialMambaModel2(nn.Module):
         
         return probs, loss
 
-from data import all_features
-
 class SimpleMamba(nn.Module):
     """
     Simple Mamba model that uses only 4 features and node 0.
@@ -996,7 +1018,7 @@ class SimpleMamba(nn.Module):
             'PropHM23', 'dNBR/1000', 'KF',
             'Acc015_mm', 'Acc030_mm', 'Acc060_mm'
         ]
-        self.feature_indices = [all_features.index(feat) for feat in limited_features if feat in all_features]
+        self.feature_indices = [globals.all_features.index(feat) for feat in limited_features if feat in all_features]
 
         self.n_features = len(self.feature_indices)  # PropHM23, dNBR/1000, KF, Acc015_mm
         self.d_model = d_model
@@ -1068,9 +1090,6 @@ class SimpleMamba(nn.Module):
             return probs, loss
         
         return probs, None
-    
-from data import all_features
-from eval import ThreatScoreLoss
 
 class WeightedSumHead(nn.Module):
     def __init__(self, d_model, dropout):
@@ -1136,8 +1155,8 @@ class ClusteredMambaModel_Flood(nn.Module):
 
         
 
-        self.rainfall_indices = [all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
-        self.non_rainfall_indices = [all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
+        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
+        self.non_rainfall_indices = [globals.all_features.index(feat) for feat in self.non_rainfall_features if feat in globals.all_features]
 
         # --- 1. Clustering Projections ---
         # Instead of explicit clustering, we use a learned projection to a cluster space.
@@ -1258,9 +1277,9 @@ class ClusteredMambaModel_GatedFusion(nn.Module):
 
         self.rainfall_features = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'StormAccum_mm']
         
-        self.rainfall_indices = [all_features.index(feat) for feat in self.rainfall_features if feat in all_features]
-        self.missing_data_index = [all_features.index(feat) for feat in self.missing_data_feature if feat in all_features]
-        self.non_rainfall_indices = [all_features.index(feat) for feat in self.non_rainfall_features if feat in all_features]
+        self.rainfall_indices = [globals.all_features.index(feat) for feat in self.rainfall_features if feat in globals.all_features]
+        self.missing_data_index = [globals.all_features.index(feat) for feat in self.missing_data_feature if feat in globals.all_features]
+        self.non_rainfall_indices = [globals.all_features.index(feat) for feat in self.non_rainfall_features if feat in globals.all_features]
         
         # --- 1. Clustering Projections ---
         self.non_rainfall_dim = len(self.non_rainfall_indices)
@@ -1386,10 +1405,10 @@ class HybridMambaMLPModel(nn.Module):
         self.mlp = ['Acc015_mm', 'Acc030_mm', 'Acc060_mm']
 
         # --- Feature Indexing (Matches RandomForestModel) ---
-        # Assuming all_features is defined globally or passed (for simplicity, we hardcode)
+        # Assuming globals.all_features is defined globally or passed (for simplicity, we hardcode)
         # In a real setup, you'd need the feature indices:
-        self.mamba_feature_indices = [all_features.index(feat) for feat in self.mamba_features if feat in all_features]
-        self.mlp_feature_index = [all_features.index(feat) for feat in self.mlp if feat in all_features]
+        self.mamba_feature_indices = [globals.all_features.index(feat) for feat in self.mamba_features if feat in globals.all_features]
+        self.mlp_feature_index = [globals.all_features.index(feat) for feat in self.mlp if feat in globals.all_features]
         
         # Features for Mamba: 'dNBR/1000', 'KF', 'PropHM23' (Sequence Length = 3)
         # Feature for MLP: 'Acc015_mm' (Input Dim = 1)

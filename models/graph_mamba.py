@@ -263,7 +263,7 @@ class KNNMambaClassifier(nn.Module):
     # New signature: Takes both the full feature list and the limited list
     def __init__(self, all_features, pos_weight, d_model=64, n_layers=2):
         super().__init__()
-        self.name = 'KNNMambaClassifier_N6_SelectedF'
+        self.name = 'KNNMambaClassifier '
         limited_features = ['Acc015_mm', 'Peak_I15_mm/h', 'PropHM23', 'dNBR/1000'] # F=4
 
         # Store all features for reference

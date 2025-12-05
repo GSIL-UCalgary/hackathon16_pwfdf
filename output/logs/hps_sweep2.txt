@@ -1,0 +1,149 @@
+
+--- Starting Sweep for SimpleMamba ---
+New Best TS: 0.5326 with HPs: {'layers': 2, 'd_model': 16, 'dropout': 0.1}
+New Best TS: 0.6092 with HPs: {'layers': 2, 'd_model': 32, 'dropout': 0.1}
+New Best TS: 0.6190 with HPs: {'layers': 2, 'd_model': 64, 'dropout': 0.2}
+Found BEST HPs for SimpleMamba: {'layers': 2, 'd_model': 64, 'dropout': 0.2, 'pos_weight': tensor(3.5693, device='cuda:0')}
+
+--- Starting Sweep for SimpleModel ---
+New Best TS: 0.4592 with HPs: {'layers': 4, 'd_model': 16, 'dropout': 0.1}
+New Best TS: 0.4706 with HPs: {'layers': 4, 'd_model': 16, 'dropout': 0.3}
+New Best TS: 0.4783 with HPs: {'layers': 8, 'd_model': 16, 'dropout': 0.1}
+New Best TS: 0.4894 with HPs: {'layers': 8, 'd_model': 32, 'dropout': 0.3}
+Found BEST HPs for SimpleModel: {'layers': 8, 'd_model': 32, 'dropout': 0.3, 'pos_weight': tensor(3.5693, device='cuda:0')}
+
+--- Starting Sweep for SimpleAttention ---
+New Best TS: 0.5104 with HPs: {'layers': 2, 'd_model': 32, 'dropout': 0.1}
+New Best TS: 0.5521 with HPs: {'layers': 2, 'd_model': 64, 'dropout': 0.2}
+Found BEST HPs for SimpleAttention: {'layers': 2, 'd_model': 64, 'dropout': 0.2, 'pos_weight': tensor(3.5693, device='cuda:0')}
+
+--- Final Training for SimpleMamba with Best HPs ---
+Final Model: SimpleMamba | Average Test TS: 0.5111
+
+--- Final Training for SimpleModel with Best HPs ---
+Final Model: SimpleModel | Average Test TS: 0.4000
+
+--- Final Training for SimpleAttention with Best HPs ---
+Final Model: SimpleAttention | Average Test TS: 0.5283
+
+
+========================= FINAL LEADERBOARD =========================
+SimpleAttention           | Avg Test TS: 0.5283
+SimpleMamba               | Avg Test TS: 0.5111
+SimpleModel               | Avg Test TS: 0.4000
+
+--- Starting Sweep for SimpleMamba ---
+
+
+
+========================= Comparison =========================
+Training set: 923 samples
+Val set: 314 samples
+Test set: 313 samples
+Input_data: 923, 923, 314, 314
+Seeds: [0]
+Features Count: 50
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015', 'StormMonth', 'I15_to_Duration', 'I30_to_Duration', 'Peak_to_Avg_Ratio', 'Burn_x_Peak', 'Burn_x_Accum', 'Burn_x_KF', 'HighMod_x_Peak', 'KF_x_I15', 'KF_x_I30', 'KF_x_Accum', 'Area_x_Distance', 'Area_per_Distance', 'Early_to_Total_Ratio', 'Early_to_Late_Ratio', 'Acc_Acceleration', 'Exceeds_I15_Threshold', 'Exceeds_I30_Threshold', 'High_Burn_Severity', 'Storm_Energy', 'Erosion_Potential', 'Is_Summer', 'Is_Monsoon']
+
+============================================================
+SUMMARY (Seed = 0)
+============================================================
+Train set
+Staley                    TS: 0.2149 | Acc: 0.7941 | F1: 0.3537 | Recall: 0.2574 | Precision: 0.5652
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000 | Recall: 1.0000 | Precision: 1.0000
+TabNetModel               TS: 0.2080 | Acc: 0.3976 | F1: 0.3443 | Recall: 0.7228 | Precision: 0.2260
+SimpleModel               TS: 0.5526 | Acc: 0.8711 | F1: 0.7119 | Recall: 0.7277 | Precision: 0.6967
+SimpleAttention           TS: 0.6830 | Acc: 0.9090 | F1: 0.8117 | Recall: 0.8960 | Precision: 0.7418
+SimpleMamba               TS: 0.9466 | Acc: 0.9881 | F1: 0.9726 | Recall: 0.9653 | Precision: 0.9799
+============================================================
+Val set
+Staley                    TS: 0.1975 | Acc: 0.7930 | F1: 0.3299 | Recall: 0.2424 | Precision: 0.5161
+RandomForest              TS: 0.6118 | Acc: 0.8949 | F1: 0.7591 | Recall: 0.7879 | Precision: 0.7324
+TabNetModel               TS: 0.2213 | Acc: 0.4172 | F1: 0.3624 | Recall: 0.7879 | Precision: 0.2353
+SimpleModel               TS: 0.4894 | Acc: 0.8471 | F1: 0.6571 | Recall: 0.6970 | Precision: 0.6216
+SimpleAttention           TS: 0.5521 | Acc: 0.8631 | F1: 0.7114 | Recall: 0.8030 | Precision: 0.6386
+SimpleMamba               TS: 0.6190 | Acc: 0.8981 | F1: 0.7647 | Recall: 0.7879 | Precision: 0.7429
+============================================================
+Test set
+Staley                    TS: 0.2222 | Acc: 0.7764 | F1: 0.3636 | Recall: 0.3030 | Precision: 0.4545
+RandomForest              TS: 0.5730 | Acc: 0.8786 | F1: 0.7286 | Recall: 0.7727 | Precision: 0.6892
+TabNetModel               TS: 0.2160 | Acc: 0.4665 | F1: 0.3552 | Recall: 0.6970 | Precision: 0.2383
+SimpleModel               TS: 0.4000 | Acc: 0.7987 | F1: 0.5714 | Recall: 0.6364 | Precision: 0.5185
+SimpleAttention           TS: 0.5283 | Acc: 0.8403 | F1: 0.6914 | Recall: 0.8485 | Precision: 0.5833
+SimpleMamba               TS: 0.5111 | Acc: 0.8594 | F1: 0.6765 | Recall: 0.6970 | Precision: 0.6571
+
+
+
+========================= Comparison =========================
+Training set: 923 samples
+Val set: 314 samples
+Test set: 313 samples
+Input_data: 923, 923, 314, 314
+Seeds: [0]
+Features Count: 50
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015', 'StormMonth', 'I15_to_Duration', 'I30_to_Duration', 'Peak_to_Avg_Ratio', 'Burn_x_Peak', 'Burn_x_Accum', 'Burn_x_KF', 'HighMod_x_Peak', 'KF_x_I15', 'KF_x_I30', 'KF_x_Accum', 'Area_x_Distance', 'Area_per_Distance', 'Early_to_Total_Ratio', 'Early_to_Late_Ratio', 'Acc_Acceleration', 'Exceeds_I15_Threshold', 'Exceeds_I30_Threshold', 'High_Burn_Severity', 'Storm_Energy', 'Erosion_Potential', 'Is_Summer', 'Is_Monsoon']
+
+============================================================
+SUMMARY (Seed = 0)
+============================================================
+Train set
+Staley                    TS: 0.2149 | Acc: 0.7941 | F1: 0.3537 | Recall: 0.2574 | Precision: 0.5652
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000 | Recall: 1.0000 | Precision: 1.0000
+TabNetModel               TS: 0.2080 | Acc: 0.3976 | F1: 0.3443 | Recall: 0.7228 | Precision: 0.2260
+SimpleModel               TS: 0.6034 | Acc: 0.8982 | F1: 0.7526 | Recall: 0.7079 | Precision: 0.8034
+SimpleAttention           TS: 0.7054 | Acc: 0.9231 | F1: 0.8273 | Recall: 0.8416 | Precision: 0.8134
+SimpleMamba               TS: 0.9754 | Acc: 0.9946 | F1: 0.9875 | Recall: 0.9802 | Precision: 0.9950
+============================================================
+Val set
+Staley                    TS: 0.1975 | Acc: 0.7930 | F1: 0.3299 | Recall: 0.2424 | Precision: 0.5161
+RandomForest              TS: 0.6118 | Acc: 0.8949 | F1: 0.7591 | Recall: 0.7879 | Precision: 0.7324
+TabNetModel               TS: 0.2213 | Acc: 0.4172 | F1: 0.3624 | Recall: 0.7879 | Precision: 0.2353
+SimpleModel               TS: 0.4536 | Acc: 0.8312 | F1: 0.6241 | Recall: 0.6667 | Precision: 0.5867
+SimpleAttention           TS: 0.5055 | Acc: 0.8567 | F1: 0.6715 | Recall: 0.6970 | Precision: 0.6479
+SimpleMamba               TS: 0.5889 | Acc: 0.8822 | F1: 0.7413 | Recall: 0.8030 | Precision: 0.6883
+============================================================
+Test set
+Staley                    TS: 0.2222 | Acc: 0.7764 | F1: 0.3636 | Recall: 0.3030 | Precision: 0.4545
+RandomForest              TS: 0.5730 | Acc: 0.8786 | F1: 0.7286 | Recall: 0.7727 | Precision: 0.6892
+TabNetModel               TS: 0.2160 | Acc: 0.4665 | F1: 0.3552 | Recall: 0.6970 | Precision: 0.2383
+SimpleModel               TS: 0.4000 | Acc: 0.7987 | F1: 0.5714 | Recall: 0.6364 | Precision: 0.5185
+SimpleAttention           TS: 0.5591 | Acc: 0.8690 | F1: 0.7172 | Recall: 0.7879 | Precision: 0.6582
+SimpleMamba               TS: 0.4842 | Acc: 0.8435 | F1: 0.6525 | Recall: 0.6970 | Precision: 0.6133
+
+
+
+========================= Comparison =========================
+Training set: 923 samples
+Val set: 314 samples
+Test set: 313 samples
+Input_data: 923, 923, 314, 314
+Seeds: [42]
+Features Count: 50
+['Fire Name', 'Year', 'Fire_ID', 'Fire_SegID', 'State', 'UTM_Zone', 'UTM_X', 'UTM_Y', 'GaugeDist_m', 'StormDur_H', 'StormAccum_mm', 'StormAvgI_mm/h', 'Peak_I15_mm/h', 'Peak_I30_mm/h', 'Peak_I60_mm/h', 'ContributingArea_km2', 'PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm', 'Acc030_mm', 'Acc060_mm', 'ID', 'Missing_Data', 'Latitude', 'Longitude', 'KF_Acc015', 'StormMonth', 'I15_to_Duration', 'I30_to_Duration', 'Peak_to_Avg_Ratio', 'Burn_x_Peak', 'Burn_x_Accum', 'Burn_x_KF', 'HighMod_x_Peak', 'KF_x_I15', 'KF_x_I30', 'KF_x_Accum', 'Area_x_Distance', 'Area_per_Distance', 'Early_to_Total_Ratio', 'Early_to_Late_Ratio', 'Acc_Acceleration', 'Exceeds_I15_Threshold', 'Exceeds_I30_Threshold', 'High_Burn_Severity', 'Storm_Energy', 'Erosion_Potential', 'Is_Summer', 'Is_Monsoon']
+
+============================================================
+SUMMARY (Seed = 42)
+============================================================
+Train set
+Staley                    TS: 0.2149 | Acc: 0.7941 | F1: 0.3537 | Recall: 0.2574 | Precision: 0.5652
+RandomForest              TS: 1.0000 | Acc: 1.0000 | F1: 1.0000 | Recall: 1.0000 | Precision: 1.0000
+TabNetModel               TS: 0.2080 | Acc: 0.3976 | F1: 0.3443 | Recall: 0.7228 | Precision: 0.2260
+SimpleModel               TS: 0.6017 | Acc: 0.9003 | F1: 0.7514 | Recall: 0.6881 | Precision: 0.8274
+SimpleAttention           TS: 0.6528 | Acc: 0.9003 | F1: 0.7900 | Recall: 0.8564 | Precision: 0.7331
+SimpleMamba               TS: 0.9369 | Acc: 0.9859 | F1: 0.9674 | Recall: 0.9554 | Precision: 0.9797
+============================================================
+Val set
+Staley                    TS: 0.1975 | Acc: 0.7930 | F1: 0.3299 | Recall: 0.2424 | Precision: 0.5161
+RandomForest              TS: 0.5952 | Acc: 0.8917 | F1: 0.7463 | Recall: 0.7576 | Precision: 0.7353
+TabNetModel               TS: 0.2213 | Acc: 0.4172 | F1: 0.3624 | Recall: 0.7879 | Precision: 0.2353
+SimpleModel               TS: 0.4831 | Acc: 0.8535 | F1: 0.6515 | Recall: 0.6515 | Precision: 0.6515
+SimpleAttention           TS: 0.5238 | Acc: 0.8408 | F1: 0.6875 | Recall: 0.8333 | Precision: 0.5851
+SimpleMamba               TS: 0.6118 | Acc: 0.8949 | F1: 0.7591 | Recall: 0.7879 | Precision: 0.7324
+============================================================
+Test set
+Staley                    TS: 0.2222 | Acc: 0.7764 | F1: 0.3636 | Recall: 0.3030 | Precision: 0.4545
+RandomForest              TS: 0.5698 | Acc: 0.8818 | F1: 0.7259 | Recall: 0.7424 | Precision: 0.7101
+TabNetModel               TS: 0.2160 | Acc: 0.4665 | F1: 0.3552 | Recall: 0.6970 | Precision: 0.2383
+SimpleModel               TS: 0.4141 | Acc: 0.8147 | F1: 0.5857 | Recall: 0.6212 | Precision: 0.5541
+SimpleAttention           TS: 0.4771 | Acc: 0.8179 | F1: 0.6460 | Recall: 0.7879 | Precision: 0.5474
+SimpleMamba               TS: 0.5714 | Acc: 0.8754 | F1: 0.7273 | Recall: 0.7879 | Precision: 0.6753

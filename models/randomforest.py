@@ -5,8 +5,7 @@ import torch
 import torch.nn as nn
 
 from eval import threat_score
-
-from data import all_features
+import globals
 
 class RandomForestModel(nn.Module):
     """
@@ -17,39 +16,14 @@ class RandomForestModel(nn.Module):
     - R (Rainfall): Accumulated rainfall (duration-dependent)
     """
     
-    def __init__(self, duration='15min', n_estimators=100, max_depth=None, 
+    def __init__(self, features, duration='15min', n_estimators=100, max_depth=None, 
                  min_samples_split=2, min_samples_leaf=1, max_features='sqrt',
                  random_state=None):
         super().__init__()
         self.name = 'RandomForest'
 
-        limited_features = ['PropHM23', 'dNBR/1000', 'KF', 'Acc015_mm']
-        #limited_features = ['Peak_I15_mm/h', 'StormAccum_mm', 'StormDur_H', 'PropHM23', 'ContributingArea_km2', 'KF', 'dNBR/1000']
-        self.feature_indices = [all_features.index(feat) for feat in limited_features if feat in all_features]
-
-        '''
-        self.duration = duration
-        self.spatial = False
-        
-        # Feature indices for T, F, S (same as Staley2017Model)
-        self.T_idx = features.index('PropHM23')
-        self.F_idx = features.index('dNBR/1000')
-        self.S_idx = features.index('KF')
-        
-        # Rainfall index based on duration
-        duration_map = {
-            '15min': 'Acc015_mm',
-            '30min': 'Acc030_mm',
-            '60min': 'Acc060_mm'
-        }
-
-        feature_name = duration_map[duration]
-        self.R_idx = features.index(feature_name) if feature_name in features else 0 # SETS TO 0 IF THAT FEATURE IS NOT PASSED IN
-        '''
-
-        # Store the 4 feature indices
-        #self.feature_indices = [self.T_idx, self.F_idx, self.S_idx, self.R_idx]
-        self.feature_names = limited_features
+        self.feature_indices = [globals.all_features.index(feat) for feat in features if feat in globals.all_features]
+        self.feature_names = features
         
         # Initialize sklearn Random Forest
         self.rf = RandomForestClassifier(
@@ -122,7 +96,7 @@ class RandomForestModel(nn.Module):
         return dict(zip(self.feature_names, importances))
 
 def train_random_forest(model: RandomForestModel, input_data):
-    X_train, y_train, X_val, y_val = input_data
+    X_train, y_train, X_val, y_val, _, _ = input_data
     model.fit(X_train, y_train)
     print(model.get_feature_importance())
     return model

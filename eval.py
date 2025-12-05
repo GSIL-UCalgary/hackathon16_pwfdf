@@ -86,11 +86,84 @@ class ThreatScoreLoss(nn.Module):
 
         return loss
 
+class ThreatScoreLogitsLoss(nn.Module):
+    """
+    A differentiable approximation of the 1 - Threat Score (CSI) loss.
+    Accepts raw logits as input (similar to BCEWithLogitsLoss).
+    """
+    def __init__(self, epsilon=1e-6):
+        super(ThreatScoreLogitsLoss, self).__init__()
+        self.epsilon = epsilon
+
+    def forward(self, logits, y_true):
+            probs = torch.sigmoid(logits)
+            
+            probs = probs.view(-1)
+            y_true = y_true.view(-1).float()
+
+            intersection = (probs * y_true).sum()
+            
+            # Union = Sum(Probs) + Sum(Targets) - Intersection
+            # This replaces the need to calculate FP and FN separately
+            union = probs.sum() + y_true.sum() - intersection
+            
+            ts_approx = (intersection + self.epsilon) / (union + self.epsilon)
+            
+            return 1.0 - ts_approx
+
+class FocalLoss(nn.Module):
+    def __init__(self, alpha=0.25, gamma=2.0):
+        super().__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+    
+    def forward(self, logits, targets):
+        bce_loss = nn.functional.binary_cross_entropy_with_logits(logits, targets, reduction='none')
+        probs = torch.sigmoid(logits)
+        pt = torch.where(targets == 1, probs, 1 - probs)
+        focal_weight = (1 - pt) ** self.gamma
+        if self.alpha is not None:
+            alpha_weight = torch.where(targets == 1, self.alpha, 1 - self.alpha)
+            focal_weight = alpha_weight * focal_weight
+        return (focal_weight * bce_loss).mean()
+
+class ComboLoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.focal = FocalLoss(alpha=0.25, gamma=2.0)
+        self.ts = ThreatScoreLogitsLoss()
+    
+    def forward(self, logits, targets):
+        return 0.3 * self.focal(logits, targets) + 0.7 * self.ts(logits, targets)
+
+class WeightedComboLoss(nn.Module):
+    def __init__(self, pos_weight=None):
+        super().__init__()
+        self.pos_weight = pos_weight  # Compute from class imbalance
+        self.bce = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+        self.focal = FocalLoss(alpha=0.25, gamma=1.5)
+        self.ts = ThreatScoreLogitsLoss()
+    
+    def forward(self, logits, targets):
+        return 0.3 * self.bce(logits, targets) + \
+               0.3 * self.focal(logits, targets) + \
+               0.4 * self.ts(logits, targets)
+
+class ComboLoss2(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.bce = nn.BCEWithLogitsLoss()
+        self.ts = ThreatScoreLogitsLoss()
+        
+    def forward(self, logits, targets):
+        # BCE helps convergence, TS optimizes the specific metric
+        return self.bce(logits, targets) + self.ts(logits, targets)
+
 def evaluate_model(model, X_test, y_test):
     """Evaluate model and return metrics"""
     model.eval()
     with torch.no_grad():
-        y_pred, _ = model(X_test, None)
+        y_pred, loss = model(X_test, y_test)
         y_pred = y_pred.cpu().numpy()
     
     y_pred_binary = (y_pred >= threshold).astype(int)
@@ -108,6 +181,7 @@ def evaluate_model(model, X_test, y_test):
 
     return {
         'name': model.name,
+        'loss': loss,
         'ts': ts,
         'jaccard': jaccard,
         'accuracy': accuracy,
